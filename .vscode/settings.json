@@ -1,0 +1,6 @@
+{
+    "files.associations": {
+        "string": "cpp",
+        "system_error": "cpp"
+    }
+}
