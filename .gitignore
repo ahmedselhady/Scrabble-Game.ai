@@ -22,6 +22,15 @@
 *.mod
 *.smod
 
+# Visual C++ cache files
+ipch/
+*.aps
+*.ncb
+*.opendb
+*.opensdf
+*.sdf
+*.cachefile
+
 # Compiled Static libraries
 *.lai
 *.la
