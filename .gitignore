@@ -35,3 +35,6 @@
 
 # visual studio code folder:
 /.vscode
+
+# CMake build directory
+build/
