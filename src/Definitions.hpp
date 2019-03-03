@@ -13,12 +13,7 @@ enum GamePhase{
 
 	
 enum AgentResponse{
-	/**
-	 * BEST_MOVE: if the move is the best move Agent could think of
-	 * SUGGEST_BETTER_MOVE: if the agent could think of a better move than played by human
-     * CONGRATULATION: if it were better than the Agent's guess
-	*/
-	BEST_MOVE,
-	SUGGEST_BETTER_MOVE,
-	CONGRATULATION
-}
+	BEST_MOVE, /* if the move is the best move Agent could think of */
+	SUGGEST_BETTER_MOVE, /* if the agent could think of a better move than played by human */
+	CONGRATULATION /* if it were better than the Agent's guess */
+};
