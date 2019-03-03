@@ -18,8 +18,20 @@ public:
 	BoardMask operator &(const BoardMask& otherboard) const;
 	BoardMask operator |(const BoardMask& otherboard) const;
 	BoardMask operator ^(const BoardMask& otherboard) const;
+	BoardMask& operator |=(const BoardMask& otherboard);
+	BoardMask& operator &=(const BoardMask& otherboard);
+	BoardMask& operator ^=(const BoardMask& otherboard);
+	BoardMask& operator =(const BoardMask& otherboard);
+	bool operator !=(const BoardMask& otherboard);
+	bool operator ==(const BoardMask& otherboard);
+	BoardMask& operator <<(int);
+	BoardMask& operator >>(int);
 
+
+	
+	
 	BoardMask(ULL = 0, ULL = 0, ULL = 0, ULL = 0);
+	BoardMask(const BoardMask&);
 	~BoardMask();
 };
 
