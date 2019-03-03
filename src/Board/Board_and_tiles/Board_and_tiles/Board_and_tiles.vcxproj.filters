@@ -21,10 +21,7 @@
     <ClInclude Include="BoardConst.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="uint256_t-master\uint128_t.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="uint256_t-master\uint256_t.h">
+    <ClInclude Include="BoardMask.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -35,10 +32,7 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="uint256_t-master\uint128_t.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="uint256_t-master\uint256_t.cpp">
+    <ClCompile Include="BoardMask.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

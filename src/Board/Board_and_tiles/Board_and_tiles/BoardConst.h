@@ -1,14 +1,15 @@
 #ifndef BOARDConstants_H
 #define BOARDConstants_H
 
-#include "uint256_t-master\uint256_t.h"
 #include <iostream>
+#include "BoardMask.h"
 
 using namespace std;
 
-typedef uint256_t Bitboard;
+typedef BoardMask Bitboard;
 
 //000000000000000
+/*
 bool getBit(Bitboard byte, int position) // position in range 0-7
 {
 	return (byte >> position) & 0x1;
@@ -34,6 +35,6 @@ uint64_t x = 0b0000000000000000000000000000000000000000010000000000000100000000;
 uint64_t y = 0b0000000000000000000000000000000000000000000000000000000000000000;
 uint64_t z = 0b000000000000000000100000010000001;
 Bitboard WSx3 = Wide(w, x, y, z);
-
+*/
 
 #endif

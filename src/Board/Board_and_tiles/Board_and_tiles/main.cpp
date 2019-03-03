@@ -8,11 +8,11 @@ using namespace std;
 
 int main()
 {
-	for (int i = 0; i < 255; ++i)
+	for (int i = 255; i >=0 ; --i)
 	{
 		if (i % 15 == 0)
 			cout << endl;
-		cout << getBit(WSx3, i) << " ";
+		//cout << getBit(WSx3, i) << " ";
 	}
 	int x;
 	cin >> x;

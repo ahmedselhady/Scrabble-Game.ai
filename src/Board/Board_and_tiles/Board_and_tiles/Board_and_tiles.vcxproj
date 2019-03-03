@@ -113,14 +113,12 @@
   <ItemGroup>
     <ClInclude Include="Board.h" />
     <ClInclude Include="BoardConst.h" />
-    <ClInclude Include="uint256_t-master\uint128_t.h" />
-    <ClInclude Include="uint256_t-master\uint256_t.h" />
+    <ClInclude Include="BoardMask.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Board.cpp" />
+    <ClCompile Include="BoardMask.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="uint256_t-master\uint128_t.cpp" />
-    <ClCompile Include="uint256_t-master\uint256_t.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
