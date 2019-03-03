@@ -1,6 +1,8 @@
 # ignore all json files
 *.json
 *.vscode
+*.md
+LICENSE
 
 # Prerequisites
 *.d
@@ -37,3 +39,6 @@
 
 # visual studio code folder:
 /.vscode
+
+# CMake build directory
+build/
