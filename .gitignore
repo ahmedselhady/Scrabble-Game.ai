@@ -1,0 +1,4 @@
+# ignore all json files
+*.json
+*.gch
+*.vscode
