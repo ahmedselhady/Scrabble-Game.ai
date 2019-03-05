@@ -1,6 +1,7 @@
 #include "BoardMask.h"
 
 #include <exception>
+#include <iostream>
 
 void BoardMask::setBit(int bitOffset) { // bitOffset Is Calculated using Equation provided by andrew
 	Values_x64[bitOffset >> 6] |= (MASK << (bitOffset - (64 * (bitOffset >> 6))));
@@ -10,9 +11,9 @@ void BoardMask::unsetBit(int bitOffset) { // bitOffset Is Calculated using Equat
 	Values_x64[bitOffset >> 6] ^= (MASK << (bitOffset - (64 * (bitOffset >> 6))));
 }
 
-ULL BoardMask::getBit(int bitOffset) {
+bool BoardMask::getBit(int bitOffset) {
 	int offset = bitOffset / 64;
-	return Values_x64[offset] & (MASK << (bitOffset - (64 * (offset))));
+	return (Values_x64[offset] & (MASK << (bitOffset - (64 * (offset)))));
  }
 
 BoardMask BoardMask::operator &(const BoardMask& otherboard) const {
@@ -151,6 +152,17 @@ BoardMask& BoardMask::operator >>(int offset) {
 		throw "Offset Out of Bound";
 	}
 	return (*this);
+}
+
+void BoardMask::print(){
+
+	for(int i=0, j=0;i<255;++i,++j){
+		if(j==15){
+			j=0;
+			std::cout<<"\n";
+		}
+		std::cout<<getBit(i);
+	}
 }
 
 BoardMask::BoardMask(ULL first, ULL second, ULL third, ULL fourth)

@@ -13,7 +13,7 @@ public:
 
 	void setBit(int bitOffset);
 	void unsetBit(int bitOffset);
-	ULL getBit(int bitOffset);
+	bool getBit(int bitOffset);
 
 	BoardMask operator &(const BoardMask& otherboard) const;
 	BoardMask operator |(const BoardMask& otherboard) const;
@@ -27,7 +27,7 @@ public:
 	BoardMask& operator <<(int);
 	BoardMask& operator >>(int);
 
-
+	void print(); // for debug mode only
 	
 	
 	BoardMask(ULL = 0, ULL = 0, ULL = 0, ULL = 0);
