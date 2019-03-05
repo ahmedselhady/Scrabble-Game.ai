@@ -2,6 +2,7 @@
     "files.associations": {
         "string": "cpp",
         "system_error": "cpp",
+<<<<<<< HEAD
         "*.tcc": "cpp",
         "cctype": "cpp",
         "clocale": "cpp",
@@ -13,16 +14,51 @@
         "cwctype": "cpp",
         "exception": "cpp",
         "initializer_list": "cpp",
+=======
+        "cmath": "cpp",
+        "cstddef": "cpp",
+        "cstdint": "cpp",
+        "cstdio": "cpp",
+        "cstdlib": "cpp",
+        "cstring": "cpp",
+        "cwchar": "cpp",
+        "exception": "cpp",
+        "initializer_list": "cpp",
+        "ios": "cpp",
+>>>>>>> 21ae3763f32cf72c6862270dfc2b9ebe7fb35f24
         "iosfwd": "cpp",
         "iostream": "cpp",
         "istream": "cpp",
         "limits": "cpp",
+<<<<<<< HEAD
+=======
+        "memory": "cpp",
+>>>>>>> 21ae3763f32cf72c6862270dfc2b9ebe7fb35f24
         "new": "cpp",
         "ostream": "cpp",
         "stdexcept": "cpp",
         "streambuf": "cpp",
+<<<<<<< HEAD
         "string_view": "cpp",
         "type_traits": "cpp",
         "typeinfo": "cpp"
+=======
+        "tuple": "cpp",
+        "type_traits": "cpp",
+        "typeinfo": "cpp",
+        "utility": "cpp",
+        "vector": "cpp",
+        "xfacet": "cpp",
+        "xiosbase": "cpp",
+        "xlocale": "cpp",
+        "xlocinfo": "cpp",
+        "xlocnum": "cpp",
+        "xmemory": "cpp",
+        "xmemory0": "cpp",
+        "xstddef": "cpp",
+        "xstring": "cpp",
+        "xtr1common": "cpp",
+        "xutility": "cpp"
+>>>>>>> 21ae3763f32cf72c6862270dfc2b9ebe7fb35f24
     }
 }
