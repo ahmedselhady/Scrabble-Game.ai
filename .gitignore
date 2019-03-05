@@ -43,7 +43,13 @@ ipch/
 *.app
 
 # visual studio code folder:
-/.vscode
+.vscode/
+
+# visual studio folder:
+.vs/
+Debug/
+*.sln
+*.suo
 
 # CMake build directory
 build/
