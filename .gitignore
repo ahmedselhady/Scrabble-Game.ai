@@ -53,6 +53,3 @@ Debug/
 
 # CMake build directory
 build/
-
-*.clang-format
-*.txt
