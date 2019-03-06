@@ -156,12 +156,10 @@ BoardMask& BoardMask::operator >>(int offset) {
 
 void BoardMask::print(){
 
-	for(int i=0, j=0;i<255;++i,++j){
-		if(j==15){
-			j=0;
+	for(int i=0, j=0;i<225;++i,++j){
+		if(j%15==0)
 			std::cout<<"\n";
-		}
-		std::cout<<getBit(i);
+		std::cout<<getBit(i)<<" ";
 	}
 }
 
