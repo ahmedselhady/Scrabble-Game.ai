@@ -16,8 +16,6 @@
 #include "Gaddag.h"
 using namespace std;
 
-sdsdfsdfsdf
-
 #define GADDAG_DELIMITER '^'
 #define GADDAG_ROOT '/'
 #define COMPRESSED_GADDAG_DELIMITER 28

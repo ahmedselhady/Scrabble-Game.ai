@@ -4,6 +4,7 @@
 //INCLUDES:
 
 #include "LoadGaddag.h"
+#include <iostream>
 #include "../SharedClasses/Logger.hpp"
 
 // NOTE: when printing cout use the Logger class utility function 'log'.

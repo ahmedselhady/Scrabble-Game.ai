@@ -1,11 +1,8 @@
-cmake_minimum_required(VERSION 3.0.0)
-project(Scrabble.ai VERSION 0.1.0)
+cmake_minimum_required(VERSION 3.0)
 
-include(CTest)
-enable_testing()
+project(Scrabble.AI)
 
-add_executable(Scrabble.ai src/main.cpp)
+set(SOURCE src/MoveGeneration/TestGaddag.cpp)
+include_directories(${PROJECT_SOURCE_DIR})
 
-set(CPACK_PROJECT_NAME ${PROJECT_NAME})
-set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
-include(CPack)
+add_executable(${PROJECT_NAME} ${SOURCE})
