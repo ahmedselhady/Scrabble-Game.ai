@@ -163,7 +163,13 @@ void BoardMask::print(){
 	}
 }
 
-BoardMask::BoardMask(ULL first, ULL second, ULL third, ULL fourth)
+bool BoardMask::isEmpty()
+{
+	return ((this->Values_x64[0] | this->Values_x64[1]|this->Values_x64[2]|this->Values_x64[3]));
+
+}
+
+BoardMask::BoardMask(ULL first, ULL second, ULL third, ULL fourth)// first is the LSB
 {
 	Values_x64 = new ULL[4];
 	this->Values_x64[0] = first;
