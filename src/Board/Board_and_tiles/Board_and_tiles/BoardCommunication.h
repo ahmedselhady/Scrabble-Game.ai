@@ -1,6 +1,6 @@
 #pragma once
 
-#include "SharedClasses/Board.hpp"
+#include "../../../SharedClasses/Board.hpp"
 #include <vector>
 
 class BoardToGrammer: public BoardCommunicator {
@@ -17,6 +17,8 @@ public:
 
 protected:
     // add any protected methods or data members
+	int HorizontalIndex;
+	int VerticalIndex;
 
 private:
     // add any utility functions

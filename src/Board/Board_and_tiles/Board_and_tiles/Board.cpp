@@ -248,3 +248,7 @@ std::vector<char>& Board::getNextVertical(int VerticalIndex)
 	return CharVect;
 
 }
+int Board::calculateScore(std::vector<char>& suggestedMove, int position, bool horizontal)
+{
+
+}

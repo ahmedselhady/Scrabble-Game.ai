@@ -1,7 +1,6 @@
 #pragma once
-
 #include<vector>
-
+#include "..\Board\Board_and_tiles\Board_and_tiles\Board.h"
 class BoardCommunicator {
 
 public:
@@ -70,7 +69,7 @@ public:
 protected:
 
 	// TODO: add the Board Class as a data member:
-
+	Board*BoardPtr;
 
 private:
 
