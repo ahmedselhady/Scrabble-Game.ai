@@ -24,6 +24,9 @@
     <ClInclude Include="BoardMask.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Tiles.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Board.cpp">
@@ -33,6 +36,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="BoardMask.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Tiles.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
