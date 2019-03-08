@@ -2,16 +2,16 @@
 
 
 BoardToGrammer::BoardToGrammer() {
-        // TODO: complete the implementation
+	BoardCommunicator::BoardPtr=Board::getBoard();// need to edit this 
 }
 
 std::vector<char>& BoardToGrammer::getNextVerticalState() {
 	//will call the function from the AI module to determine the next state given the current board
-        // TODO: complete the implementation
+	return(BoardPtr->getNextVertical(VerticalIndex++));
 }
 
 std::vector<char>& BoardToGrammer::getNextHorizontalState(){
-        // TODO: complete the implementation
+	return(BoardPtr->getNextHorizontal(HorizontalIndex++));// what if reached to 15?
 }
 
 std::vector<char>& BoardToGrammer::getTiles(){

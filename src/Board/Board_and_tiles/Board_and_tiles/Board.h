@@ -10,9 +10,10 @@ private:
 	Board();
 	static Board* BoardInst_;
 public:
-	Board* getBoard();
+	static Board* getBoard();
 	std::vector<char>& getNextHorizontal(int HorizontalIndex);
 	std::vector<char>& getNextVertical(int VerticalIndex);
+	int calculateScore(std::vector<char>& suggestedMove, int position, bool horizontal)
 
 
 
