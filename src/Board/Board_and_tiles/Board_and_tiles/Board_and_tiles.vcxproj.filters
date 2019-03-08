@@ -24,7 +24,7 @@
     <ClInclude Include="BoardMask.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Tiles.h">
+    <ClInclude Include="BoardCommunication.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -38,7 +38,10 @@
     <ClCompile Include="BoardMask.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Tiles.cpp">
+    <ClCompile Include="BoardCommunication.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\SharedClasses\Board.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

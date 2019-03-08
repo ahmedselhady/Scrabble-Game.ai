@@ -10,7 +10,7 @@ private:
 	ULL* Values_x64, MASK;
 
 public:
-	bool isEmpty();
+	bool isEmpty();// its name should be non empty 
 	void setBit(int bitOffset);
 	void unsetBit(int bitOffset);
 	bool getBit(int bitOffset);

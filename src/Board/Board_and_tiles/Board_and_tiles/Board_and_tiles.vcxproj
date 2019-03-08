@@ -28,7 +28,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v141</PlatformToolset>
+    <PlatformToolset>v110</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -112,15 +112,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Board.h" />
+    <ClInclude Include="BoardCommunication.h" />
     <ClInclude Include="BoardConst.h" />
     <ClInclude Include="BoardMask.h" />
-    <ClInclude Include="Tiles.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\SharedClasses\Board.cpp" />
     <ClCompile Include="Board.cpp" />
+    <ClCompile Include="BoardCommunication.cpp" />
     <ClCompile Include="BoardMask.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="Tiles.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
