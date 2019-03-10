@@ -1,5 +1,4 @@
 
-33 lines (26 sloc) 270 Bytes
 # Prerequisites
 *.d
 
@@ -34,7 +33,7 @@
 *.app
 
 # visual studio code folder:
-/.vscode
+.vscode/
 
 # CMake build directory
 build/
