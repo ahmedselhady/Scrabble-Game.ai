@@ -7,7 +7,7 @@ using namespace std;
 
 
 MCTreeNode:: MCTreeNode(vector<char> Rack) {
-	this->depth = 0;
+	this->Depth = 0;
 	this->AverageReward = 0;
 	this->Parent = NULL;
 	this->NumberOfVisits = 0;
@@ -17,7 +17,7 @@ MCTreeNode:: MCTreeNode(vector<char> Rack) {
 
 //This constructor is used with all other tree nodes than the root
 MCTreeNode::MCTreeNode(MCTreeNode* parent) {
-	this->depth = parent->Depth + 1;
+	this->Depth = parent->Depth + 1;
 	this->AverageReward = 0;
 	this->Parent = parent;
 	this->NumberOfVisits = 0;

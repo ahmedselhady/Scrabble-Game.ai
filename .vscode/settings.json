@@ -23,6 +23,8 @@
         "streambuf": "cpp",
         "string_view": "cpp",
         "type_traits": "cpp",
-        "typeinfo": "cpp"
+        "typeinfo": "cpp",
+        "random": "cpp",
+        "vector": "cpp"
     }
 }
