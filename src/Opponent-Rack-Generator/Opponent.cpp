@@ -3,10 +3,7 @@
 #include "Opponent.h"
 
 // The Number of Distinct Letters in scrabble is: 26 English Letters + Blank:
-#define DISTINCT_SCRABBLE_LETTERS 27
- 
-//Number of Letters in a rack:
-#define RACK_LETTERS 7
+#define START_OF_WANTED_ASCII 49
 
 /*
 Written by: Amr Khaled
@@ -17,10 +14,12 @@ Please Consult the document InstallingBoostLibrary.md concerning the installatio
 ------------------------------------------------------------------------------
 NOTE:
 
-This code takes as input a class containing:
+This code takes as input:
 
-1- The 27 Letters of the scrabble Language. (26 English Letters + Blank)
-2- Number of remaining letters of each letter. ( Remaining Letters = 100 - My rack - Ground Tiles).
+ -Unordered Map of Pairs containing:
+
+	1- First: The 27 Letters of the scrabble Language. (26 English Letters + Blank)
+	2- Second: Number of remaining letters of each letter. ( Remaining Letters = 100 - My rack - Ground Tiles).
 
 
 */
@@ -29,89 +28,116 @@ This code takes as input a class containing:
 
 
 //Constructor for Rack Generation of the Opponent:
-OpponentRack::OpponentRack(){
+OpponentRack::OpponentRack() {
 
 }
 
 
-int OpponentRack::LeftLetters(vector<Letter>Letters){
+//Function to get Number letters left: (Not in my hand and not on the board)
+int OpponentRack::LeftLetters(unordered_map<char, int> Letters) {
 
-    //Get Number of Remaining Letters that aren't on board or in my hand:
-    int Number_Of_Remaining_Letters=0;
-    for(int Letter_Iterator=0;Letter_Iterator<DISTINCT_SCRABBLE_LETTERS;Letter_Iterator++){
-        
-        Number_Of_Remaining_Letters += Letters[Letter_Iterator].Number_Of_Remaining;
+	//Get Number of Remaining Letters that aren't on board or in my hand:
+	int Number_Of_Remaining_Letters = 0;
+	for (auto Letter_Iterator : Letters) {
 
-    } 
+		Number_Of_Remaining_Letters += Letter_Iterator.second;
 
-    return Number_Of_Remaining_Letters;
+	}
+
+	return Number_Of_Remaining_Letters;
 }
 
 
-vector<double> OpponentRack::GetProbabilities(vector<Letter>Letters,int Number_Of_Remaining_Letters ){
+//Function to get probabilities of each letter:
+vector<double> OpponentRack::GetProbabilities(unordered_map<char, int>Letters, int Number_Of_Remaining_Letters) {
 
-    vector<double> Letter_Probabilities;
-    //Get Number of Remaining Letters that aren't on board or in my hand:
-    for(int Letter_Iterator=0;Letter_Iterator<DISTINCT_SCRABBLE_LETTERS;Letter_Iterator++){
-        
-        double Let_Prob = Letters[Letter_Iterator].Number_Of_Remaining/Number_Of_Remaining_Letters;
-        Letter_Probabilities.push_back(Let_Prob);
+	vector<double> Letter_Probabilities;
+	//Get Number of Remaining Letters that aren't on board or in my hand:
+	for (auto Letter_Iterator : Letters) {
 
-    }
+		//Get Probability of each letter:
+		double Let_Prob = (static_cast<double>(Letter_Iterator.second)) / (static_cast<double>(Number_Of_Remaining_Letters));
 
-    return Letter_Probabilities;
+		//Save the Probabilities in a vector to be used in random generator:
+		Letter_Probabilities.push_back(Let_Prob);
+
+	}
+
+	return Letter_Probabilities;
 }
 
 
 
 //Function to create the rack to be used:
-vector<char> OpponentRack::RackGenerator(vector<Letter> Letters){ 
+vector<char> OpponentRack::RackGenerator(unordered_map<char, int> Letters) {
+	OpponentRack::Rack.clear();
+	//Taking a copy of letters vector:
+	unordered_map<char, int> Copy_Letters = Letters;
 
-    //Taking a copy of letters vector:
-    vector<Letter> Copy_Letters=Letters;
-
-    //Boost Library:
-    //Applying Srand() but for Boost Library:
-    std::time_t now = std::time(0);
-    boost::mt19937 Generator{static_cast<std::uint32_t>(now)}; //Mersenne Random number generator: produce unsigned int (0 -> 2^w -1)
-   
+	//Boost Library:
+	//Applying Srand() but for Boost Library:
+	
+	boost::random_device RandomDevice;
+	boost::mt19937 Generator(RandomDevice); //Mersenne Random number generator: produce unsigned int (0 -> 2^w -1)
+  
    //Data Members where data will be returned in.
-    vector<double> Letter_Probabilities; //Vector containing probability of finding a letter in a rack.
-    int Number_Of_Remaining_Letters; //Number of Remaining Letters in the Bag and Opponent Hand.
+	vector<double> Letter_Probabilities; //Vector containing probability of finding a letter in a rack.
+	int Number_Of_Remaining_Letters; //Number of Remaining Letters in the Bag and Opponent Hand.
 
-    //Get Number of Remaining Letters that aren't on board or in my hand:
-    Number_Of_Remaining_Letters = OpponentRack::LeftLetters(Letters);
+	//Get Number of Remaining Letters that aren't on board or in my hand:
+	Number_Of_Remaining_Letters = OpponentRack::LeftLetters(Letters);
 
-    //Get Probability of each character being drawn from the bag:
-    Letter_Probabilities = OpponentRack::GetProbabilities(Letters,Number_Of_Remaining_Letters);
+	//Get Probability of each character being drawn from the bag:
+	Letter_Probabilities = OpponentRack::GetProbabilities(Letters, Number_Of_Remaining_Letters);
 
-    //Populate one rack:
-    for(int Rack_Letter=0;Rack_Letter<RACK_LETTERS;Rack_Letter++){
+	//Populate one rack:
+	for (auto Letter_Position : Copy_Letters) {
 
-     //Function that Generates integers based on their different probabilities:
-     boost::random::discrete_distribution<> Distribution(Letter_Probabilities);
+		//Function that Generates integers based on their different probabilities:
+		boost::random::discrete_distribution<> Distribution(Letter_Probabilities);
 
-        int Letter_Position = Distribution(Generator);
-        //Push one randomly selected letter into the suggested opponent rack:
-        OpponentRack::Rack.push_back(Copy_Letters[Letter_Position].Letter_Character);
-        
-        //Decrement Number of remaining instances of the character:
-        Copy_Letters[Letter_Position].Number_Of_Remaining--;
-        
-        //Decrement remaining Number of all characters:
-        Number_Of_Remaining_Letters--;
+		//Position: Starts from:
+		// 'a' --> '{'
+		// 97  --> 123
+		//Distribution generates numbers from 0 --> 26:
+		int Position = Distribution(Generator) + START_OF_WANTED_ASCII;
+		
+		//NOTE: This IS Another Implementation.
+		//int Position = Distribution(RandomDevice) + START_OF_WANTED_ASCII;
 
-        //Update New Probabilities of Letters after removing the current letter:
-        Letter_Probabilities = OpponentRack::GetProbabilities(Copy_Letters,Number_Of_Remaining_Letters);
+	   //Letter_Position: Holds the ascii for the generated Letter.
+		char Letter_Position;
 
-    
-    }
+		if (Position == (123 -'0')) { //if (Position == '{'){
+			Position = 35;            //Position = '#'
+			Letter_Position = ((char)Position);
+		}
+		else {
+			//Else: Put the ascii of the current letter:
+			Letter_Position = ((char)Position) + '0';
+		}
 
-return OpponentRack::Rack;
+		//Push one randomly selected letter into the suggested opponent rack:
+		int LetterFinal = Copy_Letters[Letter_Position];
+		OpponentRack::Rack.push_back(Letter_Position);
+
+		//Decrement Number of remaining instances of the character:
+		Copy_Letters[Letter_Position]--;
+
+		//Decrement remaining Number of all characters:
+		Number_Of_Remaining_Letters--;
+
+		//Update New Probabilities of Letters after removing the current letter:
+		Letter_Probabilities = OpponentRack::GetProbabilities(Copy_Letters, Number_Of_Remaining_Letters);
+
+
+	}
+
+	return OpponentRack::Rack;
 }
 
 
 //Getter function for the suggested rack:
-vector<char> OpponentRack::GetRack(){
-    return OpponentRack::Rack;
+vector<char> OpponentRack::GetRack() {
+	return OpponentRack::Rack;
 }
