@@ -20,8 +20,8 @@ std::vector<char>& BoardToGrammer::getTiles(){
 
 		// for Dummy:
 		std::vector<char>* tiles = new std::vector<char>();
-		for(int i=(int)'a',i<=(int)'g';++i){
-			tiles.push_back(i);
+		for(int i=(int)'a';i<=(int)'g';++i){
+			tiles->push_back((char)i);
 		}
 		return *tiles;
 }

@@ -11,7 +11,7 @@
 #include <list>
 #include <string.h>
 #include <string>
-#include"LoadGaddag.h"
+
 #include"LoadNode.h"
 #include "Gaddag.h"
 using namespace std;

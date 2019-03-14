@@ -49,7 +49,7 @@ public:
 	 * returns:
 	 * 		the rack of tiles with player
 	*/
-	std::vector<char>& getTiles()=0;
+	virtual std::vector<char>& getTiles()=0;
 
 	/**
 	 * function: getTiles; calculates and returns the Score gained by the suggested move
