@@ -17,4 +17,22 @@ std::vector<char>& BoardToGrammer::getNextHorizontalState(){
 std::vector<char>& BoardToGrammer::getTiles(){
 	//will call the GUI function which will aquire the move played by the player
         // TODO: complete the implementation
+
+		// for Dummy:
+		std::vector<char>* tiles = new std::vector<char>();
+		for(int i=(int)'a',i<=(int)'z';++i){
+			tiles.push_back(i);
+		}
+		return *tiles;
+}
+
+char BoardToGrammer::getTileAtPosition(int row, int col){
+        // TODO: complete the implementation
+	return 'a';
+}
+
+
+bool BoardToGrammer::hasaTile(int row, int col){
+        // TODO: complete the implementation
+	return true;
 }
