@@ -26,6 +26,15 @@ LICENSE
 *.mod
 *.smod
 
+# Visual C++ cache files
+ipch/
+*.aps
+*.ncb
+*.opendb
+*.opensdf
+*.sdf
+*.cachefile
+
 # Compiled Static libraries
 *.lai
 *.la
@@ -38,7 +47,13 @@ LICENSE
 *.app
 
 # visual studio code folder:
-/.vscode
+.vscode/
+
+# visual studio folder:
+.vs/
+Debug/
+*.sln
+*.suo
 
 # CMake build directory
 build/
