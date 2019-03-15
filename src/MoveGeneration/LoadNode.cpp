@@ -5,6 +5,7 @@
 #include "LoadNode.h"
 using namespace std;
 
+//Funtion LoadNode is constructor is for initialization
 LoadNode::LoadNode(char letter){
     this->letter = letter;
     //this->isTerminal = false;
@@ -13,26 +14,34 @@ LoadNode::LoadNode(char letter){
     this->numberChilds = 0;
 }
 
+//Function addChild it adds a successor.
 inline void LoadNode::addChild(char letter ,LoadNode& node){
         this->childeren.push_back(node);
-} // Adding successor.
+} 
 
+//Function numberOfChilds return number of childern.
 int LoadNode::numberOfChilds(){
 	return numberChilds;
-}// return number of childern.
+}
 
 // inline bool LoadNode::isTerminal(){
 //     return this->isTerminal;
 // } // i.e. Node is last Node in the trie.
 
+/*
+Function isEndofWord the Node contains EOW character (last character).
+i.e. Node is last character in a valid word.
+*/
 bool LoadNode::isEndOfWord(){
     return lastChar;
-} // i.e. Node is last character in a valid word.
+} 
 
+//Function isLastChild the Node is last child of his parent.
 bool LoadNode::isLastChild(){
     return lastChild;
-}// i.e. Node is last child of his parent.
+}
 
+//Function getChild get child corresponding to the node letter.
 inline int LoadNode::getChild(char letter){
 
      for (int index = 0; index < this->childeren.size(); ++index)
@@ -44,12 +53,14 @@ inline int LoadNode::getChild(char letter){
      }
      return -1; // not node letter not found.
 
-} // get child corresponding to the node letter.
+} 
 
+//Function getLetter it retuns the node character.
 char LoadNode::getLetter(){
     return letter;
-} // Retuns the node character.
+} 
 
+//Function insertGaddagWord it inserts a word in gaddag trie.
 void LoadNode::insertGaddagWord(string gaddagWord){
 
   if(gaddagWord.size() == 0) { this->lastChar = true;
@@ -68,8 +79,9 @@ void LoadNode::insertGaddagWord(string gaddagWord){
 
   childeren[childIndex].insertGaddagWord(remainingChars);
 
-} // inserts a word in gaddag trie.
+} 
 
+//Function storeNodes it store nodes in gaddagNodes.
 void LoadNode::storeNodes(vector< LoadNode* >& gaddagNodes)
 {
 	if (childeren.size() == 0){return;}
@@ -91,9 +103,13 @@ void LoadNode::storeNodes(vector< LoadNode* >& gaddagNodes)
 // inline void  LoadNode::setTerminal(){
 //     this->isTerminal = true;
 // } // returns terminal state.
+
+//Function setLastChild it returns last child state.
 inline void  LoadNode::setLastChild(){
     this->lastChild = true;
-}// returns last child state.
+}
+
+//Function setLastChar it returns last char state.
 inline void LoadNode::setLastChar(){
     this->lastChar = true;
-}// returns last char state.
+}
