@@ -66,6 +66,11 @@ Node* LoadGaddag::constructGaddag(){
     return (Node*) &gaddagRootNode[0]; // ROOT .. return address of the first value in compressed byte offset array casted in a Node type.
 } // builds Gaddag trie.
 
+/*
+The function CompressGaddag it compresses the letter as it takes the root node and the rest of the nodes as this data structure takes 
+a lot of memory we need to make compression to the nodes.
+*/
+
  void LoadGaddag::compressGaddag(unsigned int *& gaddagRootNode,vector< LoadNode* >& gaddagNodes){
 
     unsigned char compressedLetter; // i.e.: means that a = 1 .... z = 26
