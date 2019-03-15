@@ -1,4 +1,5 @@
 #include "Board.h"
+#include "BoardMask.cpp"
 
 Board::Board()
 {
@@ -17,19 +18,19 @@ Board* Board::getBoard()
 	}
 	return (BoardInst_);
 }
-std::vector<char> Board::getNextHorizontal(int HorizontalIndex)
+
+std::vector<char>& Board::getNextHorizontal(int HorizontalIndex)
 {
-	vector<char> CharVect;
-	vector<char> HorizontalVector= std::vector<char>(15);
+	std::vector<char> CharVect;
+	std::vector<char>* HorizontalVector = new std::vector<char>(15);
 	int ResIndex=0;
-	//BoardMask CheckBoard(0b0000000000000000000000000000000000000000000000000111111111111111, 0b0000000000000000000000000000000000000000000000000000000000000000, 0b0000000000000000000000000000000000000000000000000000000000000000, 0b0000000000000000000000000000000000000000000000000000000000000000);
+
 	BoardMask CheckBoard;
-	for (int i = (15*HorizontalIndex); i < (15 * HorizontalIndex)+15; i++)
+	for (int i = (15*HorizontalIndex); i < (15 * HorizontalIndex)+15; ++i)
 	{
 		CheckBoard.setBit(i);
 	}
-	//CheckBoard=CheckBoard <<(15*HorizontalIndex); // shift 15times in  each column 
-	//check board func is to bring the char. that in the Horizontal index
+	
 	for (auto Instance : BoardMap) // an instance of a letter
 	{
 
@@ -45,22 +46,22 @@ std::vector<char> Board::getNextHorizontal(int HorizontalIndex)
 		{
 			if(BoardMap[CharVect[i]].getBit(mOffsit))
 			{
-				HorizontalVector[ResIndex++]=CharVect[i];
+				(*HorizontalVector)[ResIndex++]=CharVect[i];
 				break; 
 			}
 			if(i==CharVect.size()-1)// i reached the end and this offsit is not in any char board
-				HorizontalVector[ResIndex++]=' ';
+				(*HorizontalVector)[ResIndex++]=' ';
 		}
 	}
-	return HorizontalVector;
+	return *HorizontalVector;
 }
-std::vector<char> Board::getNextVertical(int VerticalIndex)
+
+std::vector<char>& Board::getNextVertical(int VerticalIndex)
 {
 	vector<char> CharVect;
-	vector<char> VerticalVector= std::vector<char>(15);
+	vector<char>* VerticalVector = new std::vector<char>(15);
 	int ResIndex=0;
-	//BoardMask CheckBoard(0b0001000000000000001000000000000001000000000000001000000000000001,0b0000000100000000000000100000000000000100000000000000100000000000, 0b0000000000010000000000000010000000000000010000000000000010000000, 0b0000000000000001000000000000001000000000000001000000000000001000);
-	//specifying the row positions
+	
 	BoardMask CheckBoard;
 	int dummyoffsit = VerticalIndex;
 	for (int i = 0; i < 15; i++)
@@ -87,17 +88,18 @@ std::vector<char> Board::getNextVertical(int VerticalIndex)
 		{
 			if(BoardMap[CharVect[i]].getBit(mOffsit))
 			{
-				VerticalVector[ResIndex++]=CharVect[i];
+				(*VerticalVector)[ResIndex++]=CharVect[i];
 				break; 
 			}
 			if(i==CharVect.size()-1)// i reached the end and this offsit is not in any char board
-				VerticalVector[ResIndex++]=' ';
+				(*VerticalVector)[ResIndex++]=' ';
 		}
 		mOffsit += 15;
 	}
-	return VerticalVector;
+	return *VerticalVector;
 
 }
+
 void Board::SetCharPos(char Letter,int Row,int Col)
 {
 	int Offsit=Row +15*Col;
@@ -146,4 +148,8 @@ void Board::print()
 Board::~Board()
 {
 	Board::BoardInst_ = nullptr;
+}
+
+int main(){
+	return 0;
 }

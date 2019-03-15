@@ -11,11 +11,11 @@ BoardToGrammer::~BoardToGrammer()
 
 std::vector<char>& BoardToGrammer::getNextVerticalState() {
 	//will call the function from the AI module to determine the next state given the current board
-	return(BoardPtr->getNextVertical(VerticalIndex++));
+	return (BoardPtr->getNextVertical(VerticalIndex++));
 }
 
 std::vector<char>& BoardToGrammer::getNextHorizontalState(){
-	return(BoardPtr->getNextHorizontal(HorizontalIndex++));// what if reached to 15?
+	return (BoardPtr->getNextHorizontal(HorizontalIndex++));// what if reached to 15?
 }
 
 std::vector<char>& BoardToGrammer::getTiles(){

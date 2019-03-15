@@ -1,5 +1,6 @@
-//#include "BoardConst.h"
-#include "Board.h"
+#include "Board.cpp"
+#include "BoardMask.cpp"
+
 void PrintNext(int index, vector<char> X)
 {
 	cout << "\niam Vector of Index " << index << " => ";
@@ -10,10 +11,7 @@ void PrintNext(int index, vector<char> X)
 		}
 }
 int main() {
-//	BoardMask B= WordScoreMultiplyBy3 | WordScoreMultiplyBy2 | LetterScoreMultiplyBy2 | LetterScoreMultiplyBy3;
-//	B.print();
-//	system("pause");
-	//First TestCase Scenario
+
 	Board*Ptr = Board::getBoard();
 	Ptr->SetCharPos('A', 0, 0);
 	Ptr->SetCharPos('A', 0, 1);
