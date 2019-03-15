@@ -5,6 +5,10 @@ BoardToGrammer::BoardToGrammer() {
 	BoardCommunicator::BoardPtr=Board::getBoard();// need to edit this 
 }
 
+BoardToGrammer::~BoardToGrammer()
+{
+}
+
 std::vector<char>& BoardToGrammer::getNextVerticalState() {
 	//will call the function from the AI module to determine the next state given the current board
 	return(BoardPtr->getNextVertical(VerticalIndex++));
@@ -20,10 +24,10 @@ std::vector<char>& BoardToGrammer::getTiles(){
 
 		// for Dummy:
 		std::vector<char>* tiles = new std::vector<char>();
-		for(int i=(int)'a',i<=(int)'g';++i){
-			tiles.push_back(i);
+		for (int i = (int)'a'; i <= (int)'g'; ++i) {
+			tiles->push_back(i);
 		}
-		return *tiles;
+		return (*tiles);
 }
 
 char BoardToGrammer::getTileAtPosition(int row, int col){
