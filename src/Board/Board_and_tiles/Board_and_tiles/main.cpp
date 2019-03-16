@@ -1,5 +1,6 @@
 #include "./Board.h"
-
+#include "./Tiles.h"
+#include "./BoardCommunication.h"
 
 void PrintNext(int index, vector<char> X)
 {
@@ -88,14 +89,25 @@ int main() {
 	PrintNext(3, VerticalVector);
 	VerticalVector = Ptr->getNextVertical(5);
 	PrintNext(5, VerticalVector);
-	delete Ptr;
+	//delete Ptr;
 
 
+	//----------------------- testing for Tiles:
+	Tiles* t = Tiles::getTiles();
+	t->addTiles('a');
+	t->addTiles('b');
+	t->addTiles('c');
+	t->addTiles('d');
+	t->addTiles('e');
+	t->addTiles('f');
+	t->addTiles('g');
+	t->addTiles('h');
+	BoardToGrammer b2g;
+	std::vector<char>* val = nullptr;
+	val = &b2g.getNextVerticalState();
+	val = &b2g.getNextVerticalState();
 
-
-
-
-
+	val = &b2g.getTiles();
 
 
 
