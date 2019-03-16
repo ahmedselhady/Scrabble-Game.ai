@@ -53,7 +53,7 @@ inline Node* Node::getNextChild(){
 } // Gets a successor in parent's childs.
 
 inline char Node::getNodeLetter(){
-    if(((nodeInfo>>CHAR_SHIFT_VALUE) & CHAR_OFFSET_CASTING) ==  COMPRESSED_GADDAG_DELIMITER){
+    if(((nodeInfo>>CHAR_SHIFT_VALUE) & CHAR_OFFSET_CASTING) ==  COMPRESSED_GADDAG_ROOT){
         return GADDAG_DELIMITER;
     }
     return (char)(CHAR_OFFSET + ((nodeInfo>>CHAR_SHIFT_VALUE) & CHAR_OFFSET_CASTING));
