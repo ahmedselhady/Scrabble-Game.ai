@@ -21,11 +21,11 @@ int BoardCommunicator::calculateScore(std::vector<char>& suggestedMove, int posi
 	{
 		if(suggestedMove[i] >='A' ||  suggestedMove[i] <='Z')// editt this coditio in case of blank 
 		{
-			if(LetterScoreMultiplyBy2.getBit[offsit])
+			if(LetterScoreMultiplyBy2.getBit(offsit))
 			{
 				WordScore +=TileValues[suggestedMove[i] -'A']*2;
 			}
-			else if(LetterScoreMultiplyBy3.getBit[offsit])
+			else if(LetterScoreMultiplyBy3.getBit(offsit))
 			{
 				WordScore +=TileValues[suggestedMove[i] -'A']*3;
 			}
@@ -33,12 +33,12 @@ int BoardCommunicator::calculateScore(std::vector<char>& suggestedMove, int posi
 			{
 				WordScore +=TileValues[suggestedMove[i] -'A'];
 			}
-			if(WordScoreMultiplyBy2.getBit[offsit] || offsit=7+15*7)  // the start square 
+			if((WordScoreMultiplyBy2.getBit(offsit)) || (offsit==7+15*7))  // the start square 
 			{
 				Wsx2=true;
 				Wsx2M*=2;
 			}
-			else if(WordScoreMultiplyBy3.getBit[offsit])
+			else if(WordScoreMultiplyBy3.getBit(offsit))
 			{
 				Wsx3=true;
 				Wsx3M*=3;
@@ -74,5 +74,5 @@ int BoardCommunicator::calculateScore(std::vector<char>& suggestedMove, int posi
 			offsit++;//  move in coloum
 		}
 	} 
-	return 0;
+	return Score;
 }

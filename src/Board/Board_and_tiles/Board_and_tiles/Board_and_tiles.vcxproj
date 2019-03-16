@@ -22,13 +22,13 @@
     <VCProjectVersion>15.0</VCProjectVersion>
     <ProjectGuid>{A3CCF08B-D7B5-4CBA-976B-B3C90108E957}</ProjectGuid>
     <RootNamespace>Board_and_tiles</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v110</PlatformToolset>
+    <PlatformToolset>v141</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -112,14 +112,11 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="Board.h" />
-    <ClInclude Include="BoardCommunication.h" />
     <ClInclude Include="BoardConst.h" />
     <ClInclude Include="BoardMask.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\SharedClasses\Board.cpp" />
     <ClCompile Include="Board.cpp" />
-    <ClCompile Include="BoardCommunication.cpp" />
     <ClCompile Include="BoardMask.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
