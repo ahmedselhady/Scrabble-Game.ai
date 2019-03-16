@@ -4,10 +4,21 @@ Tiles::Tiles()
 {
 }
 
-vector<char> Tiles::getTiles()
+vector<char> Tiles::getRackTiles()
 {
 
 	return (RackTiles);//return current rack of tiles
+}
+Tiles* Tiles::TilesInst_=nullptr;
+Tiles* Tiles::getTiles()
+{
+
+	if(TilesInst_==nullptr)
+	{
+		TilesInst_=new Tiles;
+	}
+	
+	return (TilesInst_);
 }
 bool Tiles::addTiles(char tile)
 {

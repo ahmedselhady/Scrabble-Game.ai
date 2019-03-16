@@ -16,8 +16,10 @@ Board* Board::getBoard()
 	{
 		BoardInst_=new Board;
 	}
+	
 	return (BoardInst_);
 }
+
 
 std::vector<char>& Board::getNextHorizontal(int HorizontalIndex)
 {
