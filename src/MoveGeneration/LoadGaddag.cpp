@@ -2,11 +2,12 @@
 
 using namespace std;
 
-
+//Function LoadGaddag is the constructor
 LoadGaddag::LoadGaddag():Root((char)GADDAG_ROOT){
     // nothing.
 }
 
+//Function readDictFile it reads dict. files which contains valid words given filename.
 void LoadGaddag::readDictFile(vector< string >& dictGaddagWords,const char* fileName){
 
   string word;
@@ -47,8 +48,9 @@ void LoadGaddag::readDictFile(vector< string >& dictGaddagWords,const char* file
   else {cout << "Unable to open file"; return;}
 
 
-} // reads dict. files which contains valid words given filename.
-
+} 
+	
+//Function constructGaddag it builds Gaddag trie and returns compressed trie node.	
 Node* LoadGaddag::constructGaddag(){
     // Gaddag Root Construction.
     vector <string> dictGaddagWords; // GADDAG words from given dict. file.
@@ -64,8 +66,11 @@ Node* LoadGaddag::constructGaddag(){
     compressGaddag(gaddagRootNode,gaddagNodes);
     cout << "Total Nodes : " << gaddagNodes.size() << endl;
     return (Node*) &gaddagRootNode[0]; // ROOT .. return address of the first value in compressed byte offset array casted in a Node type.
-} // builds Gaddag trie.
+} 
 
+
+
+//The function CompressGaddag it compresses the trie into an array of nodes using byte offset techinque.
  void LoadGaddag::compressGaddag(unsigned int *& gaddagRootNode,vector< LoadNode* >& gaddagNodes){
 
     unsigned char compressedLetter; // i.e.: means that a = 1 .... z = 26
@@ -107,4 +112,4 @@ Node* LoadGaddag::constructGaddag(){
       gaddagRootNode[index] =  (address & 0x00FFFFFF) + (compressedLetter << 24);
     }
 
- } // compresses the trie into an array of nodes using byte offset techinque.
+ } 
