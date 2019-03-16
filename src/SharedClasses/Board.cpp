@@ -1,12 +1,11 @@
-#include "Board.hpp"
+#include "./BoardCommunicator.hpp"
+#include "../Board/Board_and_tiles/Board_and_tiles/BoardConst.h"
+
 
 int BoardCommunicator::calculateScore(std::vector<char>& suggestedMove, int position, bool horizontal)
 {
 
-	//int WSx3[]={0,7,14,7*15,7*15+14,7*15,7*15 + 7,7*15+14};// cells that contain tripple Word
-	//int WSx2[];
-	//int LSx3[]
-	//	int LSx2
+	
 	int Score=0;
 	int TileValues[26] = { 1, 3, 3, 2, 1, 4, 2, 4, 1, 8, 5, 1, 3, 1, 1, 3, 10, 1, 1, 1, 1, 4, 4, 8, 4, 10 }; //need to add the blank
 	int offsit=position;

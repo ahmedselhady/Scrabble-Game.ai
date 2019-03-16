@@ -1,7 +1,8 @@
 #pragma once
 #include<vector>
-#include "..\Board\Board_and_tiles\Board_and_tiles\Board.h"
-#include "..\Board\Board_and_tiles\Board_and_tiles\Tiles.h"
+#include "../Board/Board_and_tiles/Board_and_tiles/Board.h"
+#include "../Board/Board_and_tiles/Board_and_tiles/Tiles.h"
+
 class BoardCommunicator {
 
 public:
@@ -15,9 +16,7 @@ public:
 	 * returns:
 	 *      Instance of Board Communicator
 	*/
-	BoardCommunicator();
-	virtual ~BoardCommunicator();
-
+	
 	
 	//Assuming the next state is an integer, Might be changed later as the moves will be updated to the board
 	/**

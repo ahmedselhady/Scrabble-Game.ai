@@ -1,4 +1,6 @@
-#include "BoardCommunication.h"
+#include "./Tiles.h"
+#include "./BoardCommunication.h"
+#include "./Board.h"
 
 
 BoardToGrammer::BoardToGrammer() {
@@ -16,40 +18,21 @@ std::vector<char>& BoardToGrammer::getNextVerticalState() {
 }
 
 std::vector<char>& BoardToGrammer::getNextHorizontalState(){
-	return (BoardPtr->getNextHorizontal(HorizontalIndex++));// what if reached to 15?
+	return (BoardPtr->getNextHorizontal(HorizontalIndex++)); // what if reached to 15?
 }
 
 std::vector<char>& BoardToGrammer::getTiles(){
 	//will call the GUI function which will aquire the move played by the player
-        // TODO: complete the implementation
-
-		return TilesPtr->getRackTiles();
+	return (* new std::vector<char>(TilesPtr->getRackTiles()));
 }
 
-char BoardToGrammer::getTileAtPosition(int row, int col){
-   
-	vector<char> CurrentRow=BoardPtr->getNextHorizontal(row);
-	//vector<char> CurrentCol=BoardPtr->getNextVertical(col);
-        char Empty='*';
-        if (CurrentRow[col]==Empty)
-	{
- 		return '*';
-	}
-	else
-	return CurrentRow[col];
+char BoardToGrammer::getTileAtPosition(int row, int col) {
+	vector<char> CurrentRow = BoardPtr->getNextHorizontal(row);
+	return (CurrentRow[col] == '*') ? '*' : CurrentRow[col];
 }
 
 
-bool BoardToGrammer::hasaTile(int row, int col){
-        
+bool BoardToGrammer::hasaTile(int row, int col){     
 	vector<char> CurrentRow=BoardPtr->getNextHorizontal(row);
-	//vector<char> CurrentCol=BoardPtr->getNextVertical(col);
-	
-	 char Empty='*';
-        if (CurrentRow[col]==Empty)
-	{
- 		return false;
-	}
-	else
-	return true;
+	return (CurrentRow[col] == '*') ? false : true;
 }

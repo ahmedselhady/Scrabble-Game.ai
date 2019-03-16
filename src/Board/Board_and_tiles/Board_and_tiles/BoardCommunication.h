@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../../SharedClasses/Board.hpp"
+#include "../../../SharedClasses/BoardCommunicator.hpp"
 #include <vector>
 
 class BoardToGrammer: public BoardCommunicator {

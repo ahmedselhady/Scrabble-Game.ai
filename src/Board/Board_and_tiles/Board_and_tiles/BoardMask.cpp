@@ -1,6 +1,5 @@
-#include "BoardMask.h"
+#include "./BoardMask.h"
 
-#include <exception>
 #include <iostream>
 
 void BoardMask::setBit(int bitOffset) { // bitOffset Is Calculated using Equation provided by andrew
