@@ -52,7 +52,7 @@ std::vector<char>& Board::getNextHorizontal(int HorizontalIndex)
 				break; 
 			}
 			if(i==CharVect.size()-1)// i reached the end and this offsit is not in any char board
-				(*HorizontalVector)[ResIndex++]=' ';
+				(*HorizontalVector)[ResIndex++]='*';//changed this to * instead of ' '
 		}
 	}
 	return *HorizontalVector;
@@ -94,7 +94,7 @@ std::vector<char>& Board::getNextVertical(int VerticalIndex)
 				break; 
 			}
 			if(i==CharVect.size()-1)// i reached the end and this offsit is not in any char board
-				(*VerticalVector)[ResIndex++]=' ';
+				(*VerticalVector)[ResIndex++]='*';//changed this to * instead of ' '
 		}
 		mOffsit += 15;
 	}

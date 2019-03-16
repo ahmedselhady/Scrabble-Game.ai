@@ -23,7 +23,7 @@ Tiles* Tiles::getTiles()
 bool Tiles::addTiles(char tile)
 {
 
-        if(RackTiles.size()<6)//if rack of tiles less than 7 then you can add other wise operation fail with false return
+        if(RackTiles.size()<7)//if rack of tiles less than 7 then you can add other wise operation fail with false return
         {
           RackTiles.push_back(tile); 
           return true;

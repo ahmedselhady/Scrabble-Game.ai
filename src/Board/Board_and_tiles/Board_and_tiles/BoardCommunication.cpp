@@ -30,7 +30,7 @@ char BoardToGrammer::getTileAtPosition(int row, int col){
    
 	vector<char> CurrentRow=BoardPtr->getNextHorizontal(row);
 	//vector<char> CurrentCol=BoardPtr->getNextVertical(col);
-        char Empty=' ';
+        char Empty='*';
         if (CurrentRow[col]==Empty)
 	{
  		return '*';
@@ -45,7 +45,7 @@ bool BoardToGrammer::hasaTile(int row, int col){
 	vector<char> CurrentRow=BoardPtr->getNextHorizontal(row);
 	//vector<char> CurrentCol=BoardPtr->getNextVertical(col);
 	
-	 char Empty=' ';
+	 char Empty='*';
         if (CurrentRow[col]==Empty)
 	{
  		return false;
