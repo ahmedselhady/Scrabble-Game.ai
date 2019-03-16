@@ -1,5 +1,4 @@
-#include "Board.h"
-#include "BoardMask.cpp"
+#include "./Board.h"
 
 Board::Board()
 {
@@ -8,7 +7,9 @@ Board::Board()
 		BoardMap[(char)('A'+i)]= BoardMask(0b0000000000000000000000000000000000000000000000000000000000000000, 0b0000000000000000000000000000000000000000000000000000000000000000, 0b0000000000000000000000000000000000000000000000000000000000000000, 0b0000000000000000000000000000000000000000000000000000000000000000);
 	}
 }
+
 Board* Board::BoardInst_=nullptr;
+
 Board* Board::getBoard()
 {
 
@@ -19,7 +20,6 @@ Board* Board::getBoard()
 	
 	return (BoardInst_);
 }
-
 
 std::vector<char>& Board::getNextHorizontal(int HorizontalIndex)
 {
@@ -109,6 +109,7 @@ void Board::SetCharPos(char Letter,int Row,int Col)
 	return;
 	BoardMap[Letter].setBit(Offsit);
 }
+
 int Board::calculateScore(std::vector<char>& suggestedMove, int position, bool horizontal)
 {
 	return 0;
@@ -152,6 +153,6 @@ Board::~Board()
 	Board::BoardInst_ = nullptr;
 }
 
-int main(){
-	return 0;
-}
+//int main(){
+//	return 0;
+//}

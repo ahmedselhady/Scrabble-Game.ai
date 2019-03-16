@@ -1,5 +1,5 @@
-#include "Board.cpp"
-#include "BoardMask.cpp"
+#include "./Board.h"
+
 
 void PrintNext(int index, vector<char> X)
 {
@@ -10,6 +10,7 @@ void PrintNext(int index, vector<char> X)
 
 		}
 }
+
 int main() {
 
 	Board*Ptr = Board::getBoard();
