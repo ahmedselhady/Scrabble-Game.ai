@@ -20,6 +20,7 @@ struct Move{ // defines what a "Move" is.
     int moveScore;
     int startPosition;
     bool horizontal; // true -> horiz false -> vertical.
+	
 };
 
 class WordGenerate { // just a static class no need to create an explicit object.
@@ -28,6 +29,8 @@ class WordGenerate { // just a static class no need to create an explicit object
      to construct the whole GADDAG Tree.*/
     private:
     BoardToGrammer * board; 
+	Node* root;
+	bitset<26> crossset[15][15];
     public:
 
        WordGenerate(BoardToGrammer&board); // Takes a Reference to the Board.
@@ -40,6 +43,7 @@ class WordGenerate { // just a static class no need to create an explicit object
        */
        void goOn(); // Gordon GO ON funtion first function in Move Generation Algo.
 
+	   void crosssets();
 };
 
 #endif
