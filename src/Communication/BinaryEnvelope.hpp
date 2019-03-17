@@ -4,6 +4,8 @@
 #include <bitset>
 #include <cstdint>
 #include <string>
+#include <vector>
+#include "CommStructs.hpp"
 
 /**
  * class: BinaryEnvelope
@@ -77,6 +79,8 @@ class BinaryEnvelope {
    */
   void insertEnvelope(const BinaryEnvelope&);
 
+  void insertString(std::string);
+
   /**
    * function: serialize
    *      This main function to get access to the "binary"
@@ -86,7 +90,8 @@ class BinaryEnvelope {
    * returns:
    *      const char *
    */
-  const char* serialize() const;
+  std::vector<uint8_t> serialize() const;
+
 };
 
 #endif  // COMM_BINARY_ENVELOPE_HPP
