@@ -242,7 +242,7 @@ void MoveGenerate::crosssets()
 				{	
 					if(nod->isEndOfWord)
 					{
-						Horiz_crossset[row][col]|=nod->getNodeLetter()-CHAR_OFFSET;
+						Horiz_crossset[row][col].set(nod->getNodeLetter()-CHAR_OFFSET);
 					}
 					nod=nod->getNextChild();
 				}
@@ -278,7 +278,7 @@ void MoveGenerate::crosssets()
 				{	
 					if(nod->isEndOfWord)
 					{
-						Horiz_crossset[row][col]|=nod->getNodeLetter()-CHAR_OFFSET;
+						Horiz_crossset[row][col].set(nod->getNodeLetter()-CHAR_OFFSET);
 					}
 					nod=nod->getNextChild();
 				}
@@ -319,7 +319,7 @@ void MoveGenerate::crosssets()
 						}	
 					
 						if(succeed)
-							Horiz_crossset[row][col]|=child->getNodeLetter()-CHAR_OFFSET;
+							Horiz_crossset[row][col].set(nod->getNodeLetter()-CHAR_OFFSET);
 						child=child->getNextChild();
 					
 					}
@@ -349,7 +349,7 @@ void MoveGenerate::crosssets()
 					{	
 						if(nod->isEndOfWord)
 						{
-							Vertical_crossset[row][col]|=nod->getNodeLetter()-CHAR_OFFSET;
+							Vertical_crossset[row][col].set(nod->getNodeLetter()-CHAR_OFFSET);
 						}
 						nod=nod->getNextChild();
 					}while(nod!=0);
@@ -386,7 +386,7 @@ void MoveGenerate::crosssets()
 					{	
 						if(nod->isEndOfWord)
 						{
-							Vertical_crossset[row][col]|=nod->getNodeLetter()-CHAR_OFFSET;
+							Vertical_crossset[row][col].set(nod->getNodeLetter()-CHAR_OFFSET);
 						}
 						nod=nod->getNextChild();
 					}while(nod!=0);
@@ -426,7 +426,7 @@ void MoveGenerate::crosssets()
 					}
 					
 					if(succeed)
-						Vertical_crossset[row][col]|=child->getNodeLetter()-CHAR_OFFSET;
+							Vertical_crossset[row][col].set(nod->getNodeLetter()-CHAR_OFFSET);
 					child=child->getNextChild();
 					
 				}
