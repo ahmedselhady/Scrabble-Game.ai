@@ -1,19 +1,74 @@
+# Specify minimum CMake version and project name
+#
 cmake_minimum_required(VERSION 3.0)
-
 project(Scrabble.AI)
 
-set(${CMAKE_CXX_COMPILER} C:/TDM-GCC-64/bin/gcc.exe CACHE PATH "" FORCE)
+set(CMAKE_CXX_COMPILER C:/TDM-GCC-64/bin/gcc.exe CACHE PATH "" FORCE)
+#
+# CMake setup
+#
+set_property(GLOBAL PROPERTY USE_FOLDERS ON)
+set (CMAKE_VERBOSE_MAKEFILE 0) # 1 should be used for debugging
+set (CMAKE_SUPPRESS_REGENERATION TRUE) # Suppresses ZERO_CHECK
+if(MSVC)
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
+else()
+  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic -std=c++11")
+  if(NOT WIN32)
+   #set(GLAD_LIBRARIES dl)
+  endif()
+endif()
 
+#
+# GLFW options
+
+#
+# Set include paths
+#
+include_directories (src/
+                    # Add More Direct. Here if needed.
+                    src/Board/
+                    src/Board/Board_and_tiles/
+                    src/Board/Board_and_tiles/Board/Board_and_tiles/
+                    src/GuiInterface/
+                    src/MoveGeneration/
+                    src/SharedClasses/
+                    )
+
+#
+# Add files
+#
+file (GLOB         VENDORS_SOURCES vendor/glad/src/glad.c)
+file (GLOB_RECURSE PROJECT_HEADERS src/*.hpp
+                                   src/*.h)
+file (GLOB_RECURSE PROJECT_SOURCES src/*.cpp
+                                   src/*.cxx
+                                   src/*.cc
+                                   src/*.c)
+file (GLOB         PROJECT_CONFIGS CMakeLists.txt)
+
+#
+# Organizing files
+#
+source_group ("headers" FILES ${PROJECT_HEADERS})
+source_group ("sources" FILES ${PROJECT_SOURCES})
+source_group ("vendors" FILES ${VENDORS_SOURCES})
+
+#
+# Set executable and target link libraries
+#
+add_definitions (-DGLFW_INCLUDE_NONE
+                 -DPROJECT_SOURCE_DIR=\"${PROJECT_SOURCE_DIR}\")
+add_executable (${PROJECT_NAME} ${PROJECT_SOURCES} ${PROJECT_HEADERS}
+                                ${COMMON_SOURCES} ${COMMON_HEADERS}
+                                ${PROJECT_CONFIGS} ${VENDORS_SOURCES})
+#target_link_libraries (${PROJECT_NAME})
+set_target_properties (${PROJECT_NAME} PROPERTIES
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${PROJECT_NAME})
+
+#add_executable(Test src/MoveGeneration/TestGaddag.cpp)
 
 #target_include_directories(test PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
-
-include_directories ("${PROJECT_SOURCE_DIR}/src/MoveGeneration/")
-
-set(SOURCES src/MoveGeneration/TestGaddag.cpp src/MoveGeneration/LoadNode.cpp src/MoveGeneration/LoadNode.h
-src/MoveGeneration/Gaddag.cpp src/MoveGeneration/Gaddag.h
-src/MoveGeneration/LoadGaddag.cpp src/MoveGeneration/LoadGaddag.h src/MoveGeneration/Dict.txt)
-
-add_executable(${PROJECT_NAME} ${SOURCES})
 
 # add_library(src/MoveGeneration/ mysqrt.cxx)
 #add_subdirectory (src/MoveGeneration/) 

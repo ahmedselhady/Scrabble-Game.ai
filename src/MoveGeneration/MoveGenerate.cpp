@@ -124,6 +124,7 @@ int WordGenerate::roomLeftCount(int row,int col){
               */
           }
     }
+    return countRoomLeft; // left count.
 }
 
 
