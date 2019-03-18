@@ -1,5 +1,4 @@
-#include "Board.h"
-#include "BoardMask.cpp"
+#include "./Board.h"
 
 Board::Board()
 {
@@ -8,7 +7,9 @@ Board::Board()
 		BoardMap[(char)('A'+i)]= BoardMask(0b0000000000000000000000000000000000000000000000000000000000000000, 0b0000000000000000000000000000000000000000000000000000000000000000, 0b0000000000000000000000000000000000000000000000000000000000000000, 0b0000000000000000000000000000000000000000000000000000000000000000);
 	}
 }
+
 Board* Board::BoardInst_=nullptr;
+
 Board* Board::getBoard()
 {
 
@@ -20,19 +21,19 @@ Board* Board::getBoard()
 	return (BoardInst_);
 }
 
-
 std::vector<char>& Board::getNextHorizontal(int HorizontalIndex)
 {
+	HorizontalIndex = HorizontalIndex % 15;
 	std::vector<char> CharVect;
 	std::vector<char>* HorizontalVector = new std::vector<char>(15);
 	int ResIndex=0;
-
 	BoardMask CheckBoard;
-	for (int i = (15*HorizontalIndex); i < (15 * HorizontalIndex)+15; ++i)
+	int dummyoffsit = HorizontalIndex;
+	for (int i = 0; i < 15; i++)
 	{
-		CheckBoard.setBit(i);
+		CheckBoard.setBit(dummyoffsit);
+		dummyoffsit += 15;
 	}
-	
 	for (auto Instance : BoardMap) // an instance of a letter
 	{
 
@@ -42,38 +43,36 @@ std::vector<char>& Board::getNextHorizontal(int HorizontalIndex)
 
 		}
 	}
-	for(int mOffsit=HorizontalIndex*15;mOffsit<(HorizontalIndex*15+15);mOffsit++)// looping on the col
+	int mOffsit = HorizontalIndex;
+	for (int i = 0; i<15; i++)// looping on the col
 	{
-		for(std::size_t i=0; i<CharVect.size(); ++i) // looking on the char board that has  this bit
+
+		for (std::size_t i = 0; i<CharVect.size(); ++i) // looking on the char board that has  this bit
 		{
-			if(BoardMap[CharVect[i]].getBit(mOffsit))
+			if (BoardMap[CharVect[i]].getBit(mOffsit))
 			{
-				(*HorizontalVector)[ResIndex++]=CharVect[i];
-				break; 
+				(*HorizontalVector)[ResIndex++] = CharVect[i];
+				break;
 			}
-			if(i==CharVect.size()-1)// i reached the end and this offsit is not in any char board
-				(*HorizontalVector)[ResIndex++]=' ';
+			if (i == CharVect.size() - 1)// i reached the end and this offsit is not in any char board
+				(*HorizontalVector)[ResIndex++] = '*';//changed this to * instead of ' '
 		}
+		mOffsit += 15;
 	}
 	return *HorizontalVector;
 }
 
 std::vector<char>& Board::getNextVertical(int VerticalIndex)
 {
+	VerticalIndex = VerticalIndex % 15;
 	vector<char> CharVect;
 	vector<char>* VerticalVector = new std::vector<char>(15);
 	int ResIndex=0;
-	
 	BoardMask CheckBoard;
-	int dummyoffsit = VerticalIndex;
-	for (int i = 0; i < 15; i++)
+	for (int i = (15 * VerticalIndex); i < (15 * VerticalIndex) + 15; ++i)
 	{
-		
-
-		CheckBoard.setBit(dummyoffsit);
-		dummyoffsit += 15;
+		CheckBoard.setBit(i);
 	}
-	//CheckBoard=CheckBoard >>VerticalIndex;  // as each row is difference from its next row by 1
 	for (auto Instance : BoardMap) 
 	{
 		if((Instance.second&CheckBoard).isEmpty())
@@ -82,21 +81,18 @@ std::vector<char>& Board::getNextVertical(int VerticalIndex)
 
 		}
 	}
-	int mOffsit = VerticalIndex;
-	for (int i = 0;i<15;i++)// looping on the col
+	for (int mOffsit = VerticalIndex * 15; mOffsit<(VerticalIndex * 15 + 15); mOffsit++)// looping on the col
 	{
-
-		for(std::size_t i=0; i<CharVect.size(); ++i) // looking on the char board that has  this bit
+		for (std::size_t i = 0; i<CharVect.size(); ++i) // looking on the char board that has  this bit
 		{
-			if(BoardMap[CharVect[i]].getBit(mOffsit))
+			if (BoardMap[CharVect[i]].getBit(mOffsit))
 			{
-				(*VerticalVector)[ResIndex++]=CharVect[i];
-				break; 
+				(*VerticalVector)[ResIndex++] = CharVect[i];
+				break;
 			}
-			if(i==CharVect.size()-1)// i reached the end and this offsit is not in any char board
-				(*VerticalVector)[ResIndex++]=' ';
+			if (i == CharVect.size() - 1)// i reached the end and this offsit is not in any char board
+				(*VerticalVector)[ResIndex++] = '*';//changed this to * instead of ' '
 		}
-		mOffsit += 15;
 	}
 	return *VerticalVector;
 
@@ -109,6 +105,7 @@ void Board::SetCharPos(char Letter,int Row,int Col)
 	return;
 	BoardMap[Letter].setBit(Offsit);
 }
+
 int Board::calculateScore(std::vector<char>& suggestedMove, int position, bool horizontal)
 {
 	return 0;
@@ -152,6 +149,6 @@ Board::~Board()
 	Board::BoardInst_ = nullptr;
 }
 
-int main(){
-	return 0;
-}
+//int main(){
+//	return 0;
+//}
