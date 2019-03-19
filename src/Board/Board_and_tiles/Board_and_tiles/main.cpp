@@ -1,7 +1,6 @@
 #include "./Board.h"
 #include "./Tiles.h"
 #include "./BoardCommunication.h"
-
 void PrintNext(int index, vector<char> X)
 {
 	cout << "\niam Vector of Index " << index << " => ";
@@ -14,14 +13,19 @@ void PrintNext(int index, vector<char> X)
 
 int main() {
 
+	//----------------------- testing for Score:
+	BoardToGrammer *Ptr2G=new BoardToGrammer();
+	Ptr2G->SetChar('A', 0, 0);
+	Ptr2G->SetChar('P', 1, 0);
+	Ptr2G->SetChar('P', 2, 0);
+	Ptr2G->SetChar('L', 3, 0);
+	Ptr2G->SetChar('E', 4, 0);
+	Ptr2G->SetChar('C', 1, 1);//  simple test case i have a vertical word apple and 1 intersecition and 1 x3 score and x2 letter score
+	Ptr2G->PrintBitBoard();
+	vector<char> V = Ptr2G->getNextVerticalState();
+	cout<<Ptr2G->calculateScore(V, 0, false)<<"\n";
+	//...................................
 	Board*Ptr = Board::getBoard();
-	Ptr->SetCharPos('A', 0, 0);
-	Ptr->SetCharPos('A', 0, 1);
-	Ptr->SetCharPos('A', 1, 0);
-	Ptr->SetCharPos('A', 1, 1);
-	Ptr->SetCharPos('B', 1, 2);
-	Ptr->SetCharPos('C', 5, 5);
-	Ptr->print();
 	vector<char> VerticalVector;
 	//vector<char> HorizontalVector;
 	VerticalVector=Ptr->getNextHorizontal(0);

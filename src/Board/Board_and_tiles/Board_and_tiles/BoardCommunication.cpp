@@ -31,6 +31,16 @@ char BoardToGrammer::getTileAtPosition(int row, int col) {
 	return (CurrentRow[col] == '*') ? '*' : CurrentRow[col];
 }
 
+void BoardToGrammer::SetChar(char Letter, int Row, int Col)
+{
+	BoardPtr->SetCharPos(Letter, Row, Col);
+}
+
+void BoardToGrammer::PrintBitBoard()
+{
+	BoardPtr->print();
+}
+
 
 bool BoardToGrammer::hasaTile(int row, int col){     
 	vector<char> CurrentRow=BoardPtr->getNextHorizontal(row);

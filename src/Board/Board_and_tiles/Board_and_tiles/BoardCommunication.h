@@ -41,6 +41,8 @@ public:
      *                    astrisc '*' when there does not exist a tile in the given position
     */
     char getTileAtPosition(int row, int col);
+	void SetChar(char Letter, int Row, int Col);
+	void PrintBitBoard();
 protected:
     // add any protected methods or data members
 	int HorizontalIndex;

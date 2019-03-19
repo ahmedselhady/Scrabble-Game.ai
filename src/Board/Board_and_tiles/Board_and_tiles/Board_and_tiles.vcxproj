@@ -111,14 +111,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\SharedClasses\BoardCommunicator.hpp" />
     <ClInclude Include="Board.h" />
+    <ClInclude Include="BoardCommunication.h" />
     <ClInclude Include="BoardConst.h" />
     <ClInclude Include="BoardMask.h" />
+    <ClInclude Include="Tiles.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\SharedClasses\BoardCommunicator.cpp" />
     <ClCompile Include="Board.cpp" />
+    <ClCompile Include="BoardCommunication.cpp" />
     <ClCompile Include="BoardMask.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Tiles.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
