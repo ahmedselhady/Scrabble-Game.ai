@@ -3,11 +3,8 @@
 #include <iostream>
 #include <vector>
 #include <ctime>
+#include <random>
 #include <unordered_map>
-
-#include <boost/random/random_device.hpp>
-#include <boost/random/mersenne_twister.hpp>
-#include <boost/random/discrete_distribution.hpp>
 
 using namespace std;
 
@@ -41,10 +38,11 @@ public:
 	vector<char> GetRack(); //Getter for the rack.
 
 	//-----------------------------------------------------------//
-	int LeftLetters(unordered_map<char, int>); //Function to get Number letters left: (Not in my hand and not on the board)
-	vector<double> GetProbabilities(unordered_map<char, int>, int); //Function to get probabilities of each letter.
-
+	int LeftLetters(std::vector<std::pair<char,int>>); //Function to get Number letters left: (Not in my hand and not on the board)
+	vector<double> GetProbabilities(std::vector<std::pair<char,int>>, int); //Function to get probabilities of each letter.
+	void RemoveZeroProbabilities(std::vector<std::pair<char,int>>&); // Remove all elements that have a probability of zero from the map.
 	///////////////////////////////////////////////////////////////
+	
 private:
 
 	vector<char> Rack;
