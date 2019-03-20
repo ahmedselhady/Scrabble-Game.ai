@@ -2,9 +2,11 @@
 //INCLUDES:
 
 #include <unordered_map>
+#include<iostream>
 #include "LoadNode.h"
 using namespace std;
 
+int count = 0;
 //Funtion LoadNode is constructor is for initialization
 LoadNode::LoadNode(char letter){
     this->letter = letter;
@@ -17,7 +19,7 @@ LoadNode::LoadNode(char letter){
 //Function addChild it adds a successor.
 inline void LoadNode::addChild(char letter ,LoadNode& node){
         this->childeren.push_back(node);
-} 
+}
 
 //Function numberOfChilds return number of childern.
 int LoadNode::numberOfChilds(){
@@ -34,12 +36,13 @@ i.e. Node is last character in a valid word.
 */
 bool LoadNode::isEndOfWord(){
     return lastChar;
-} 
+}
 
 //Function isLastChild the Node is last child of his parent.
 bool LoadNode::isLastChild(){
     return lastChild;
 }
+
 
 //Function getChild get child corresponding to the node letter.
 inline int LoadNode::getChild(char letter){
@@ -53,21 +56,21 @@ inline int LoadNode::getChild(char letter){
      }
      return -1; // not node letter not found.
 
-} 
+}
 
 //Function getLetter it retuns the node character.
 char LoadNode::getLetter(){
     return letter;
-} 
+}
 
 //Function insertGaddagWord it inserts a word in gaddag trie.
 void LoadNode::insertGaddagWord(string gaddagWord){
 
-  if(gaddagWord.size() == 0) { this->lastChar = true;
+  if(gaddagWord.length() == 0) { this->lastChar = true;
       return ;} // no chars to insert.
 
   char firstChar = gaddagWord[0];
-  string remainingChars = gaddagWord.substr(1,gaddagWord.size());
+  string remainingChars = gaddagWord.substr(1,gaddagWord.size()-1);
 
   int childIndex = getChild(firstChar);
   if(childIndex == -1)
@@ -79,12 +82,31 @@ void LoadNode::insertGaddagWord(string gaddagWord){
 
   childeren[childIndex].insertGaddagWord(remainingChars);
 
-} 
+}
+
+bool LoadNode::findWord(string word){
+
+	int size = word.length();
+	if(size == 0){return true;}
+
+	int index;
+	index = this->getChild(word[0]) ;
+	char letter = word[0];
+
+	cout<< letter <<" ";
+
+	if(index == -1){
+		return false;
+	}
+	return childeren[index].findWord(word.substr(1,word.size()-1));
+}
 
 //Function storeNodes it store nodes in gaddagNodes.
 void LoadNode::storeNodes(vector< LoadNode* >& gaddagNodes)
 {
+	int size = childeren.size() ;
 	if (childeren.size() == 0){return;}
+
 
 	this->numberChilds = gaddagNodes.size();  // usefull for byte offset indexing.
 	childeren[childeren.size() - 1].lastChild = true;
@@ -92,12 +114,22 @@ void LoadNode::storeNodes(vector< LoadNode* >& gaddagNodes)
 	for (int index = 0; index < childeren.size(); ++index)
     {
         gaddagNodes.push_back(&childeren[index]);
+
+
+
+//        if(count == 6 && this->letter == 'v'){
+//        	std::cout<<childeren[index].letter<<" "<<endl;
+//        }
     }
+//	if(count == 6 && this->letter == 'v'){
+//		cout<<"Level : "<<count<<endl;
+//	}
 
 	for (int index = 0; index < childeren.size(); ++index)
     {
 		childeren[index].storeNodes(gaddagNodes); // recursively for all nodes.
     }
+	//count--;
 }
 
 // inline void  LoadNode::setTerminal(){

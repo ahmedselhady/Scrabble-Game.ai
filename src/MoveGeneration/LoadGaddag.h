@@ -35,7 +35,6 @@ class LoadGaddag { // just a static class no need to create an explicit object.
         void insertGaddagWord(string gaddagWord); // inserts a word in gaddag trie.
         Node* constructGaddag(); // builds Gaddag trie and returns compressed trie node.
         void compressGaddag(unsigned int *& gaddagRootNode,vector< LoadNode* >& gaddagNodes); // compresses the trie into an array of nodes using byte offset techinque.
-
 };
 
 #endif

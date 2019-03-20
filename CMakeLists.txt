@@ -10,13 +10,12 @@ set(CMAKE_CXX_COMPILER C:/TDM-GCC-64/bin/gcc.exe CACHE PATH "" FORCE)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 set (CMAKE_VERBOSE_MAKEFILE 0) # 1 should be used for debugging
 set (CMAKE_SUPPRESS_REGENERATION TRUE) # Suppresses ZERO_CHECK
+set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wall")
+
 if(MSVC)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W4")
 else()
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic -std=c++11")
-  if(NOT WIN32)
-   #set(GLAD_LIBRARIES dl)
-  endif()
 endif()
 
 #
@@ -44,7 +43,8 @@ file (GLOB_RECURSE PROJECT_HEADERS src/*.hpp
 file (GLOB_RECURSE PROJECT_SOURCES src/*.cpp
                                    src/*.cxx
                                    src/*.cc
-                                   src/*.c)
+                                   src/*.c
+                                   src/MoveGeneration/Dict.txt)
 file (GLOB         PROJECT_CONFIGS CMakeLists.txt)
 
 #
@@ -57,6 +57,12 @@ source_group ("vendors" FILES ${VENDORS_SOURCES})
 #
 # Set executable and target link libraries
 #
+# configure_file(${CMAKE_CURRENT_SOURCE_DIR}/src/MoveGeneration/Dict.txt
+#     ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
+
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/src/MoveGeneration/Dict.txt
+     DESTINATION ${CMAKE_BINARY_DIR}/Scrabble.AI/Debug)
+
 add_definitions (-DGLFW_INCLUDE_NONE
                  -DPROJECT_SOURCE_DIR=\"${PROJECT_SOURCE_DIR}\")
 add_executable (${PROJECT_NAME} ${PROJECT_SOURCES} ${PROJECT_HEADERS}
@@ -65,6 +71,8 @@ add_executable (${PROJECT_NAME} ${PROJECT_SOURCES} ${PROJECT_HEADERS}
 #target_link_libraries (${PROJECT_NAME})
 set_target_properties (${PROJECT_NAME} PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${PROJECT_NAME})
+
+
 
 #add_executable(Test src/MoveGeneration/TestGaddag.cpp)
 

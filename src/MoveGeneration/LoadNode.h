@@ -35,6 +35,8 @@ class LoadNode {
         //bool isTerminal(); // i.e. Node is last character in a valid word.
         bool isEndOfWord(); // i.e. Node contains EOW character (last character).
         inline int getChild(char letter); // Gets successor which holds with given character.
+        bool findWord(string word);
+
 };
 
 #endif

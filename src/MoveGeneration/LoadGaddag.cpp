@@ -1,4 +1,8 @@
 #include "LoadGaddag.h"
+#include <sys/stat.h>
+#define DICT_FILE_NAME "C:/Users/yaha/Desktop/Projects/Scrabble_GameProject/Scrabble-Game.ai/build/Dict.txt"
+#define GADDAG_FILE_NAME "C:/Users/yaha/Desktop/Projects/Scrabble_GameProject/Scrabble-Game.ai/build/yahiaGAD.txt"
+#define TOTAL_GADDAG_NODES 6419512
 
 using namespace std;
 
@@ -12,7 +16,7 @@ void LoadGaddag::readDictFile(vector< string >& dictGaddagWords,const char* file
 
   string word;
   int count = 0;
-  ifstream myFile("Dict.txt");
+  ifstream myFile(fileName);
   if (myFile.is_open())
   {
 	string gaddagWord ;// gaddag word structure.
@@ -35,7 +39,7 @@ void LoadGaddag::readDictFile(vector< string >& dictGaddagWords,const char* file
                 }  // suffix part
             }
 
-//            if(count < 20){
+//            if(word == "aardvark"){
 //            	 cout<<gaddagWord<<endl;
 //            	 count++;
 //            }
@@ -48,25 +52,67 @@ void LoadGaddag::readDictFile(vector< string >& dictGaddagWords,const char* file
   else {cout << "Unable to open file"; return;}
 
 
-} 
-	
-//Function constructGaddag it builds Gaddag trie and returns compressed trie node.	
+}
+
+//Function constructGaddag it builds Gaddag trie and returns compressed trie node.
 Node* LoadGaddag::constructGaddag(){
+
+
+    struct stat buffer;
+
+    if((stat(GADDAG_FILE_NAME, &buffer)==0)){
+
+          ifstream inputGaddagFile(GADDAG_FILE_NAME);
+          if(!inputGaddagFile.is_open()){
+                cout << "Unable to open file HERE"; return NULL;
+          }
+          cout << "Unable to open file";
+          unsigned int * gaddagRootNode = new unsigned int[TOTAL_GADDAG_NODES];
+
+          int nodeInfo;
+          int index = 0;
+
+          while(inputGaddagFile>>nodeInfo){
+            gaddagRootNode[index] = nodeInfo;
+            index++;
+          }
+          cout << " NODES: "<<index<<endl;
+          inputGaddagFile.close();
+          return (Node*) &gaddagRootNode[0]; // ROOT .. return address of the first value in compressed byte offset array casted in a Node type.
+    }
+
+
     // Gaddag Root Construction.
     vector <string> dictGaddagWords; // GADDAG words from given dict. file.
     vector< LoadNode* > gaddagNodes; // store all nodes to then output a compressed structure then.
-    readDictFile(dictGaddagWords,"Dict.txt");
+    readDictFile(dictGaddagWords,DICT_FILE_NAME);
     for (int index = 0; index < dictGaddagWords.size(); ++index)
     {
          Root.insertGaddagWord(dictGaddagWords[index]); //inserting word into GADDAG.
     }
+
+   bool check = Root.findWord("legovsaa");
+
     gaddagNodes.push_back(&Root);
     Root.storeNodes(gaddagNodes);
     unsigned int * gaddagRootNode = new unsigned int[gaddagNodes.size()];
     compressGaddag(gaddagRootNode,gaddagNodes);
+
+    ofstream gaddagFile;
+    gaddagFile.open(GADDAG_FILE_NAME);
+    int index = 0;
+    while(index < TOTAL_GADDAG_NODES) // Writing Data.
+    {
+    		 gaddagFile << gaddagRootNode[index];
+             if(index != TOTAL_GADDAG_NODES-1){
+                gaddagFile << "\n";
+             }
+    		 index++;
+    }
+
     cout << "Total Nodes : " << gaddagNodes.size() << endl;
     return (Node*) &gaddagRootNode[0]; // ROOT .. return address of the first value in compressed byte offset array casted in a Node type.
-} 
+}
 
 
 
@@ -98,7 +144,7 @@ Node* LoadGaddag::constructGaddag(){
       {
           compressedLetter |= 0x20;
       }
-
+//73986
       if(gaddagNodes[index]->isLastChild())
       {
           compressedLetter |= 0x40;
@@ -109,7 +155,8 @@ Node* LoadGaddag::constructGaddag(){
           address -= index; // as all counts(addresses) are increased by one to achieve a right indexed offset.
       }
 
-      gaddagRootNode[index] =  (address & 0x00FFFFFF) + (compressedLetter << 24);
+      gaddagRootNode[index] =  (address & 0x00FFFFFF) | (compressedLetter << 24);
+      if(index == 73985){cout<<"Adress : "<<gaddagNodes[index]->numberOfChilds()<<endl;
+            cout<<"node info : "<< gaddagRootNode[index]<<endl;}
     }
-
- } 
+ }
