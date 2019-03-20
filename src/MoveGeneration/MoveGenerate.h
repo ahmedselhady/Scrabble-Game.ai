@@ -42,6 +42,7 @@ class WordGenerate { // just a static class no need to create an explicit object
     char currDirection; // i.e. if horizontal move we choose the col else the row.
 	bitset<26> Horiz_crossset[15][15];
 	bitset<26> Vertical_crossset[15][15];
+	bitset<26> currCrossSet;
     char countRoomLeft = 0; // count of chars directly left to an anchor sqaure.
     char cancelIndex = 0; // just a factor to eliminate duplicate of code.
     

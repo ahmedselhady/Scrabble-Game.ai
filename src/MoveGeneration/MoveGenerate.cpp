@@ -2,6 +2,8 @@
 //TODO: Completion of Move Generation Algorithm.
 #include "MoveGenerate.h"
 #include "LoadGaddag.h"
+#include "Gaddag.h"
+
 
 using namespace std;
 
@@ -217,7 +219,7 @@ void WordGenerate::countTilesRack(){
 
 
 
-void MoveGenerate::crosssets()
+void WordGenerate::crosssets()
 {
 	char letter;
 	for(int row=0;row<MAX_BOARD_ROWS;row++)
@@ -228,7 +230,7 @@ void MoveGenerate::crosssets()
 			{
 				
 				int move_col=col+1;
-				while(board->hasaTile(row,move_col++);
+				while(board->hasaTile(row,move_col++)){};
 				move_col-=2;
 				Node* nod;
 				nod=root;
@@ -255,7 +257,7 @@ void MoveGenerate::crosssets()
 				
 				int move_col=col-1;
 				int ptr=0;
-				while(board->hasaTile(row,move_col--);
+				while(board->hasaTile(row,move_col--));
 				move_col+=2;
 				Node* nod;
 				nod=root;
@@ -264,7 +266,7 @@ void MoveGenerate::crosssets()
 					if(itr==1)
 					{
 						nod=nod->findChildChar('^');
-						i--;
+						itr--;
 					}
 					else
 					{
@@ -290,9 +292,9 @@ void MoveGenerate::crosssets()
 					if(board->hasaTile(row,col+1) && board->hasaTile(row,col-1))
 					{
 					int R_move_col=col+1;
-					while(board->hasaTile(row,R_move_col++);
+					while(board->hasaTile(row,R_move_col++));
 					R_move_col-=2;
-					Node* nod,child;
+					Node* nod,*child;
 					nod=root;
 					for(int i=0;i<R_move_col-col;i++)
 					{
@@ -302,7 +304,7 @@ void MoveGenerate::crosssets()
 					child=nod->getFirstChild();
 					nod=child;
 	
-					while(child!=0)
+					while(*child!=0)
 					{	
 						int itr=1;
 						bool succeed=true;
@@ -334,7 +336,7 @@ void MoveGenerate::crosssets()
 			{
 				
 				int move_row=row+1;
-				while(board->hasaTile(move_row++,col);
+				while(board->hasaTile(move_row++,col));
 				move_row-=2;
 				Node* nod;
 				nod=root;
@@ -362,7 +364,7 @@ void MoveGenerate::crosssets()
 				
 				int move_row=row-1;
 				int ptr=0;
-				while(board->hasaTile(move_row--,col);
+				while(board->hasaTile(move_row--,col));
 				move_row+=2;
 				Node* nod;
 				nod=root;
@@ -371,7 +373,7 @@ void MoveGenerate::crosssets()
 					if(itr==1)
 					{
 						nod=nod->findChildChar('^');
-						i--;
+						itr--;
 					}
 					else
 					{
@@ -397,9 +399,9 @@ void MoveGenerate::crosssets()
 			else if(!board->hasaTile(row,col) && board->hasaTile(row+1,col) && board->hasaTile(row-1,col))
 			{
 				int move_row=row+1;
-				while(board->hasaTile(move_row++,col);
+				while(board->hasaTile(move_row++,col));
 				move_row-=2;
-				Node* nod,child;
+				Node* nod,*child;
 				nod=root;
 				for(int i=0;i<move_row-row;i++)
 				{
@@ -409,7 +411,7 @@ void MoveGenerate::crosssets()
 				child=nod->getFirstChild();
 				nod=child;
 	
-				while(child!=0)
+				while(*child!=0)
 				{	
 					int itr=1;
 					bool succeed=true;
