@@ -6,52 +6,111 @@
 using namespace std;
 
 
-MCTreeNode:: MCTreeNode(vector<char> Rack) {
+MCTreeNode:: MCTreeNode(list<Move> Moves) {
 	this->Depth = 0;
 	this->AverageReward = 0;
 	this->Parent = NULL;
 	this->NumberOfVisits = 0;
-	this->Rack = Rack;
-	//TODO: with the given rack generate all the possible moves to fill the vector of children
+	this->PossibleMoves = Moves;
+	this->Expandable = true;
+	for (int i = 0; i < Moves.size; i++) {
+		std::list<Move>::iterator it = Moves.begin();
+		std::advance(it, i);
+		Children.push_back(new MCTreeNode(this, it->moveScore));
+	}
+	
 }
 
 //This constructor is used with all other tree nodes than the root
-MCTreeNode::MCTreeNode(MCTreeNode* parent) {
+MCTreeNode::MCTreeNode(MCTreeNode* parent,int moveScore) {
 	this->Depth = parent->Depth + 1;
 	this->AverageReward = 0;
+	this->moveScore = moveScore;
 	this->Parent = parent;
 	this->NumberOfVisits = 0;
-	//TODO: complete the function that generates rack based on the current state and call it here
+	this->Expandable = true;
+
+	//expand the node only if it is non terminal node
+	if(this->Depth<3){
+		//TODO: with the given rack generate all the possible moves to fill the vector of children
+
+		//TODO: Using the Rack Generated we need to generate all the possible moves "Just Call the Function" and Assign it to 
+		//List Moves
+
+	}
+	
 }
 
-
-
-MCTreeNode::MCTreeNode* getPartent() {
+ MCTreeNode* MCTreeNode::getPartent() {
 	return Parent;
 }
 
-MCTreeNode::MCTreeNode* getMaxChild() {
-	//TODO: return the best child from children based on thier average score
-}
-
-MCTreeNode::void incrementVisits() {
+void MCTreeNode::incrementVisits() {
 	NumberOfVisits++;
 }
 
-MCTreeNode::void setAverageReward(float NewReward) {
+
+bool MCTreeNode::isExpandable() {
+	return Expandable;
+}
+void MCTreeNode::setAverageReward(float NewReward) {
 	AverageReward = NewReward;
 }
 
-MCTreeNode::float getAverageReward() {
+float MCTreeNode::getAverageReward() {
 	return AverageReward;
 }
 
-MCTreeNode::vector<char> getRack() {
-	return Rack;
-}
 
-MCTreeNode::vector<char> generateRack() {
+vector<char> MCTreeNode::generateRack() {
 	//TODO:implement this function
 }
 
+vector<MCTreeNode*> MCTreeNode::getChildren() {
+	return this->Children;
+}
 
+int MCTreeNode::getNumberOfVisits() {
+	return this->NumberOfVisits;
+}
+
+void MCTreeNode::setNonExpandable() {
+	this->Expandable = false;
+}
+
+int MCTreeNode::getDepth() {
+	return this->Depth;
+}
+
+int MCTreeNode::getMoveScore() {
+	return this->moveScore;
+}
+
+
+
+void MCTreeNode::expandMidGame() {
+	if (this->PossibleMoves.size == 0) { 
+		this->setNonExpandable(); 
+		return;
+	}
+	else {
+		Move newChild = this->PossibleMoves.back();
+		this->PossibleMoves.pop_back();
+		this->Children.push_back(new MCTreeNode(this, newChild.moveScore));
+		if (this->PossibleMoves.size == 0) this->setNonExpandable();
+	}
+}
+void MCTreeNode::expandEndGame() {
+	if (this->PossibleMoves.size == 0) {
+		this->setNonExpandable();
+		return;
+	}
+	else {
+		Move newChild = this->PossibleMoves.back();
+		this->PossibleMoves.pop_back();
+		this->Children.push_back(new MCTreeNode(this, newChild.moveScore));
+		if (this->PossibleMoves.size == 0&& this->Depth==2) this->setNonExpandable();
+	
+
+	}
+}
