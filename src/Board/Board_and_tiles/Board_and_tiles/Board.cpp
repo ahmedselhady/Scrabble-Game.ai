@@ -10,6 +10,9 @@ Board::Board()
 
 Board* Board::BoardInst_ = nullptr;
 
+
+
+//The Function getBoard it gets instance of the board
 Board* Board::getBoard()
 {
 
@@ -21,11 +24,13 @@ Board* Board::getBoard()
 	return (BoardInst_);
 }
 
+//The Function getBoardStatus it returns all charcters in board
 BoardMask Board::getBoardStatus() 
 {
 	return AllCharBoard;
 }
 
+//The Function getCharByOffset it gets the character whose offset is given
 char Board::getCharByOffsit(int offsit) 
 {
 	for (auto Instance : BoardMap) // an instance of a letter
@@ -40,6 +45,7 @@ char Board::getCharByOffsit(int offsit)
 	return'*';
 }
 
+//The Function getNextHorizontal it will call the function from the AI module to determine the next state given the current board Horizontally
 std::vector<char>& Board::getNextHorizontal(int HorizontalIndex)
 {
 	HorizontalIndex = HorizontalIndex % 15;
@@ -81,6 +87,8 @@ std::vector<char>& Board::getNextHorizontal(int HorizontalIndex)
 	return *HorizontalVector;
 }
 
+
+//This Function it will call the function from the AI module to determine the next state given the current board Vertically
 std::vector<char>& Board::getNextVertical(int VerticalIndex)
 {
 	VerticalIndex = VerticalIndex % 15;
@@ -117,6 +125,8 @@ std::vector<char>& Board::getNextVertical(int VerticalIndex)
 
 }
 
+
+//This Function setCharPos it sets the character postion on the board
 void Board::SetCharPos(char Letter, int Row, int Col)
 {
 	int Offsit = Row + 15 * Col;
@@ -126,6 +136,7 @@ void Board::SetCharPos(char Letter, int Row, int Col)
 	AllCharBoard.setBit(Offsit);// for all Titles
 }
 
+//This Function calculateScore it calulates the word and letter score
 int Board::calculateScore(int offsit, bool horizontal)
 {
 
