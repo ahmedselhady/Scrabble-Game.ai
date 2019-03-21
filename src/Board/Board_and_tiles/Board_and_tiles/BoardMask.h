@@ -11,9 +11,9 @@ private:
 
 public:
 
-	void setBit(int bitOffset);
-	void unsetBit(int bitOffset);
-	ULL getBit(int bitOffset);
+	void setBit(int bitOffset);//sets bit with this Bitoffset
+	void unsetBit(int bitOffset);//unset bit with this Bitoffset
+	ULL getBit(int bitOffset);//get bit with this Bitoffset
 
 	BoardMask operator &(const BoardMask& otherboard) const;
 	BoardMask operator |(const BoardMask& otherboard) const;
