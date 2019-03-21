@@ -2,14 +2,17 @@
 
 #include <exception>
 
-void BoardMask::setBit(int bitOffset) { // bitOffset Is Calculated using Equation provided by andrew
+//Function setBit it sets the bit whose bitoffset is calculated using Equation provided by andrew
+void BoardMask::setBit(int bitOffset) {
 	Values_x64[bitOffset >> 6] |= (MASK << (bitOffset - (64 * (bitOffset >> 6))));
  }
 
-void BoardMask::unsetBit(int bitOffset) { // bitOffset Is Calculated using Equation provided by andrew
+//Function unsetBit it unsets the bit whose bitoffset is calculated using Equation provided by andrew
+void BoardMask::unsetBit(int bitOffset) { 
 	Values_x64[bitOffset >> 6] ^= (MASK << (bitOffset - (64 * (bitOffset >> 6))));
 }
 
+//Function getbit it gets the bit whose bitoffset is calculated using Equation provided by andrew
 ULL BoardMask::getBit(int bitOffset) {
 	int offset = bitOffset / 64;
 	return Values_x64[offset] & (MASK << (bitOffset - (64 * (offset))));
