@@ -1,6 +1,8 @@
 #include "Board.h"
 #include "BoardMask.cpp"
 
+
+//Constructor
 Board::Board()
 {
 	for(int i=0;i<26;i++)// i want to create them at insertion of the letter as i dont need the whole 26 char along the game
