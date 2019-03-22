@@ -11,6 +11,8 @@ vector<char> Tiles::getRackTiles()
 	return (RackTiles);//return current rack of tiles
 }
 Tiles* Tiles::TilesInst_=nullptr;
+
+//This Function return the tiles 
 Tiles* Tiles::getTiles()
 {
 
