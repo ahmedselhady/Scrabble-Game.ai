@@ -7,13 +7,13 @@ class BoardToGrammer: public BoardCommunicator {
 
 public:
 
-    BoardToGrammer();
-    ~BoardToGrammer();
+    BoardToGrammer();//Constructor
+    ~BoardToGrammer();//Destructor
 
     // overrided methods:
-    std::vector<char>& getNextVerticalState();
-    std::vector<char>& getNextHorizontalState();
-    std::vector<char>& getTiles();
+    std::vector<char>& getNextVerticalState();// it will call the function from the AI module to determine the next state given the current board Vertically
+    std::vector<char>& getNextHorizontalState();//it will call the function from the AI module to determine the next state given the current board Horizontally
+    std::vector<char>& getTiles();//it will call the GUI function which will aquire the move played by the player
     /**
      *  function: 
      *      has-a-Tile: checks if a tile exists at a certain position
@@ -40,7 +40,7 @@ public:
      *      tile char; a letter from a-z when there exist a tile in the given position
      *                    astrisc '*' when there does not exist a tile in the given position
     */
-    char getTileAtPosition(int row, int col);
+    char getTileAtPosition(int row, int col);//it will get the tile that is in the given rows and coloumns
 protected:
     // add any protected methods or data members
 	int HorizontalIndex;
