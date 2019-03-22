@@ -11,9 +11,9 @@ private:
 
 public:
 	bool isEmpty();// its name should be non empty 
-	void setBit(int bitOffset);
-	void unsetBit(int bitOffset);
-	bool getBit(int bitOffset);
+	void setBit(int bitOffset);//sets bit whose bitOffset is given
+	void unsetBit(int bitOffset);//unsets bit whose bitOffset is given
+	bool getBit(int bitOffset);//gets bit whose bitOffset is given
 
 	BoardMask operator &(const BoardMask& otherboard) const;
 	BoardMask operator |(const BoardMask& otherboard) const;
