@@ -4,6 +4,10 @@
 #include <cstdint>
 #include <vector>
 
+/**
+ * The Messages that we receive and send throught the Websocket
+ * to the game judge server
+ */
 enum MessageTypes {
   NAME,
   START,
@@ -18,6 +22,9 @@ enum MessageTypes {
   END,
 };
 
+/**
+ * The states that our agent goes through throughout the game
+ */
 enum States {
   INIT,
   READY,
@@ -29,8 +36,9 @@ enum States {
   AWAIT_CHALLENGE_RESPONSE,
 };
 
-enum LetterCodes { NO_LETTER, LETTER_A, LETTER_B, LETTER_C };
-
+/**
+ * These are the reasons the server sends us when the game ends
+ */
 enum EndReasons {
   ALL_TILES_USED,
   TIME_ENDED,
@@ -39,8 +47,8 @@ enum EndReasons {
 };
 
 // Request means client (us) <== server
-// Response means client (us) ==> server and this is handled by our Binary
-// Envelope
+// Response means client (us) ==> server and
+// this is handled by our BinaryEnvelope
 
 // no instanse of BaseSocket is ever parsed
 // it just makes for the template
@@ -143,6 +151,10 @@ enum MessagesStructs {
   EndRequest,
 };
 
+/**
+ * These are the sizes of the messages byte by byte
+ * used to parse the binary into the suitable message
+ */
 extern std::vector<uint8_t> NameRequestMessagePadding;
 extern std::vector<uint8_t> ReadyRequestMessagePadding;
 extern std::vector<uint8_t> InvalidExchangeRequestMessagePadding;
@@ -156,23 +168,28 @@ extern std::vector<uint8_t> ExchangeRequestMessagePadding;
 extern std::vector<uint8_t> PlayRequestMessagePadding;
 extern std::vector<uint8_t> EndRequestMessagePadding;
 
-extern NameRequestMessage deserializeNameMessage(std::vector<uint8_t>&);
-extern ReadyRequestMessage deserializeReadyMessage(std::vector<uint8_t>&);
+/**
+ * These are de-serialization functions implemented in the .cpp.
+ * These convert the binary array to the proper message struct
+ */
+extern NameRequestMessage deserializeNameMessage(const std::vector<uint8_t>&);
+extern ReadyRequestMessage deserializeReadyMessage(const std::vector<uint8_t>&);
 extern InvalidExchangeRequestMessage deserializeInvalidExchangeMessage(
-    std::vector<uint8_t>&);
+    const std::vector<uint8_t>&);
 extern InvalidPlayRequestMessage deserializeInvalidPlayMessage(
-    std::vector<uint8_t>&);
+    const std::vector<uint8_t>&);
 extern OkExchangeRequestMessage deserializeOkExchangeMessage(
-    std::vector<uint8_t>&);
+    const std::vector<uint8_t>&);
 extern ChallengeRejectedRequestMessage deserializeChallengeRejectedMessage(
-    std::vector<uint8_t>&);
+    const std::vector<uint8_t>&);
 extern NoChallengeRequestMessage deserializeNoChallengeMessage(
-    std::vector<uint8_t>&);
+    const std::vector<uint8_t>&);
 extern ChallengeAcceptedRequestMessage deserializeChallengeAcceptedMessage(
-    std::vector<uint8_t>&);
-extern PassRequestMessage deserializePassMessage(std::vector<uint8_t>&);
-extern ExchangeRequestMessage deserializeExchangeMessage(std::vector<uint8_t>&);
-extern PlayRequestMessage deserializePlayMessage(std::vector<uint8_t>&);
-extern EndRequestMessage deserializeEndMessage(std::vector<uint8_t>&);
+    const std::vector<uint8_t>&);
+extern PassRequestMessage deserializePassMessage(const std::vector<uint8_t>&);
+extern ExchangeRequestMessage deserializeExchangeMessage(
+    const std::vector<uint8_t>&);
+extern PlayRequestMessage deserializePlayMessage(const std::vector<uint8_t>&);
+extern EndRequestMessage deserializeEndMessage(const std::vector<uint8_t>&);
 
 #endif
