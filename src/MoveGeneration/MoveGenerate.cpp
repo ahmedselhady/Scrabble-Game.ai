@@ -13,10 +13,16 @@ using namespace std;
 #define VerticalCrossSet 0;
 #define BLANK ' '
 
+//This Function it takes a Reference to the Board.
 WordGenerate::WordGenerate(BoardToGrammer&board){
     this->board=&board; // catching a boardcomm. verison object.
 }
 
+
+/*
+This Function iterates on each sqaure in the board and performing the algo. Taking the board 2-Dimensions into Consideration.
+and it iterates on each sqaure in the board and performing the algo.
+*/
 void WordGenerate::generateWords(){
 
     bool isAnchorSquare = false;
@@ -50,9 +56,11 @@ void WordGenerate::generateWords(){
             }
         }
     }
-} // iterates on each sqaure in the board and performing the algo.
+} 
 
- bool WordGenerate::isAnchor(int row,int col){
+
+//This Function is this square given row and col an anchor sqaure.
+bool WordGenerate::isAnchor(int row,int col){
      // NOTE: GADDAG algo. works from the left to right. it can be reversed but also need reverse of the structure itself DAGGAD.
 
   // what is an anchor square:
@@ -80,6 +88,9 @@ void WordGenerate::generateWords(){
     return false;
  }// is this square given row and col an anchor sqaure? Offsets used to make the function works in 2D (vert./horiz.)
 
+
+
+//This Function it's important to stop right before a letter found while travesring the board leftward generating possible moves.
 int WordGenerate::roomLeftCount(int row,int col){
     
     // count include the first char (itself).
@@ -129,6 +140,7 @@ int WordGenerate::roomLeftCount(int row,int col){
 }
 
 
+//This Gen funtion first function in Move Generation Algo.
 void WordGenerate::gen(int pos,string &word,Node*gaddagNode){
 
     char childLetter; // init.
@@ -175,8 +187,10 @@ void WordGenerate::gen(int pos,string &word,Node*gaddagNode){
         }
     }
 
-} // Gordon Gen funtion first function in Move Generation Algo.
+} 
 
+
+//This Function it sets the Options needed for transforming from Horiz. to vertical and vice versa.
 void WordGenerate::setDirectionOptions(int row,int col ,bool isHorizontal){
 
     if(isHorizontal){
@@ -194,13 +208,16 @@ void WordGenerate::setDirectionOptions(int row,int col ,bool isHorizontal){
       rowOffset = 1;
       currCrossSet = HorizCrossSet;// dummy pass to it Horizcrossset[row][col] .
   }
-}// Sets the Options needed for transforming from Horiz. to vertical and vice versa.
+}
 
+//This Function GO ON funtion first function in Move Generation Algo.
 void WordGenerate::goOn(int pos,char boardLetter,string&word,Node*gaddagNode){
     //TODO: Complete The Algo. + Add any Helping Functions that may be Needed During Implementation.
     cout<<"HI GADDAD<<endl";
-} // Gordon GO ON funtion first function in Move Generation Algo.
+} 
 
+
+// This Function calculates the no. of tiles for each character in Rack.
 void WordGenerate::countTilesRack(){
 	
     vector<char> rack = board->getTiles();
@@ -213,12 +230,10 @@ void WordGenerate::countTilesRack(){
         tilesCount[rack[index] - CHAR_OFFSET]++;
     }
 
-} // Calculates the no. of tiles for each character in Rack.
+} 
 
 
-
-
-
+//This Function calculate the crosssets of each square.
 void WordGenerate::crosssets()
 {
 	char letter;
