@@ -15,6 +15,8 @@ std::vector<char> Tiles::getRackTiles()
 
 Tiles* Tiles::TilesInst_=nullptr;
 
+
+//This Function return tiles
 Tiles* Tiles::getTiles()
 {
 
