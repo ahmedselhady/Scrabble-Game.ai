@@ -42,13 +42,16 @@ std::vector<uint8_t> PlayRequestMessagePadding = {8, 8, 8, 8,  8,  8,  8, 8,
 
 std::vector<uint8_t> EndRequestMessagePadding = {8, 8, 32, 32};
 
-NameRequestMessage deserializeNameMessage(std::vector<uint8_t>& binary) {
+/*****************************************************************************/
+
+NameRequestMessage deserializeNameMessage(const std::vector<uint8_t>& binary) {
   NameRequestMessage msg;
   msg.type = binary[0];
   return msg;
 };
 
-ReadyRequestMessage deserializeReadyMessage(std::vector<uint8_t>& binary) {
+ReadyRequestMessage deserializeReadyMessage(
+    const std::vector<uint8_t>& binary) {
   ReadyRequestMessage msg;
   int index = 0;
 
@@ -77,7 +80,7 @@ ReadyRequestMessage deserializeReadyMessage(std::vector<uint8_t>& binary) {
 };
 
 InvalidExchangeRequestMessage deserializeInvalidExchangeMessage(
-    std::vector<uint8_t>& binary) {
+    const std::vector<uint8_t>& binary) {
   InvalidExchangeRequestMessage msg;
   int index = 0;
   msg.type = binary[index];
@@ -89,7 +92,7 @@ InvalidExchangeRequestMessage deserializeInvalidExchangeMessage(
 };
 
 InvalidPlayRequestMessage deserializeInvalidPlayMessage(
-    std::vector<uint8_t>& binary) {
+    const std::vector<uint8_t>& binary) {
   InvalidPlayRequestMessage msg;
   int index = 0;
   msg.type = binary[index];
@@ -101,7 +104,7 @@ InvalidPlayRequestMessage deserializeInvalidPlayMessage(
 };
 
 OkExchangeRequestMessage deserializeOkExchangeMessage(
-    std::vector<uint8_t>& binary) {
+    const std::vector<uint8_t>& binary) {
   OkExchangeRequestMessage msg;
   int index = 0;
   msg.type = binary[index++];
@@ -112,7 +115,7 @@ OkExchangeRequestMessage deserializeOkExchangeMessage(
 };
 
 ChallengeRejectedRequestMessage deserializeChallengeRejectedMessage(
-    std::vector<uint8_t>& binary) {
+    const std::vector<uint8_t>& binary) {
   ChallengeRejectedRequestMessage msg;
   int index = 0;
   msg.type = binary[index++];
@@ -127,7 +130,7 @@ ChallengeRejectedRequestMessage deserializeChallengeRejectedMessage(
 };
 
 NoChallengeRequestMessage deserializeNoChallengeMessage(
-    std::vector<uint8_t>& binary) {
+    const std::vector<uint8_t>& binary) {
   NoChallengeRequestMessage msg;
   int index = 0;
   msg.type = binary[index++];
@@ -138,7 +141,7 @@ NoChallengeRequestMessage deserializeNoChallengeMessage(
 };
 
 ChallengeAcceptedRequestMessage deserializeChallengeAcceptedMessage(
-    std::vector<uint8_t>& binary) {
+    const std::vector<uint8_t>& binary) {
   ChallengeAcceptedRequestMessage msg;
 
   msg.type = binary[0];
@@ -146,7 +149,7 @@ ChallengeAcceptedRequestMessage deserializeChallengeAcceptedMessage(
   return msg;
 };
 
-PassRequestMessage deserializePassMessage(std::vector<uint8_t>& binary) {
+PassRequestMessage deserializePassMessage(const std::vector<uint8_t>& binary) {
   PassRequestMessage msg;
   int index = 0;
   msg.type = binary[index++];
@@ -158,7 +161,7 @@ PassRequestMessage deserializePassMessage(std::vector<uint8_t>& binary) {
 };
 
 ExchangeRequestMessage deserializeExchangeMessage(
-    std::vector<uint8_t>& binary) {
+    const std::vector<uint8_t>& binary) {
   ExchangeRequestMessage msg;
   int index = 0;
   msg.type = binary[index++];
@@ -170,13 +173,13 @@ ExchangeRequestMessage deserializeExchangeMessage(
   return msg;
 };
 
-PlayRequestMessage deserializePlayMessage(std::vector<uint8_t>& binary) {
+PlayRequestMessage deserializePlayMessage(const std::vector<uint8_t>& binary) {
   PlayRequestMessage msg;
   // TODO: Ahmed Hussein Complete this
   return msg;
 };
 
-EndRequestMessage deserializeEndMessage(std::vector<uint8_t>& binary) {
+EndRequestMessage deserializeEndMessage(const std::vector<uint8_t>& binary) {
   EndRequestMessage msg;
   int index = 0;
   msg.type = binary[index++];
