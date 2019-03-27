@@ -1,5 +1,7 @@
 #include "./Board.h"
 
+
+//Constructor
 Board::Board()
 {
 	for (int i = 0; i < 26; i++)// i want to create them at insertion of the letter as i dont need the whole 26 char along the game
@@ -86,7 +88,6 @@ std::vector<char>& Board::getNextHorizontal(int HorizontalIndex)
 	}
 	return *HorizontalVector;
 }
-
 
 //This Function it will call the function from the AI module to determine the next state given the current board Vertically
 std::vector<char>& Board::getNextVertical(int VerticalIndex)
@@ -279,6 +280,7 @@ void Board::print()
 	}
 }
 
+//Destructor
 Board::~Board()
 {
 	Board::BoardInst_ = nullptr;

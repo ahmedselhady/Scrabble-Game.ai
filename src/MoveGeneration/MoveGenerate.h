@@ -40,6 +40,8 @@ class WordGenerate { // just a static class no need to create an explicit object
     char colOffset;
     char rowOffset;
     char currDirection; // i.e. if horizontal move we choose the col else the row.
+    bitset<26> Horiz_crossset[15][15];
+    bitset<26> Vertical_crossset[15][15];
     bitset<26> currCrossSet;
     char countRoomLeft = 0; // count of chars directly left to an anchor sqaure.
     char cancelIndex = 0; // just a factor to eliminate duplicate of code.
@@ -76,6 +78,7 @@ class WordGenerate { // just a static class no need to create an explicit object
        void setDirectionOptions(int row,int col ,bool isHorizontal); // Sets the Options needed for transforming from Horiz. to vertical and vice versa.
        void duplicateMovesRemoval(); // TODO: removes duplicate moves occuring from a one tile play. (vertically + Horizonatally)
        void emptyBoardMoves(); //TODO: Generate all possible moves availabe given certain Rack when the status of the board is empty only.
+	   void crosssets(); // calculate the crosssets of each square.
 };
 
 // NOTES: (Put Critical Questions Here For Furthur Development)

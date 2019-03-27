@@ -10,7 +10,7 @@ Tiles::Tiles()
 std::vector<char> Tiles::getRackTiles()
 {
 
-	return (RackTiles)
+	return (RackTiles);
 }
 
 Tiles* Tiles::TilesInst_=nullptr;
