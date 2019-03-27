@@ -14,10 +14,10 @@ private:
 public:
 
 	
-	static Tiles* getTiles();//function to get current rack of tiles
-	std::vector<char> getRackTiles();
-	bool addTiles(char tile);//function to add a tile to the rack
-	bool exchngTiles(char Current,char New);//function to exchange tiles with server
+	static Tiles* getTiles();//this function to get current rack of tiles
+	std::vector<char> getRackTiles();//This function return rack of tiles
+	bool addTiles(char tile);//this function to add a tile to the rack
+	bool exchngTiles(char Current,char New);//this function to exchange tiles with server
 
 };
 

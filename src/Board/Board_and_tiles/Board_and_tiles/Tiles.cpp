@@ -6,14 +6,17 @@ Tiles::Tiles()
 {
 }
 
+//This Function returns current rack of tiles
 std::vector<char> Tiles::getRackTiles()
 {
 
-	return (RackTiles);//return current rack of tiles
+	return (RackTiles)
 }
 
 Tiles* Tiles::TilesInst_=nullptr;
 
+
+//This Function return tiles
 Tiles* Tiles::getTiles()
 {
 
@@ -25,6 +28,7 @@ Tiles* Tiles::getTiles()
 	return (TilesInst_);
 }
 
+//This Function add tiles to the rack
 bool Tiles::addTiles(char tile)
 {
 
@@ -36,6 +40,7 @@ bool Tiles::addTiles(char tile)
 return false;
 }
 
+//This Function exchange tiles
 bool Tiles::exchngTiles(char Current,char New)
 {
   

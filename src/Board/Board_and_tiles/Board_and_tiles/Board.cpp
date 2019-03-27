@@ -2,31 +2,56 @@
 
 Board::Board()
 {
-	for(int i=0;i<26;i++)// i want to create them at insertion of the letter as i dont need the whole 26 char along the game
+	for (int i = 0; i < 26; i++)// i want to create them at insertion of the letter as i dont need the whole 26 char along the game
 	{
-		BoardMap[(char)('A'+i)]= BoardMask(0b0000000000000000000000000000000000000000000000000000000000000000, 0b0000000000000000000000000000000000000000000000000000000000000000, 0b0000000000000000000000000000000000000000000000000000000000000000, 0b0000000000000000000000000000000000000000000000000000000000000000);
+		BoardMap[(char)('A' + i)] = BoardMask(0b0000000000000000000000000000000000000000000000000000000000000000, 0b0000000000000000000000000000000000000000000000000000000000000000, 0b0000000000000000000000000000000000000000000000000000000000000000, 0b0000000000000000000000000000000000000000000000000000000000000000);
 	}
 }
 
-Board* Board::BoardInst_=nullptr;
+Board* Board::BoardInst_ = nullptr;
 
+
+
+//The Function getBoard it gets instance of the board
 Board* Board::getBoard()
 {
 
-	if(BoardInst_==nullptr)
+	if (BoardInst_ == nullptr)
 	{
-		BoardInst_=new Board;
+		BoardInst_ = new Board;
 	}
-	
+
 	return (BoardInst_);
 }
 
+//The Function getBoardStatus it returns all charcters in board
+BoardMask Board::getBoardStatus() 
+{
+	return AllCharBoard;
+}
+
+//The Function getCharByOffset it gets the character whose offset is given
+char Board::getCharByOffsit(int offsit) 
+{
+	for (auto Instance : BoardMap) // an instance of a letter
+	{
+
+		if (Instance.second.getBit(offsit))
+		{
+			return Instance.first;
+
+		}
+	}
+	return'*';
+}
+
+//The Function getNextHorizontal it will call the function from the AI module to determine the next state given the current board Horizontally
 std::vector<char>& Board::getNextHorizontal(int HorizontalIndex)
 {
 	HorizontalIndex = HorizontalIndex % 15;
 	std::vector<char> CharVect;
 	std::vector<char>* HorizontalVector = new std::vector<char>(15);
-	int ResIndex=0;
+	int ResIndex = 0;
 	BoardMask CheckBoard;
 	int dummyoffsit = HorizontalIndex;
 	for (int i = 0; i < 15; i++)
@@ -37,17 +62,17 @@ std::vector<char>& Board::getNextHorizontal(int HorizontalIndex)
 	for (auto Instance : BoardMap) // an instance of a letter
 	{
 
-		if((Instance.second&CheckBoard).isEmpty()) 
+		if ((Instance.second&CheckBoard).isEmpty())
 		{
 			CharVect.push_back(Instance.first);//  need to edit the position in the vector 
 
 		}
 	}
 	int mOffsit = HorizontalIndex;
-	for (int i = 0; i<15; i++)// looping on the col
+	for (int i = 0; i < 15; i++)// looping on the col
 	{
 
-		for (std::size_t i = 0; i<CharVect.size(); ++i) // looking on the char board that has  this bit
+		for (std::size_t i = 0; i < CharVect.size(); ++i) // looking on the char board that has  this bit
 		{
 			if (BoardMap[CharVect[i]].getBit(mOffsit))
 			{
@@ -62,28 +87,30 @@ std::vector<char>& Board::getNextHorizontal(int HorizontalIndex)
 	return *HorizontalVector;
 }
 
+
+//This Function it will call the function from the AI module to determine the next state given the current board Vertically
 std::vector<char>& Board::getNextVertical(int VerticalIndex)
 {
 	VerticalIndex = VerticalIndex % 15;
 	vector<char> CharVect;
 	vector<char>* VerticalVector = new std::vector<char>(15);
-	int ResIndex=0;
+	int ResIndex = 0;
 	BoardMask CheckBoard;
 	for (int i = (15 * VerticalIndex); i < (15 * VerticalIndex) + 15; ++i)
 	{
 		CheckBoard.setBit(i);
 	}
-	for (auto Instance : BoardMap) 
+	for (auto Instance : BoardMap)
 	{
-		if((Instance.second&CheckBoard).isEmpty())
+		if ((Instance.second&CheckBoard).isEmpty())
 		{
 			CharVect.push_back(Instance.first);
 
 		}
 	}
-	for (int mOffsit = VerticalIndex * 15; mOffsit<(VerticalIndex * 15 + 15); mOffsit++)// looping on the col
+	for (int mOffsit = VerticalIndex * 15; mOffsit < (VerticalIndex * 15 + 15); mOffsit++)// looping on the col
 	{
-		for (std::size_t i = 0; i<CharVect.size(); ++i) // looking on the char board that has  this bit
+		for (std::size_t i = 0; i < CharVect.size(); ++i) // looking on the char board that has  this bit
 		{
 			if (BoardMap[CharVect[i]].getBit(mOffsit))
 			{
@@ -98,17 +125,125 @@ std::vector<char>& Board::getNextVertical(int VerticalIndex)
 
 }
 
-void Board::SetCharPos(char Letter,int Row,int Col)
+
+//This Function setCharPos it sets the character postion on the board
+void Board::SetCharPos(char Letter, int Row, int Col)
 {
-	int Offsit=Row +15*Col;
-	if(Offsit<0 || Offsit >(14+15*14) )
-	return;
+	int Offsit = Row + 15 * Col;
+	if (Offsit<0 || Offsit >(14 + 15 * 14))
+		return;
 	BoardMap[Letter].setBit(Offsit);
+	AllCharBoard.setBit(Offsit);// for all Titles
 }
 
-int Board::calculateScore(std::vector<char>& suggestedMove, int position, bool horizontal)
+//This Function calculateScore it calulates the word and letter score
+int Board::calculateScore(int offsit, bool horizontal)
 {
-	return 0;
+
+	BoardMask WordScoreMultiplyBy3(0b0000000000000000000000000000000000000000000000000100000010000001, 0b0000000010000000000000100000000000000000000000000000000000000000, 0b0000000000000000000000000000000000000000000000000000000000000000, 0b0000000000000000000000000000000100000010000001000000000000000000);
+	BoardMask WordScoreMultiplyBy2(0b0000000100000001000001000000000100010000000000010000000000000000, 0b0000000000000001000000000000000000000000000000000000000001000001, 0b0000000001000001000000010000000100000100000000000000000000000000, 0b0000000000000000000000000000000000000000000000010000000000010001);
+	BoardMask LetterScoreMultiplyBy2(0b0000100000010000001000000101000000000000000000000000100000001000, 0b0100010000010000000100000100010100010000000000000000000000000000, 0b0001010000001000000100000010000000000000000000000000000000010001, 0b0000000000000000000000000000000000100000001000000000000000000000);
+	BoardMask LetterScoreMultiplyBy3(0b0000000000000000000000000000000000000001000100000000000000000000, 0b0000000000000000000000000000000000000001000100010001000000000000, 0b0000000000000000000000000000000000000000000100010001000100000000, 0b0000000000000000000000000000000000000000000000000001000100000000);
+
+
+
+	int mStartOffsit = offsit;
+	int WordScore = 0;
+	int TileValues[26] = { 1, 3, 3, 2, 1, 4, 2, 4, 1, 8, 5, 1, 3, 1, 1, 3, 10, 1, 1, 1, 1, 4, 4, 8, 4, 10 }; //need to add the blank
+	bool Wsx3 = false;
+	bool Wsx2 = false;
+	int Wsx3M = 1;// multiplyer
+	int Wsx2M = 1;
+	if (!horizontal) // vertically
+	{
+
+		while (AllCharBoard.getBit(mStartOffsit - 15))
+		{
+			mStartOffsit -= 15;
+		}
+		while (AllCharBoard.getBit(mStartOffsit))// the word still didnt complete
+		{
+			char Tile = getCharByOffsit(mStartOffsit);// get the current char
+			if (LetterScoreMultiplyBy2.getBit(offsit))
+			{
+				WordScore += TileValues[Tile - 'A'] * 2;
+			}
+			else if (LetterScoreMultiplyBy3.getBit(offsit))
+			{
+				WordScore += TileValues[Tile - 'A'] * 3;
+			}
+			else
+			{
+				WordScore += TileValues[Tile - 'A'];
+			}
+			if ((WordScoreMultiplyBy2.getBit(offsit)) || (offsit == 7 + 15 * 7))  // the start square 
+			{
+				Wsx2 = true;
+				Wsx2M *= 2;
+			}
+			else if (WordScoreMultiplyBy3.getBit(offsit))
+			{
+				Wsx3 = true;
+				Wsx3M *= 3;
+			}
+			mStartOffsit += 15;
+		}
+		if (Wsx2)
+		{
+			WordScore = WordScore*Wsx2M;
+		}
+		else if (Wsx3)
+		{
+			WordScore = WordScore*Wsx3M;
+		}
+		return WordScore;
+	}
+	else
+	{
+
+		while (AllCharBoard.getBit(mStartOffsit - 1))// need to add a validition if its a valid offsit or not
+		{
+			mStartOffsit--;
+		}
+		while (AllCharBoard.getBit(mStartOffsit))// the world still didnt complete
+		{
+			char Tile = getCharByOffsit(mStartOffsit);// get the current char
+			if (LetterScoreMultiplyBy2.getBit(offsit))
+			{
+				WordScore += TileValues[Tile - 'A'] * 2;
+			}
+			else if (LetterScoreMultiplyBy3.getBit(offsit))
+			{
+				WordScore += TileValues[Tile - 'A'] * 3;
+			}
+			else
+			{
+				WordScore += TileValues[Tile - 'A'];
+			}
+			if ((WordScoreMultiplyBy2.getBit(offsit)) || (offsit == 7 + 15 * 7))  // the start square 
+			{
+				Wsx2 = true;
+				Wsx2M *= 2;
+			}
+			else if (WordScoreMultiplyBy3.getBit(offsit))
+			{
+				Wsx3 = true;
+				Wsx3M *= 3;
+			}
+			mStartOffsit += 1;
+		}
+		if (Wsx2)
+		{
+			WordScore = WordScore*Wsx2M;
+		}
+		else if (Wsx3)
+		{
+			WordScore = WordScore*Wsx3M;
+		}
+		return WordScore;
+
+
+	}
 }
 
 void Board::print()
@@ -124,7 +259,7 @@ void Board::print()
 		mOffsit = i;
 		for (int j = 0; j < 15; j++)
 		{
-			
+
 			if (AllCharBoard.getBit(mOffsit))
 			{
 				for (auto Instance : BoardMap) // an instance of a letter
