@@ -1,9 +1,15 @@
 # Specify minimum CMake version and project name
 #
 cmake_minimum_required(VERSION 3.0)
-project(Scrabble.AI)
+project(Scrabble.AI VERSION 0.1.0)
 
-#set(CMAKE_CXX_COMPILER C:/TDM-GCC-64/bin/gcc.exe CACHE PATH "" FORCE)
+
+include(CTest)
+
+
+set(CPACK_PROJECT_NAME ${PROJECT_NAME})
+set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
+include(CPack)
 #
 # CMake setup
 #
@@ -76,11 +82,5 @@ set_target_properties (${PROJECT_NAME} PROPERTIES
 
 
 
-#add_executable(Test src/MoveGeneration/TestGaddag.cpp)
 
-#target_include_directories(test PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
-
-# add_library(src/MoveGeneration/ mysqrt.cxx)
-#add_subdirectory (src/MoveGeneration/) 
-# (${PROJECT_BINARY_DIR})
 
