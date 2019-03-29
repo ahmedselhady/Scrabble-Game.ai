@@ -98,9 +98,9 @@ int main() {
 
 	//----------------------- testing for Tiles:
 	BoardToGrammer b2g;
-	// b2g.SetChar('b',7,7);
-	// b2g.SetChar('o',7,8);
-	// b2g.SetChar('y',7,9);
+	b2g.SetChar('b',7,7);
+	b2g.SetChar('o',7,8);
+	b2g.SetChar('y',7,9);
 
 	b2g.PrintBitBoard();
 	Tiles* t = Tiles::getTiles();

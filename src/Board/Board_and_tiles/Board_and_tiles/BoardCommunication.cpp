@@ -50,6 +50,5 @@ void BoardToGrammer::PrintBitBoard()
 //This function checs if this place contain a tile or not
 bool BoardToGrammer::hasaTile(int row, int col){     
 	vector<char> CurrentRow=BoardPtr->getNextHorizontal(row);
-	// TODO: when board is empty, it should return ALL CHARACTERS AS '*' !!!!
 	return (CurrentRow[col] == '*') ? false : true;
 }

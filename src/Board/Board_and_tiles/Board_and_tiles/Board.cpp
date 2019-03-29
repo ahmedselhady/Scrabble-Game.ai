@@ -43,7 +43,7 @@ std::vector<char>& Board::getNextHorizontal(int HorizontalIndex){
 
 	HorizontalIndex = HorizontalIndex % 15;
 	std::vector<char> CharVect;
-	std::vector<char>* HorizontalVector = new std::vector<char>(15);
+	std::vector<char>* HorizontalVector = new std::vector<char>(15,'*');
 	int ResIndex = 0;
 	BoardMask CheckBoard;
 	int dummyoffsit = HorizontalIndex;
@@ -63,7 +63,7 @@ std::vector<char>& Board::getNextHorizontal(int HorizontalIndex){
 	int mOffsit = HorizontalIndex;
 	for (int i = 0; i < 15; i++) {// looping on the col
 
-		for (std::size_t i = 0; i < CharVect.size(); ++i) {// looking on the char board that has  this bit
+		for (std::size_t i = 0; i < CharVect.size(); ++i) { // looking on the char board that has  this bit
 		
 			if (BoardMap[CharVect[i]].getBit(mOffsit)){
 				(*HorizontalVector)[ResIndex++] = CharVect[i];
@@ -83,7 +83,7 @@ std::vector<char>& Board::getNextVertical(int VerticalIndex)
 {
 	VerticalIndex = VerticalIndex % 15;
 	vector<char> CharVect;
-	vector<char>* VerticalVector = new std::vector<char>(15);
+	vector<char>* VerticalVector = new std::vector<char>(15,'*');
 	int ResIndex = 0;
 	BoardMask CheckBoard;
 	for (int i = (15 * VerticalIndex); i < (15 * VerticalIndex) + 15; ++i)
