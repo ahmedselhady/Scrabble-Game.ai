@@ -1,3 +1,4 @@
+
 #include "LoadGaddag.h"
 #include <sys/stat.h>
 #define DICT_FILE_NAME "C:/Users/yaha/Desktop/Projects/Scrabble_GameProject/Scrabble-Game.ai/build/Dict.txt"

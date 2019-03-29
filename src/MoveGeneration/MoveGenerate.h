@@ -1,9 +1,6 @@
 
 //TODO: Completion of Move Generation Algorithm.
-
-#ifndef MOVEGENERATE_H
-#define MOVEGENERATE_H
-
+#pragma once
 //INCLUDES:
 
 #include <iostream>
@@ -19,12 +16,19 @@ using namespace std;
 
 #define MAX_BOARD_ROWS 15
 #define MAX_BOARD_COLS 15
+#define BLANK_CHAR 0x80
+
+struct Position{ // defines what a "Move" is.
+    char ROW;
+    char COL;
+};
 
 struct Move{ // defines what a "Move" is.
     string word;
     int moveScore;
-    int startPosition;
+    Position startPosition;
     bool horizontal; // true -> horiz false -> vertical.
+    char moveUsedTiles;
 };
 
 class WordGenerate { // just a static class no need to create an explicit object.
@@ -33,7 +37,7 @@ class WordGenerate { // just a static class no need to create an explicit object
      to construct the whole GADDAG Tree.*/
     private:
     BoardToGrammer * board; 
-    list<Move> Moves; // all possible moves provided a Rack and and a Board at a given instant.
+    list<Move> moves; // all possible moves provided a Rack and and a Board at a given instant.
     Node*root; // gaddag root tree.
     unordered_map<char,int> tilesCount;
     char maxBorder; // Utility Variables inside fuctions helping in Transformation from Vertical to Horiz and vice versa.
@@ -46,12 +50,17 @@ class WordGenerate { // just a static class no need to create an explicit object
     char countRoomLeft = 0; // count of chars directly left to an anchor sqaure.
     char cancelIndex = 0; // just a factor to eliminate duplicate of code.
     
+    bool blankUsed;
     char anchorRow; // chosen anchor square postion.
     char anchorCol;
+    char usedTiles = 0;
+
+    bool emptyBoard = false;
 
     public:
 
-       WordGenerate(BoardToGrammer&board); // Takes a Reference to the Board.
+       WordGenerate(BoardToGrammer *board,Node*root); // Takes a Reference to the Board.
+       void setBoardState(BoardToGrammer&board);// TODO: Assigns Different Board States For Monte Carlo.
        void generateWords(); // iterates on each sqaure in the board and performing the algo. Taking the board 2-Dimensions into Consideration.
        int roomLeftCount(int row,int col); 
        /*
@@ -65,15 +74,15 @@ class WordGenerate { // just a static class no need to create an explicit object
             we count this as "RoomLeft=4" for last example.
        */
        bool isAnchor(int row,int col); // is this square given row and col an anchor sqaure?
-       void gen(int pos,string &word,Node*gaddagNode); // Gordon Gen funtion first function in Move Generation Algo.
+       void gen(int pos,string word,Node*gaddagNode); // Gordon Gen funtion first function in Move Generation Algo.
        /*
        pos: offset to a square in the board -> left/down (-ve) right/up (+ve).
        word: 
        rack: all 7 possible tiles that can be used in a move.
        root: the root node which is start of GADDAG root tree.
        */
-       void goOn(int pos,char boardLetter,string&word,Node*gaddagNode); // Gordon GO ON funtion first function in Move Generation Algo.
-       void countTilesRack(); // Calculates the no. of tiles for each character in Rack.
+       void goOn(int pos,char boardLetter,string word,Node*gaddagNode); // Gordon GO ON funtion first function in Move Generation Algo.
+       void countTilesRack(vector<char>*rackTiles); // Calculates the no. of tiles for each character in Rack.
        list<Move> allMoves(); // TODO:Returns all moves.
        void setDirectionOptions(int row,int col ,bool isHorizontal); // Sets the Options needed for transforming from Horiz. to vertical and vice versa.
        void duplicateMovesRemoval(); // TODO: removes duplicate moves occuring from a one tile play. (vertically + Horizonatally)
@@ -85,8 +94,10 @@ class WordGenerate { // just a static class no need to create an explicit object
     /*
         1- Case where the Board will be empty with no anchors at the start of game ??
         2- Fear of duplicate moves/words ??
-        3- There is an idea that enhance the Creation time of the GADDAG Tree (LAST IMPROVEMENT). 
+        3- There is an idea that enhance the Creation time of the GADDAG Tree (LAST IMPROVEMENT). (DONE)
         4- Removal of redundant "cancelIndex".
         5- Optimimize crosssets founder after a move been made to only consider certain square to update thier crossset.
+        6- optimizing "RoomLeft".
+        7- RESET Moves,RackCount and optimizing in pass, exchange, noplay etc. plays.
+        8- Adding Horiz. CrossSet in gen function.
     */
-#endif

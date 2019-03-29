@@ -30,31 +30,31 @@ Node* Node::findChildChar(char letter){
     Node*child = getFirstChild();
     //cout<<std::hex<<this<<endl;
     int index = 0;
-    do{
+    while(child!=NULL){
     	//cout<<std::hex<<this<<" .. "<<++index<<endl;
     	char temp = child->getNodeLetter();
         if(temp == letter){return child;}
         child = child->getNextChild();
-    }while(child!=NULL);
+    }
 
     return NULL; // not found.
 }
 
 
 //The function getFirstChild it gets first childs uncompressed.
-inline Node* Node::getFirstChild(){
+Node* Node::getFirstChild(){
     int addressCastOffset = (nodeInfo & ADDRESS_OFFSET_CASTING);
 
     return addressCastOffset != 0 ? this + (addressCastOffset) : 0;
 }
 
 //The Function isLastChild the node is last character in a valid word.
-inline bool Node::isLastChild(){
+bool Node::isLastChild(){
     return ((nodeInfo & LAST_CHILD_OFFSET_CASTING) == LAST_CHILD_OFFSET_CASTING);
 }
 
 //The Function getNextChild it gets a successor in parent's childs.
-inline Node* Node::getNextChild(){
+Node* Node::getNextChild(){
     if (!isLastChild()){
         return this + 1;
     }
@@ -62,8 +62,8 @@ inline Node* Node::getNextChild(){
 }
 
 //Function getNodeLetter it retuns the node character.
-inline char Node::getNodeLetter(){
-    if(((nodeInfo>>CHAR_SHIFT_VALUE) & CHAR_OFFSET_CASTING) ==  COMPRESSED_GADDAG_ROOT){
+char Node::getNodeLetter(){
+    if(((nodeInfo>>CHAR_SHIFT_VALUE) & CHAR_OFFSET_CASTING) ==  COMPRESSED_GADDAG_DELIMITER){
         return GADDAG_DELIMITER;
     }
     return (char)(CHAR_OFFSET + ((nodeInfo>>CHAR_SHIFT_VALUE) & CHAR_OFFSET_CASTING));

@@ -1,7 +1,4 @@
-
-#ifndef LOADNODE_H
-#define LOADNODE_H
-
+#pragma once
 //INCLUDES:
 
 #include <vector>
@@ -38,5 +35,3 @@ class LoadNode {
         bool findWord(string word);
 
 };
-
-#endif

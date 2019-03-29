@@ -1,7 +1,5 @@
 
-#ifndef GADDAG_H
-#define GADDAG_H
-
+#pragma once
 //INCLUDES:
 
 #include <unordered_map>
@@ -31,5 +29,3 @@ class Node {
         Node* getNextChild(); // Gets a successor in parents childs.
         int getNodeInfo(); // returns node info.
 };
-
-#endif

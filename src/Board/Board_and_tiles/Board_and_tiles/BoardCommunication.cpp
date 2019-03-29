@@ -47,5 +47,5 @@ void BoardToGrammer::PrintBitBoard()
 //This function checs if this place contain a tile or not
 bool BoardToGrammer::hasaTile(int row, int col){     
 	vector<char> CurrentRow=BoardPtr->getNextHorizontal(row);
-	return (CurrentRow[col] == '*') ? false : true;
+	return (CurrentRow[col] == 0) ? false : true;
 }

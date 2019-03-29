@@ -3,7 +3,7 @@
 #include "MoveGenerate.h"
 #include "LoadGaddag.h"
 #include "Gaddag.h"
-
+#include <iostream>
 
 using namespace std;
 
@@ -14,8 +14,9 @@ using namespace std;
 #define BLANK ' '
 
 //This Function it takes a Reference to the Board.
-WordGenerate::WordGenerate(BoardToGrammer&board){
-    this->board=&board; // catching a boardcomm. verison object.
+WordGenerate::WordGenerate(BoardToGrammer*board,Node*root){
+    this->board = board; // catching a boardcomm. verison object.
+    this->root = root;
 }
 
 
@@ -29,13 +30,16 @@ void WordGenerate::generateWords(){
     int countRoomLeft = 0;
     string word;
 
-    countTilesRack();
+    moves.clear(); // clear all moves. Later on paramters(BOOL) can be passsed to shape the needed return.
+
+    //countTilesRack(NULL);
     for(int indexRow = 0; indexRow < MAX_BOARD_ROWS ; ++indexRow){
         for(int indexCol = 0; indexCol < MAX_BOARD_COLS ; ++indexCol){
             word = "";
 
             //Horizonatal Move Generation:
             setDirectionOptions(indexRow,indexCol,true); // true -> horizontal.
+            currCrossSet.reset();
             isAnchorSquare = isAnchor(indexRow,indexCol); 
             if(isAnchorSquare){
                 countRoomLeft = roomLeftCount(indexRow,indexCol);
@@ -47,6 +51,7 @@ void WordGenerate::generateWords(){
             word = "";
             //Vertical Move Generation:
             setDirectionOptions(indexRow,indexCol,false); // false -> vertical.
+            currCrossSet.reset();
             isAnchorSquare = isAnchor(indexRow,indexCol);
             if(isAnchorSquare){
                 countRoomLeft = roomLeftCount(indexRow,indexCol);
@@ -74,6 +79,7 @@ bool WordGenerate::isAnchor(int row,int col){
 
   if(board->hasaTile(row,col) && (currDirection == maxBorder - 1 || !board->hasaTile(row+rowOffset,col+colOffset))){
     
+      char L = board->getTileAtPosition(row,col);
       return true;
   } // when there is a char.
 
@@ -94,17 +100,20 @@ bool WordGenerate::isAnchor(int row,int col){
 int WordGenerate::roomLeftCount(int row,int col){
     
     // count include the first char (itself).
-    for(int offsetLeft = currDirection; offsetLeft >=0; --offsetLeft){
-        if(board->hasaTile(row+cancelIndex*offsetLeft,col+(1-cancelIndex)*offsetLeft)){
+    for(int offsetLeft = 0; offsetLeft < maxBorder ; ++offsetLeft){
+        if(board->hasaTile(row-cancelIndex*(offsetLeft),col-(1-cancelIndex)*(offsetLeft))){
             countRoomLeft++;
+        }
+        else{
+            break;
         }
     }
 
     for(int offsetLeft = currDirection - countRoomLeft - 1; offsetLeft >=0; --offsetLeft){
-          if(!currCrossSet.any() && !board->hasaTile(row+cancelIndex*(offsetLeft),col+(1-cancelIndex)*(offsetLeft))){
+          if(!currCrossSet.any() && !board->hasaTile((1-cancelIndex)*row+cancelIndex*((offsetLeft)),cancelIndex*col+(1-cancelIndex)*(offsetLeft))){
                 if(offsetLeft == 0){ countRoomLeft++;}
                 else{
-                    if(!board->hasaTile(row+cancelIndex*(offsetLeft-1),col+(1-cancelIndex)*(offsetLeft - 1))){
+                    if(!board->hasaTile((1-cancelIndex)*row+cancelIndex*(offsetLeft-1),cancelIndex*col+(1-cancelIndex)*(offsetLeft - 1))){
                         countRoomLeft++;
                     }
                 }
@@ -142,7 +151,7 @@ int WordGenerate::roomLeftCount(int row,int col){
 
 
 //This Gen funtion first function in Move Generation Algo.
-void WordGenerate::gen(int pos,string &word,Node*gaddagNode){
+void WordGenerate::gen(int pos,string word,Node*gaddagNode){
 
     char childLetter; // init.
     char boardLetter;
@@ -158,12 +167,13 @@ void WordGenerate::gen(int pos,string &word,Node*gaddagNode){
         while(childNode != NULL){
 
             childLetter = childNode->getNodeLetter();
-			if ((tilesCount[childLetter - CHAR_OFFSET] > 0) && currCrossSet.test(childLetter-CHAR_OFFSET)) {
+			if ((tilesCount[childLetter - CHAR_OFFSET] > 0) && (emptyBoard || currCrossSet.test(childLetter-CHAR_OFFSET))) {
                 
+                usedTiles++; // counting tiles used.
                 tilesCount[childLetter - CHAR_OFFSET]--; // meaning that a letter has been taken into consideration dont repeat it.
                 goOn(pos, childLetter, word, childNode);
                 tilesCount[childLetter - CHAR_OFFSET]++; // Make it re-usable again.
-
+                usedTiles--;
 			}
 
             childNode = childNode->getNextChild();
@@ -175,12 +185,15 @@ void WordGenerate::gen(int pos,string &word,Node*gaddagNode){
             while(childNode != NULL){
 
                 childLetter = childNode->getNodeLetter();
-			    if (((childLetter-CHAR_OFFSET) != COMPRESSED_GADDAG_DELIMITER) && currCrossSet.test(childLetter-CHAR_OFFSET)) {
-                
+			    if (((childLetter-CHAR_OFFSET) != COMPRESSED_GADDAG_DELIMITER) && (emptyBoard || currCrossSet.test(childLetter-CHAR_OFFSET))) {
+                    
+                    usedTiles++; // counting tiles used.
                     tilesCount[BLANK - CHAR_OFFSET]--; // meaning that a letter has been taken into consideration dont repeat it.
+                    childLetter = childLetter | BLANK_CHAR; // to mark this letter as a BLANK USED.
                     goOn(pos, childLetter, word, childNode);
                     tilesCount[BLANK - CHAR_OFFSET]++; // Make it re-usable again.
-
+                    usedTiles++; // counting tiles used.
+                    
 			    }
 
                 childNode = childNode->getNextChild();
@@ -200,260 +213,426 @@ void WordGenerate::setDirectionOptions(int row,int col ,bool isHorizontal){
       cancelIndex = 0;
       colOffset = 1;
       rowOffset = 0;
-      currCrossSet = VerticalCrossSet;// dummy pass to it Vericrossset[row][col] .
+      currCrossSet = 0;//VerticalCrossSet;// dummy pass to it Vericrossset[row][col] .
   }else {
       maxBorder = MAX_BOARD_ROWS;
       currDirection = row;
       cancelIndex = 1;
       colOffset = 0;
       rowOffset = 1;
-      currCrossSet = HorizCrossSet;// dummy pass to it Horizcrossset[row][col] .
+      currCrossSet = 0;//HorizCrossSet;// dummy pass to it Horizcrossset[row][col] .
   }
 }
 
 //This Function GO ON funtion first function in Move Generation Algo.
-void WordGenerate::goOn(int pos,char boardLetter,string&word,Node*gaddagNode){
+void WordGenerate::goOn(int pos,char boardLetter,string word,Node*gaddagNode){
     //TODO: Complete The Algo. + Add any Helping Functions that may be Needed During Implementation.
-    cout<<"HI GADDAD<<endl";
-} 
+    cout<<"HI GADDAD"<<endl;
+    if(pos <= 0)
+    {
+        bool roomLeft = true;
+        bool boardEdge = false;
+        bool directlyLeft = false;
+        //al ahly
+        word = boardLetter + word; 
+        
+        if(anchorCol+pos*(1-cancelIndex) < 0 || anchorRow+pos*(cancelIndex) < 0)
+        {
+            boardEdge = true;
+        } // board edge reached whehter from above or left.
+        else{
+
+            // 
+            if(!board->hasaTile(anchorRow+pos*(cancelIndex),anchorCol+pos*(1-cancelIndex)) && board->hasaTile(anchorRow + (pos - 1)*(cancelIndex),anchorCol+(pos - 1)*(1-cancelIndex)) ){ // does it have a letter left (above) to this square
+                roomLeft = false;
+            }
+
+            if(board->hasaTile(anchorRow + (pos - 1)*(cancelIndex),anchorCol+(pos - 1)*(1-cancelIndex))){ // does it have a letter left (above) to this square
+                directlyLeft = true;
+            }
+
+        }
+
+        // Move Score Calculations and adding to move list:
+        if(gaddagNode->isEndOfWord() && usedTiles != 0 && (emptyBoard || roomLeft)) // a move is FOUND if : end of a word is found (in GADDAG) and atleast a tile was used and.
+        {
+            // create,calculate and add a new move in MOVE LIST.
+            // using the class or struct(for now).
+            bool bingoMove = false;
+
+            Move *newMove = new Move();
+            newMove->word = word;
+            newMove->horizontal = cancelIndex == 0 ? true : false ;
+            newMove->startPosition.ROW = anchorRow + pos*(cancelIndex);
+            newMove->startPosition.COL = anchorCol + pos*(1-cancelIndex);
+
+            if(usedTiles == 7){ // BINGO
+                bingoMove = true;
+            }
+
+            //CALCULATE SCORE:
+                    //--HERE
+            int score = 22;
+            newMove->moveUsedTiles = usedTiles;
+            newMove->moveScore = score + (char)(bingoMove)*10; // extra 10 points for now only.
+            moves.push_back(*newMove);
+        }
+        
+        // Can I Go Left Furthur ??? : ANS:
+        if(!boardEdge && (emptyBoard || (roomLeft && pos != -countRoomLeft))){
+               gen(pos-1,word,gaddagNode);
+        }
+        // Setup Going Right Direction (Switch)
+
+        bool rightBoardEdge = false;
+        if(anchorCol+rowOffset >= maxBorder || anchorRow+colOffset >= maxBorder)
+        {
+            rightBoardEdge = true;
+        } // board edge reached whehter from above or left.
+
+        if(!rightBoardEdge && (emptyBoard || !directlyLeft)){
+                // RIGHT:
+                 Node* delimeterNode = gaddagNode->findChildChar(GADDAG_DELIMITER); // search for the delimeter as on "newArc" to switch direction and  go right (SUFFIX).
+                 if(delimeterNode != NULL){
+                    gen(1,word,delimeterNode);
+                 }      
+        }
+    }
+    else if(pos > 0){ // Go
+
+            // RIGHT:
+
+        bool roomRight = true;
+        bool rightboardEdge = false;
+        //al ahly
+        word = word + boardLetter; 
+        
+        if(anchorCol+pos*(1-cancelIndex) >= maxBorder || anchorRow+pos*(cancelIndex)  >= maxBorder)
+        {
+            rightboardEdge = true;
+        } // board edge reached whehter from above or left.
+        else{
+
+            // 
+            if(board->hasaTile(anchorRow + (pos + 1)*(cancelIndex),anchorCol+(pos + 1)*(1-cancelIndex)) ){ // does it have a letter left (above) to this square
+                roomRight = false;
+            }
+        }
+
+        // Move Score Calculations and adding to move list:
+        if(gaddagNode->isEndOfWord() && usedTiles != 0 && (emptyBoard || roomRight)) // a move is FOUND if : end of a word is found (in GADDAG) and atleast a tile was used and.
+        {
+            // create,calculate and add a new move in MOVE LIST.
+            // using the class or struct(for now).
+            bool bingoMove = false;
+
+            Move *newMove = new Move();
+            newMove->word = word;
+            newMove->horizontal = true;
+            newMove->startPosition.ROW = anchorRow + pos*(cancelIndex) - word.length()*(cancelIndex)+1;
+            newMove->startPosition.COL = anchorCol + pos*(1-cancelIndex) - word.length()*(1-cancelIndex)+1;
+
+            if(usedTiles == 7){ // BINGO
+                bingoMove = true;
+            }
+
+            //CALCULATE SCORE:
+                    //--HERE
+            int score = 22;
+            newMove->moveUsedTiles = usedTiles;
+            newMove->moveScore = score + (char)(bingoMove)*10; // extra 10 points for now only.
+            moves.push_back(*newMove);
+        }
+        // Can I Go Left Furthur ??? : ANS:
+        if(!rightboardEdge){
+               gen(pos+1,word,gaddagNode);
+        }
+
+    }
+} // Gordon GO ON funtion first function in Move Generation Algo.
 
 
-// This Function calculates the no. of tiles for each character in Rack.
-void WordGenerate::countTilesRack(){
+/* This Function calculates the no. of tiles for each character in Rack.
+    PLEASE READ CAREFULLY:
+        -> Pass what ever RACK you need to generate possible moves using it.
+        -> Dont Worry this Function Acts Like a SET Methode for RACK.
+*/
+void WordGenerate::countTilesRack(vector<char>*rackTiles){
 	
-    vector<char> rack = board->getTiles();
-
-     for(int index = 0 ; index<=29; ++index){
+    // TODO: USE rackTiles instead later.
+    vector<char> *rack = rackTiles;
+    if(rack == NULL){
+        *rack = board->getTiles();
+    }
+    
+    for(int index = 0 ; index<=29; ++index){
         tilesCount[index] = 0;
     }
 
-    for(int index = 0 ; index<rack.size(); ++index){
-        tilesCount[rack[index] - CHAR_OFFSET]++;
+    for(int index = 0 ; index<rack->size(); ++index){
+        tilesCount[(*rack)[index] - CHAR_OFFSET]++;
     }
 
 } 
 
 
 //This Function calculate the crosssets of each square.
-void WordGenerate::crosssets()
-{
-	char letter;
-	for(int row=0;row<MAX_BOARD_ROWS;row++)
-	{
-		for(int col=0;col<MAX_BOARD_COLS;col++)
-		{
-			if(!board->hasaTile(row,col) && (col==14 || board->hasaTile(row,col+1)) && (col==0 || !board->hasaTile(row,col-1)))
-			{
+// void WordGenerate::crosssets()
+// {
+// 	char letter;
+// 	for(int row=0;row<MAX_BOARD_ROWS;row++)
+// 	{
+// 		for(int col=0;col<MAX_BOARD_COLS;col++)
+// 		{
+// 			if(!board->hasaTile(row,col) && (col==14 || board->hasaTile(row,col+1)) && (col==0 || !board->hasaTile(row,col-1)))
+// 			{
 				
-				int move_col=col+1;
-				while(board->hasaTile(row,move_col++)){};
-				move_col-=2;
-				Node* nod;
-				nod=root;
-				for(int i=0;i<move_col-col;i++)
-				{
-					letter=board->getTileAtPosition(row,move_col-i);
-					nod=nod->findChildChar(letter);
-				}
-				nod=nod->getFirstChild();
-				while(nod!=0)
-				{	
-					if(nod->isEndOfWord())
-					{
-						Horiz_crossset[row][col].set(nod->getNodeLetter()-CHAR_OFFSET);
-					}
-					nod=nod->getNextChild();
-				}
-				
-					
-			}
-			
-			else if(!board->hasaTile(row,col) && (col==14 || !board->hasaTile(row,col+1)) && (col==0 || board->hasaTile(row,col-1)))
-			{
-				
-				int move_col=col-1;
-				int ptr=0;
-				while(board->hasaTile(row,move_col--));
-				move_col+=2;
-				Node* nod;
-				nod=root;
-				for(int itr=0;itr<=move_col-col;itr++)
-				{
-					if(itr==1)
-					{
-						nod=nod->findChildChar('^');
-						itr--;
-					}
-					else
-					{
-						letter=board->getTileAtPosition(row,move_col+ptr);
-						ptr++;
-						nod=nod->findChildChar(letter);
-					}
-				}
-				nod=nod->getFirstChild();
-				while(nod!=0)
-				{	
-					if(nod->isEndOfWord)
-					{
-						Horiz_crossset[row][col].set(nod->getNodeLetter()-CHAR_OFFSET);
-					}
-					nod=nod->getNextChild();
-				}
+// 				int move_col=col+1;
+// 				while(board->hasaTile(row,move_col++)){};
+// 				move_col-=2;
+// 				Node* nod;
+// 				nod=this->root;
+// 				for(int i=0;i<move_col-col;i++)
+// 				{
+// 					letter=board->getTileAtPosition(row,move_col-i);
+// 					nod=nod->findChildChar(letter);
+// 				}
+// 				nod=nod->getFirstChild();
+// 				while(nod!=0)
+// 				{	
+// 					if(nod->isEndOfWord())
+// 					{
+// 						Horiz_crossset[row][col].set(nod->getNodeLetter()-CHAR_OFFSET);
+// 					}
+// 					nod=nod->getNextChild();
+// 				}
 				
 					
-			}
+// 			}
 			
-			else if(!board->hasaTile(row,col))
-					if(board->hasaTile(row,col+1) && board->hasaTile(row,col-1))
-					{
-					int R_move_col=col+1;
-					while(board->hasaTile(row,R_move_col++));
-					R_move_col-=2;
-					Node* nod,*child;
-					nod=root;
-					for(int i=0;i<R_move_col-col;i++)
-					{
-						letter=board->getTileAtPosition(row,R_move_col-i);
-						nod=nod->findChildChar(letter);
-					}
-					child=nod->getFirstChild();
-					nod=child;
+// 			else if(!board->hasaTile(row,col) && (col==14 || !board->hasaTile(row,col+1)) && (col==0 || board->hasaTile(row,col-1)))
+// 			{
+				
+// 				int move_col=col-1;
+// 				int ptr=0;
+// 				while(board->hasaTile(row,move_col--));
+// 				move_col+=2;
+// 				Node* nod;
+// 				nod=this->root;
+// 				for(int itr=0;itr<=move_col-col;itr++)
+// 				{
+// 					if(itr==1)
+// 					{
+// 						nod=nod->findChildChar('^');
+// 						itr--;
+// 					}
+// 					else
+// 					{
+// 						letter=board->getTileAtPosition(row,move_col+ptr);
+// 						ptr++;
+// 						nod=nod->findChildChar(letter);
+// 					}
+// 				}
+// 				nod=nod->getFirstChild();
+// 				while(nod!=0)
+// 				{	
+// 					if(nod->isEndOfWord())
+// 					{
+// 						Horiz_crossset[row][col].set(nod->getNodeLetter()-CHAR_OFFSET);
+// 					}
+// 					nod=nod->getNextChild();
+// 				}
+				
+					
+// 			}
+			
+// 			else if(!board->hasaTile(row,col))
+// 					if(board->hasaTile(row,col+1) && board->hasaTile(row,col-1))
+// 					{
+// 					int R_move_col=col+1;
+// 					while(board->hasaTile(row,R_move_col++));
+// 					R_move_col-=2;
+// 					Node* nod,*child;
+// 					nod=root;
+// 					for(int i=0;i<R_move_col-col;i++)
+// 					{
+// 						letter=board->getTileAtPosition(row,R_move_col-i);
+// 						nod=nod->findChildChar(letter);
+// 					}
+// 					child=nod->getFirstChild();
+// 					nod=child;
 	
-					while(child!=0)
-					{	
-						int itr=1;
-						bool succeed=true;
-						while(board->hasaTile(row,col-itr))
-						{
-							letter=board->getTileAtPosition(row,col-itr);
-							nod=nod->findChildChar(letter);
-							if(nod==0)
-							{
-								succeed=false;
-								break;
-							}
-							itr++;
-						}	
+// 					while(child!=0)
+// 					{	
+// 						int itr=1;
+// 						bool succeed=true;
+// 						while(board->hasaTile(row,col-itr))
+// 						{
+// 							letter=board->getTileAtPosition(row,col-itr);
+// 							nod=nod->findChildChar(letter);
+// 							if(nod==0)
+// 							{
+// 								succeed=false;
+// 								break;
+// 							}
+// 							itr++;
+// 						}	
 					
-						if(succeed)
-							Horiz_crossset[row][col].set(nod->getNodeLetter()-CHAR_OFFSET);
-						child=child->getNextChild();
+// 						if(succeed)
+// 							Horiz_crossset[row][col].set(nod->getNodeLetter()-CHAR_OFFSET);
+// 						child=child->getNextChild();
 					
-					}
+// 					}
 				
 					
-					}
+// 					}
 			
 			
 			
-			//////// Vertical
-			if(!board->hasaTile(row,col) && (row==14 || board->hasaTile(row+1,col)) && (row==0 || !board->hasaTile(row-1,col)))
-			{
+// 			//////// Vertical
+// 			if(!board->hasaTile(row,col) && (row==14 || board->hasaTile(row+1,col)) && (row==0 || !board->hasaTile(row-1,col)))
+// 			{
 				
-				int move_row=row+1;
-				while(board->hasaTile(move_row++,col));
-				move_row-=2;
-				Node* nod;
-				nod=root;
-				for(int i=0;i<move_row-row;i++)
-				{
-					letter=board->getTileAtPosition(move_row-i,col);
-					nod=nod->findChildChar(letter);
-				}
-				nod=nod->getFirstChild();
-				if(nod!=0){
-					do
-					{	
-						if(nod->isEndOfWord)
-						{
-							Vertical_crossset[row][col].set(nod->getNodeLetter()-CHAR_OFFSET);
-						}
-						nod=nod->getNextChild();
-					}while(nod!=0);
-				}
+// 				int move_row=row+1;
+// 				while(board->hasaTile(move_row++,col));
+// 				move_row-=2;
+// 				Node* nod;
+// 				nod=root;
+// 				for(int i=0;i<move_row-row;i++)
+// 				{
+// 					letter=board->getTileAtPosition(move_row-i,col);
+// 					nod=nod->findChildChar(letter);
+// 				}
+// 				nod=nod->getFirstChild();
+// 				if(nod!=0){
+// 					do
+// 					{	
+// 						if(nod->isEndOfWord())
+// 						{
+// 							Vertical_crossset[row][col].set(nod->getNodeLetter()-CHAR_OFFSET);
+// 						}
+// 						nod=nod->getNextChild();
+// 					}while(nod!=0);
+// 				}
 					
-			}
+// 			}
 			
-			else if(!board->hasaTile(row,col) && (row==14 || !board->hasaTile(row+1,col)) && (row==0 || board->hasaTile(row-1,col)))
-			{
+// 			else if(!board->hasaTile(row,col) && (row==14 || !board->hasaTile(row+1,col)) && (row==0 || board->hasaTile(row-1,col)))
+// 			{
 				
-				int move_row=row-1;
-				int ptr=0;
-				while(board->hasaTile(move_row--,col));
-				move_row+=2;
-				Node* nod;
-				nod=root;
-				for(int itr=0;itr<=move_row-row;itr++)
-				{
-					if(itr==1)
-					{
-						nod=nod->findChildChar('^');
-						itr--;
-					}
-					else
-					{
-						letter=board->getTileAtPosition(move_row+ptr,col);
-						ptr++;
-						nod=nod->findChildChar(letter);
-					}
-				}
-				nod=nod->getFirstChild();
-				if(nod!=0){
-					do
-					{	
-						if(nod->isEndOfWord)
-						{
-							Vertical_crossset[row][col].set(nod->getNodeLetter()-CHAR_OFFSET);
-						}
-						nod=nod->getNextChild();
-					}while(nod!=0);
-				}
+// 				int move_row=row-1;
+// 				int ptr=0;
+// 				while(board->hasaTile(move_row--,col));
+// 				move_row+=2;
+// 				Node* nod;
+// 				nod=root;
+// 				for(int itr=0;itr<=move_row-row;itr++)
+// 				{
+// 					if(itr==1)
+// 					{
+// 						nod=nod->findChildChar('^');
+// 						itr--;
+// 					}
+// 					else
+// 					{
+// 						letter=board->getTileAtPosition(move_row+ptr,col);
+// 						ptr++;
+// 						nod=nod->findChildChar(letter);
+// 					}
+// 				}
+// 				nod=nod->getFirstChild();
+// 				if(nod!=0){
+// 					do
+// 					{	
+// 						if(nod->isEndOfWord())
+// 						{
+// 							Vertical_crossset[row][col].set(nod->getNodeLetter()-CHAR_OFFSET);
+// 						}
+// 						nod=nod->getNextChild();
+// 					}while(nod!=0);
+// 				}
 					
-			}
+// 			}
 			
-			else if(!board->hasaTile(row,col) && board->hasaTile(row+1,col) && board->hasaTile(row-1,col))
-			{
-				int move_row=row+1;
-				while(board->hasaTile(move_row++,col));
-				move_row-=2;
-				Node* nod,*child;
-				nod=root;
-				for(int i=0;i<move_row-row;i++)
-				{
-					letter=board->getTileAtPosition(move_row-i,col);
-					nod=nod->findChildChar(letter);
-				}
-				child=nod->getFirstChild();
-				nod=child;
+// 			else if(!board->hasaTile(row,col) && board->hasaTile(row+1,col) && board->hasaTile(row-1,col))
+// 			{
+// 				int move_row=row+1;
+// 				while(board->hasaTile(move_row++,col));
+// 				move_row-=2;
+// 				Node* nod,*child;
+// 				nod=root;
+// 				for(int i=0;i<move_row-row;i++)
+// 				{
+// 					letter=board->getTileAtPosition(move_row-i,col);
+// 					nod=nod->findChildChar(letter);
+// 				}
+// 				child=nod->getFirstChild();
+// 				nod=child;
 	
-				while(child!=0)
-				{	
-					int itr=1;
-					bool succeed=true;
-					while(board->hasaTile(row-itr,col))
-					{
-						letter=board->getTileAtPosition(row-itr,col);
-						nod=nod->findChildChar(letter);
-						if(nod==0)
-						{
-							succeed=false;
-							break;
-						}
-						itr++;
-					}
+// 				while(child!=0)
+// 				{	
+// 					int itr=1;
+// 					bool succeed=true;
+// 					while(board->hasaTile(row-itr,col))
+// 					{
+// 						letter=board->getTileAtPosition(row-itr,col);
+// 						nod=nod->findChildChar(letter);
+// 						if(nod==0)
+// 						{
+// 							succeed=false;
+// 							break;
+// 						}
+// 						itr++;
+// 					}
 					
-					if(succeed)
-							Vertical_crossset[row][col].set(nod->getNodeLetter()-CHAR_OFFSET);
-					child=child->getNextChild();
+// 					if(succeed)
+// 							Vertical_crossset[row][col].set(nod->getNodeLetter()-CHAR_OFFSET);
+// 					child=child->getNextChild();
 					
-				}
+// 				}
 				
 					
-			}
+// 			}
 			
 			
-		}
-	}
+// 		}
+// 	}
 	
+// }
+
+void WordGenerate::setBoardState(BoardToGrammer&board){
+    this->board = &board;
 }
+// TODO: Assigns Different Board States For Monte Carlo.
+
+list<Move> WordGenerate::allMoves(){
+    return moves;
+} // TODO:Returns all moves.
+
+void WordGenerate::emptyBoardMoves(){
+
+    if(!emptyBoard){
+
+        string word = "";
+        // Middle Square in Board To Start generation of words at:
+        setDirectionOptions(7,7,true); // true -> horizontal.
+        currCrossSet.reset();
+        anchorRow = 7 ;
+        anchorCol = 7 ;
+        emptyBoard = true;
+
+        gen(0,word,this->root);
+
+        setDirectionOptions(7,7,false); // false -> vertical.
+        currCrossSet.reset();
+
+        word = "";
+        gen(0,word,this->root);
+
+        emptyBoard = false;
+    }
+} //TODO: Generate all possible moves availabe given certain Rack when the status of the board is empty only.
+
+void WordGenerate::duplicateMovesRemoval(){
+
+} // TODO: removes duplicate moves occuring from a one tile play. (vertically + Horizonatally)

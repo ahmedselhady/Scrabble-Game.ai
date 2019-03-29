@@ -130,7 +130,7 @@ std::vector<char>& Board::getNextVertical(int VerticalIndex)
 //This Function setCharPos it sets the character postion on the board
 void Board::SetCharPos(char Letter, int Row, int Col)
 {
-	int Offsit = Row + 15 * Col;
+	int Offsit = Row + 15 * Col;setBit
 	if (Offsit<0 || Offsit >(14 + 15 * 14))
 		return;
 	BoardMap[Letter].setBit(Offsit);
