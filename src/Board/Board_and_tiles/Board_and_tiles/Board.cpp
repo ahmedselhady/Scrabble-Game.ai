@@ -1,9 +1,7 @@
 #include "./Board.h"
 
-Board::Board()
-{
-	for (int i = 0; i < 26; i++)// i want to create them at insertion of the letter as i dont need the whole 26 char along the game
-	{
+Board::Board(){
+	for (int i = 0; i < 26; i++){ // i want to create them at insertion of the letter as i dont need the whole 26 char along the game
 		BoardMap[(char)('A' + i)] = BoardMask(0b0000000000000000000000000000000000000000000000000000000000000000, 0b0000000000000000000000000000000000000000000000000000000000000000, 0b0000000000000000000000000000000000000000000000000000000000000000, 0b0000000000000000000000000000000000000000000000000000000000000000);
 	}
 }
@@ -13,11 +11,9 @@ Board* Board::BoardInst_ = nullptr;
 
 
 //The Function getBoard it gets instance of the board
-Board* Board::getBoard()
-{
+Board* Board::getBoard(){
 
-	if (BoardInst_ == nullptr)
-	{
+	if (BoardInst_ == nullptr){
 		BoardInst_ = new Board;
 	}
 
@@ -25,19 +21,16 @@ Board* Board::getBoard()
 }
 
 //The Function getBoardStatus it returns all charcters in board
-BoardMask Board::getBoardStatus() 
-{
+BoardMask Board::getBoardStatus() {
 	return AllCharBoard;
 }
 
 //The Function getCharByOffset it gets the character whose offset is given
-char Board::getCharByOffsit(int offsit) 
-{
-	for (auto Instance : BoardMap) // an instance of a letter
-	{
+char Board::getCharByOffsit(int offsit) {
+	for (auto Instance : BoardMap){ // an instance of a letter
+	
 
-		if (Instance.second.getBit(offsit))
-		{
+		if (Instance.second.getBit(offsit)){
 			return Instance.first;
 
 		}
@@ -46,36 +39,33 @@ char Board::getCharByOffsit(int offsit)
 }
 
 //The Function getNextHorizontal it will call the function from the AI module to determine the next state given the current board Horizontally
-std::vector<char>& Board::getNextHorizontal(int HorizontalIndex)
-{
+std::vector<char>& Board::getNextHorizontal(int HorizontalIndex){
+
 	HorizontalIndex = HorizontalIndex % 15;
 	std::vector<char> CharVect;
 	std::vector<char>* HorizontalVector = new std::vector<char>(15);
 	int ResIndex = 0;
 	BoardMask CheckBoard;
 	int dummyoffsit = HorizontalIndex;
-	for (int i = 0; i < 15; i++)
-	{
+	
+	for (int i = 0; i < 15; i++){
 		CheckBoard.setBit(dummyoffsit);
 		dummyoffsit += 15;
 	}
-	for (auto Instance : BoardMap) // an instance of a letter
-	{
 
-		if ((Instance.second&CheckBoard).isEmpty())
-		{
+	for (auto Instance : BoardMap){ // an instance of a letter
+
+		if ((Instance.second&CheckBoard).isEmpty()){
 			CharVect.push_back(Instance.first);//  need to edit the position in the vector 
-
 		}
 	}
-	int mOffsit = HorizontalIndex;
-	for (int i = 0; i < 15; i++)// looping on the col
-	{
 
-		for (std::size_t i = 0; i < CharVect.size(); ++i) // looking on the char board that has  this bit
-		{
-			if (BoardMap[CharVect[i]].getBit(mOffsit))
-			{
+	int mOffsit = HorizontalIndex;
+	for (int i = 0; i < 15; i++) {// looping on the col
+
+		for (std::size_t i = 0; i < CharVect.size(); ++i) {// looking on the char board that has  this bit
+		
+			if (BoardMap[CharVect[i]].getBit(mOffsit)){
 				(*HorizontalVector)[ResIndex++] = CharVect[i];
 				break;
 			}
