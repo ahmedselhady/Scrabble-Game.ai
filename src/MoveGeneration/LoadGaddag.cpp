@@ -1,8 +1,8 @@
 
 #include "LoadGaddag.h"
 #include <sys/stat.h>
-#define DICT_FILE_NAME "C:/Users/yaha/Desktop/Projects/Scrabble_GameProject/Scrabble-Game.ai/build/Dict.txt"
-#define GADDAG_FILE_NAME "C:/Users/yaha/Desktop/Projects/Scrabble_GameProject/Scrabble-Game.ai/build/yahiaGAD.txt"
+#define DICT_FILE_NAME "./src/MoveGeneration/GADDAG_Dict.txt"
+#define GADDAG_FILE_NAME "./src/MoveGeneration/GADDAG.txt"
 #define TOTAL_GADDAG_NODES 6419512
 
 using namespace std;
@@ -92,7 +92,7 @@ Node* LoadGaddag::constructGaddag(){
          Root.insertGaddagWord(dictGaddagWords[index]); //inserting word into GADDAG.
     }
 
-   bool check = Root.findWord("legovsaa");
+   //bool check = Root.findWord("legovsaa");
 
     gaddagNodes.push_back(&Root);
     Root.storeNodes(gaddagNodes);
