@@ -18,6 +18,13 @@ using namespace std;
 #define MAX_BOARD_COLS 15
 #define BLANK_CHAR 0x80
 
+// dummylist:
+// a particular sqaure. 
+#define HorizCrossSet 1; // each will be replaced by the coreponding sqaure crossset 
+#define VerticalCrossSet 0;
+#define BLANK '~'
+
+
 struct Position{ // defines what a "Move" is.
     char ROW;
     char COL;
@@ -44,9 +51,10 @@ class WordGenerate { // just a static class no need to create an explicit object
     char colOffset;
     char rowOffset;
     char currDirection; // i.e. if horizontal move we choose the col else the row.
-    bitset<26> Horiz_crossset[15][15];
-    bitset<26> Vertical_crossset[15][15];
-    bitset<26> currCrossSet;
+    bitset<27> Horiz_crossset[15][15];
+    bitset<27> Vertical_crossset[15][15];
+    bitset<27> (*currCrossSet)[15][15];
+    //bitset<27> (*currCrossSet)(int row,int col);
     char countRoomLeft = 0; // count of chars directly left to an anchor sqaure.
     char cancelIndex = 0; // just a factor to eliminate duplicate of code.
     
@@ -60,7 +68,7 @@ class WordGenerate { // just a static class no need to create an explicit object
     public:
 
        WordGenerate(BoardToGrammer *board,Node*root); // Takes a Reference to the Board.
-       void setBoardState(BoardToGrammer&board);// TODO: Assigns Different Board States For Monte Carlo.
+       void setBoardState(BoardToGrammer*board);// TODO: Assigns Different Board States For Monte Carlo.
        void generateWords(); // iterates on each sqaure in the board and performing the algo. Taking the board 2-Dimensions into Consideration.
        int roomLeftCount(int row,int col); 
        /*
@@ -88,6 +96,12 @@ class WordGenerate { // just a static class no need to create an explicit object
        void duplicateMovesRemoval(); // TODO: removes duplicate moves occuring from a one tile play. (vertically + Horizonatally)
        void emptyBoardMoves(); //TODO: Generate all possible moves availabe given certain Rack when the status of the board is empty only.
 	   void crosssets(); // calculate the crosssets of each square.
+       bool checkWordDict(string word); // TODO: Given a Word it checks Whether This word in Dict or NOT.
+       Move* bestScoreMove(); // TODO: Returns Best (Highest Score) Move From The Last Generated Moves RUN.
+       //--> TODO: Optimize CrossSet Calculation Each Move Played. 
+       void printCrossSet(); // TEST FUNCTION ONLY.
+       //bitset<27> getVerticalCrossSet(); // Given Row and Col it Returns Correponding CrossSet (VERTICAL CROSSSET).
+
 };
 
 // NOTES: (Put Critical Questions Here For Furthur Development)

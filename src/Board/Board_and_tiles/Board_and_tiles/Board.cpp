@@ -52,7 +52,7 @@ std::vector<char>& Board::getNextHorizontal(int HorizontalIndex)
 {
 	HorizontalIndex = HorizontalIndex % 15;
 	std::vector<char> CharVect;
-	std::vector<char>* HorizontalVector = new std::vector<char>(15);
+	std::vector<char>* HorizontalVector = new std::vector<char>(15,'*');
 	int ResIndex = 0;
 	BoardMask CheckBoard;
 	int dummyoffsit = HorizontalIndex;
@@ -94,7 +94,7 @@ std::vector<char>& Board::getNextVertical(int VerticalIndex)
 {
 	VerticalIndex = VerticalIndex % 15;
 	vector<char> CharVect;
-	vector<char>* VerticalVector = new std::vector<char>(15);
+	vector<char>* VerticalVector = new std::vector<char>(15,'*');
 	int ResIndex = 0;
 	BoardMask CheckBoard;
 	for (int i = (15 * VerticalIndex); i < (15 * VerticalIndex) + 15; ++i)
@@ -130,7 +130,7 @@ std::vector<char>& Board::getNextVertical(int VerticalIndex)
 //This Function setCharPos it sets the character postion on the board
 void Board::SetCharPos(char Letter, int Row, int Col)
 {
-	int Offsit = Row + 15 * Col;setBit
+	int Offsit = Row + 15 * Col;
 	if (Offsit<0 || Offsit >(14 + 15 * 14))
 		return;
 	BoardMap[Letter].setBit(Offsit);
