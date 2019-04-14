@@ -16,7 +16,7 @@ using namespace std;
 
 #define MAX_BOARD_ROWS 15
 #define MAX_BOARD_COLS 15
-#define BLANK_CHAR 0x80
+#define BLANK_CHAR 32 // Capitalize The Blank Character Used To Mark it as 'BLANK'
 
 // dummylist:
 // a particular sqaure. 
@@ -68,7 +68,7 @@ class WordGenerate { // just a static class no need to create an explicit object
     public:
 
        WordGenerate(BoardToGrammer *board,Node*root); // Takes a Reference to the Board.
-       void setBoardState(BoardToGrammer*board);// TODO: Assigns Different Board States For Monte Carlo.
+       void setBoardState(BoardToGrammer*board);// Assigns Different Board States For Monte Carlo.
        void generateWords(); // iterates on each sqaure in the board and performing the algo. Taking the board 2-Dimensions into Consideration.
        int roomLeftCount(int row,int col); 
        /*
@@ -91,17 +91,15 @@ class WordGenerate { // just a static class no need to create an explicit object
        */
        void goOn(int pos,char boardLetter,string word,Node*gaddagNode); // Gordon GO ON funtion first function in Move Generation Algo.
        void countTilesRack(vector<char>*rackTiles); // Calculates the no. of tiles for each character in Rack.
-       list<Move> allMoves(); // TODO:Returns all moves.
+       list<Move> allMoves(); // Returns all moves.
        void setDirectionOptions(int row,int col ,bool isHorizontal); // Sets the Options needed for transforming from Horiz. to vertical and vice versa.
        void duplicateMovesRemoval(); // TODO: removes duplicate moves occuring from a one tile play. (vertically + Horizonatally)
-       void emptyBoardMoves(); //TODO: Generate all possible moves availabe given certain Rack when the status of the board is empty only.
+       void emptyBoardMoves(); // Generate all possible moves availabe given certain Rack when the status of the board is empty only.
 	   void crosssets(); // calculate the crosssets of each square.
-       bool checkWordDict(string word); // TODO: Given a Word it checks Whether This word in Dict or NOT.
+       bool checkWordDict(string word); // Given a Word it checks Whether This word in Dict or NOT.
        Move* bestScoreMove(); // TODO: Returns Best (Highest Score) Move From The Last Generated Moves RUN.
-       //--> TODO: Optimize CrossSet Calculation Each Move Played. 
+       //--> TODO: Optimize CrossSet Calculation Each Move Played. Should Be Called After Each Play t.
        void printCrossSet(); // TEST FUNCTION ONLY.
-       //bitset<27> getVerticalCrossSet(); // Given Row and Col it Returns Correponding CrossSet (VERTICAL CROSSSET).
-
 };
 
 // NOTES: (Put Critical Questions Here For Furthur Development)

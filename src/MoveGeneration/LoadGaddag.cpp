@@ -67,7 +67,7 @@ Node* LoadGaddag::constructGaddag(){
           if(!inputGaddagFile.is_open()){
                 cout << "Unable to open file HERE"; return NULL;
           }
-          cout << "Unable to open file";
+          cout << "HI GADDAG is RUNNING ... ";
           unsigned int * gaddagRootNode = new unsigned int[TOTAL_GADDAG_NODES];
 
           int nodeInfo;
@@ -77,7 +77,7 @@ Node* LoadGaddag::constructGaddag(){
             gaddagRootNode[index] = nodeInfo;
             index++;
           }
-          cout << " NODES: "<<index<<endl;
+          //cout << " NODES: "<<index<<endl;
           inputGaddagFile.close();
           return (Node*) &gaddagRootNode[0]; // ROOT .. return address of the first value in compressed byte offset array casted in a Node type.
     }

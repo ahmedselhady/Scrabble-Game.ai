@@ -4,6 +4,9 @@
 *.md
 LICENSE
 
+moves.txt
+out.txt
+
 *_builds
 *build
 *_ReleaseVer
