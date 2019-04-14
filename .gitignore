@@ -3,3 +3,4 @@ build
 _builds
 _ReleaseVer
 .vscode
+*.json
