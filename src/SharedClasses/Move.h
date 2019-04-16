@@ -20,18 +20,16 @@ struct Position { // defines what a "Move" is.
 };
 
 class Move { // Move or Play.
-
-public: 
     // Add if Needed ...
   
+public:
     string word; // Extra Notes : The Returned word will be lowered Case and a Capitalized Letter in case of a BLANK USED.
-    int moveScore;
+    int moveScore; // type maybe changed...
     Position startPosition;
     bool horizontal; // true -> horiz false -> vertical.
     char moveUsedTiles; // Number of Tiles used in a Move Excluding Already on-Board Tiles. 
     bool isBingo; // Can Be Removed Redundant. Ask First if Before Removal To Check That Nobody Uses it.
 
-public:
     Move(string word,bool horizontal,Position position,int usedTiles); // Init. 
     void setScore(int score);   // Setting Move Score.
 };
