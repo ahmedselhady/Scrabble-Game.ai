@@ -13,7 +13,7 @@ MCTreeNode:: MCTreeNode(list<Move> Moves) {
 	this->NumberOfVisits = 0;
 	this->PossibleMoves = Moves;
 	this->Expandable = true;
-	for (int i = 0; i < Moves.size; i++) {
+	for (int i = 0; i < Moves.size(); i++) {
 		std::list<Move>::iterator it = Moves.begin();
 		std::advance(it, i);
 		Children.push_back(new MCTreeNode(this, it->moveScore));
@@ -89,7 +89,7 @@ int MCTreeNode::getMoveScore() {
 
 
 void MCTreeNode::expandMidGame() {
-	if (this->PossibleMoves.size == 0) { 
+	if (this->PossibleMoves.size() == 0) { 
 		this->setNonExpandable(); 
 		return;
 	}
@@ -97,11 +97,11 @@ void MCTreeNode::expandMidGame() {
 		Move newChild = this->PossibleMoves.back();
 		this->PossibleMoves.pop_back();
 		this->Children.push_back(new MCTreeNode(this, newChild.moveScore));
-		if (this->PossibleMoves.size == 0) this->setNonExpandable();
+		if (this->PossibleMoves.size() == 0) this->setNonExpandable();
 	}
 }
 void MCTreeNode::expandEndGame() {
-	if (this->PossibleMoves.size == 0) {
+	if (this->PossibleMoves.size() == 0) {
 		this->setNonExpandable();
 		return;
 	}
@@ -109,7 +109,7 @@ void MCTreeNode::expandEndGame() {
 		Move newChild = this->PossibleMoves.back();
 		this->PossibleMoves.pop_back();
 		this->Children.push_back(new MCTreeNode(this, newChild.moveScore));
-		if (this->PossibleMoves.size == 0&& this->Depth==2) this->setNonExpandable();
+		if (this->PossibleMoves.size() == 0&& this->Depth==2) this->setNonExpandable();
 	
 
 	}

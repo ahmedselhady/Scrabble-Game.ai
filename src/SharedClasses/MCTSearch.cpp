@@ -14,7 +14,7 @@ MCTreeNode* MCTSearch:: SelectBestMove(MCTreeNode* Parent) {
 	float BestScore = FLT_MIN;
 	float CurrentScore;
 	int cp = 30;
-	for (int i = 0; i < Parent->Children.size; i++) {
+	for (int i = 0; i < Parent->Children.size(); i++) {
 		CurrentScore = Parent->Children[i]->getMoveScore() +
 			2 * cp*log((2 * Parent->getNumberOfVisits()) / Parent->Children[i]->getNumberOfVisits());
 		if (CurrentScore > BestScore &&Parent->Children[i]->isExpandable()) {
@@ -34,7 +34,7 @@ int MCTSearch::endGameMCTS() {
 		//Primary Selection on depth=1
 		MCTreeNode* FirstMove = SelectBestMove(Root); 
 		if (FirstMove == NULL)
-			return;
+			break;
 		//expand on selected depth=1 if possible(more moves are unexplored)
 		FirstMove->expandEndGame();
 		//select from depth=2
@@ -51,16 +51,16 @@ int MCTSearch::endGameMCTS() {
 		//to the tree
 		int MySecondMove = SecondMove->Children.back()->getMoveScore();
 		//Finally the value will be back propagated to the d=1 node
-		int MoveDifference = FirstMove->getMoveScore() + MySecondMove - SecondMove->getMoveScore();
+		float MoveDifference = FirstMove->getMoveScore() + MySecondMove - SecondMove->getMoveScore();
 		if (MoveDifference > FirstMove->getAverageReward()) {
 			FirstMove->setAverageReward(MoveDifference);
 		}
 
 	}
 
-	int BestMoveScore=INT_MIN;
+	float BestMoveScore=FLT_MIN;
 	int BestMoveIndex;
-	for (int j = 0; j < Root->Children.size; j++) {
+	for (int j = 0; j < Root->Children.size(); j++) {
 		if (Root->Children[j]->getAverageReward() > BestMoveScore) {
 			BestMoveIndex = j;
 			BestMoveScore = Root->Children[j]->getAverageReward();
@@ -78,7 +78,7 @@ int MCTSearch::midGameMCTS() {
 		//Primary Selection on depth=1
 		MCTreeNode* FirstMove = SelectBestMove(Root);
 		if (FirstMove == NULL)
-			return;
+			break;
 
 		//expand on selected depth=1 if possible(more moves are unexplored)
 	
@@ -93,16 +93,16 @@ int MCTSearch::midGameMCTS() {
 
 		//Finally the value will be back propagated to the d=1 node to calculate the move score
 		//For now we will be saving the maximum score in the branch
-		int MoveDifferenece = FirstMove->getMoveScore() - OpponentMoveScore;
+		float MoveDifferenece = FirstMove->getMoveScore() - OpponentMoveScore;
 		if (MoveDifferenece > FirstMove->getAverageReward()) {
 			FirstMove->setAverageReward(MoveDifferenece);
 		}
 		
 
 	}
-	int BestMoveScore = INT_MIN;
+	float BestMoveScore = FLT_MIN;
 	int BestMoveIndex;
-	for (int j = 0; j < Root->Children.size; j++) {
+	for (int j = 0; j < Root->Children.size(); j++) {
 		if (Root->Children[j]->getAverageReward() > BestMoveScore) {
 			BestMoveIndex = j;
 			BestMoveScore = Root->Children[j]->getAverageReward();
