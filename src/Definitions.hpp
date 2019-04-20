@@ -29,4 +29,4 @@ enum AgentResponse{
 	BEST_MOVE,
 	SUGGEST_BETTER_MOVE,
 	CONGRATULATION
-}
+};
