@@ -8,6 +8,10 @@ int main(int, char**) {
 	GameMode CurrentMode=GameMode::TEACHER_MODE;
 	//----------------------- Board Definitions:
 	BoardToGrammer *BoardAndTiles = new BoardToGrammer();
+	Board*Board = nullptr;
+	std::vector<char>* Tiles = nullptr;
+	Tiles = &BoardAndTiles->getTiles();
+	Board = &BoardAndTiles->getBoard;
 	if (CurrentMode == TEACHER_MODE)
 	{
 		while (CurrentPhase != GamePhase::END_GAME_MODE)

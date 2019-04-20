@@ -14,6 +14,7 @@ public:
     std::vector<char>& getNextVerticalState();//it will call the function from the AI module to determine the next state given the current board Vertically
     std::vector<char>& getNextHorizontalState();//it will call the function from the AI module to determine the next state given the current board Horizontally
     std::vector<char>& getTiles();//it will call the GUI function which will aquire the move played by the player
+	Board& getBoard();
     /**
      *  function: 
      *      has-a-Tile: checks if a tile exists at a certain position
