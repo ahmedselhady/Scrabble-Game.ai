@@ -24,7 +24,6 @@ set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wall")
 if(MSVC)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -W4")
   set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wall")
-
 endif()
 
 
@@ -39,6 +38,7 @@ include_directories (src/
                     src/Board/Board_and_tiles/
                     src/Board/Board_and_tiles/Board/Board_and_tiles/
                     src/GuiInterface/
+                    src/MoveGeneration/
                     src/SharedClasses/
                     )
 
@@ -68,8 +68,8 @@ source_group ("vendors" FILES ${VENDORS_SOURCES})
 # configure_file(${CMAKE_CURRENT_SOURCE_DIR}/src/MoveGeneration/Dict.txt
 #     ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
 
-#file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/src/MoveGeneration/Dict.txt
-#     DESTINATION ${CMAKE_BINARY_DIR}/Scrabble.AI/Debug)
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/src/MoveGeneration/Dict.txt
+     DESTINATION ${CMAKE_BINARY_DIR}/Scrabble.AI/Debug)
 
 add_definitions (-DGLFW_INCLUDE_NONE
                  -DPROJECT_SOURCE_DIR=\"${PROJECT_SOURCE_DIR}\")
@@ -79,7 +79,6 @@ add_executable (${PROJECT_NAME} ${PROJECT_SOURCES} ${PROJECT_HEADERS}
 #target_link_libraries (${PROJECT_NAME})
 set_target_properties (${PROJECT_NAME} PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${PROJECT_NAME})
-
 
 
 

@@ -30,7 +30,7 @@ std::vector<char>& BoardToGrammer::getTiles(){
 //This Function will get the tile that is in the given rows and coloumns
 char BoardToGrammer::getTileAtPosition(int row, int col) {
 	vector<char> CurrentRow = BoardPtr->getNextHorizontal(row);
-	return (CurrentRow[col] == '*') ? '*' : CurrentRow[col];
+	return (CurrentRow[col] == '*') ? '*' : CurrentRow[col]+32;
 }
 
 //This function set character postion

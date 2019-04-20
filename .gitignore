@@ -1,6 +1,18 @@
+# ignore all json files
+*.json
+*.vscode
+*.md
+LICENSE
 
-33 lines (26 sloc) 270 Bytes
-# Prerequisites
+moves.txt
+out.txt
+
+*_builds
+*build
+*_ReleaseVer
+*.project
+
+# Prerequisites 
 *.d
 
 # Compiled Object files
