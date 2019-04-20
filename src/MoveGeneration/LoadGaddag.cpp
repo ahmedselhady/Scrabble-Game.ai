@@ -1,7 +1,9 @@
 
 #include "LoadGaddag.h"
+#include "LoadNode.h"
 #include <sys/stat.h>
-#define DICT_FILE_NAME "./src/MoveGeneration/GADDAG_Dict.txt"
+#include <algorithm> 
+#define DICT_FILE_NAME "./src/MoveGeneration/Dict.txt"
 #define GADDAG_FILE_NAME "./src/MoveGeneration/GADDAG.txt"
 #define TOTAL_GADDAG_NODES 6419512
 
@@ -55,6 +57,12 @@ void LoadGaddag::readDictFile(vector< string >& dictGaddagWords,const char* file
 
 }
 
+// for String Comparison.
+bool compare(string &s1,string &s2) 
+{ 
+    return s1.size() > s2.size(); 
+} 
+
 //Function constructGaddag it builds Gaddag trie and returns compressed trie node.
 Node* LoadGaddag::constructGaddag(){
 
@@ -87,22 +95,38 @@ Node* LoadGaddag::constructGaddag(){
     vector <string> dictGaddagWords; // GADDAG words from given dict. file.
     vector< LoadNode* > gaddagNodes; // store all nodes to then output a compressed structure then.
     readDictFile(dictGaddagWords,DICT_FILE_NAME);
+    //sort(dictGaddagWords.begin(), dictGaddagWords.end(),compare);
+    //cout<<dictGaddagWords[0]<<endl;
+    int connectedWords = 0;
+    cout<<"HERE start"<<endl;
     for (int index = 0; index < dictGaddagWords.size(); ++index)
     {
+        //  if(connectedWords == 0){
+        //      connectedWords = dictGaddagWords[index].size() - 1;
+        //      Root.setWordLength(0);  // min join distance
+        //  }
+         
+         
          Root.insertGaddagWord(dictGaddagWords[index]); //inserting word into GADDAG.
+         //Root.setWordLength(-1);  // min join distance
+         //connectedWords--;
     }
 
+    cout<<"HERE 1"<<endl;
    //bool check = Root.findWord("legovsaa");
 
     gaddagNodes.push_back(&Root);
+    cout<<"HERE 2"<<endl;
+
     Root.storeNodes(gaddagNodes);
+    cout<<"HERE 3"<<endl;
     unsigned int * gaddagRootNode = new unsigned int[gaddagNodes.size()];
     compressGaddag(gaddagRootNode,gaddagNodes);
-
+    cout<< "NODES:"<<gaddagNodes.size()<<endl;
     ofstream gaddagFile;
     gaddagFile.open(GADDAG_FILE_NAME);
     int index = 0;
-    while(index < TOTAL_GADDAG_NODES) // Writing Data.
+    while(index < gaddagNodes.size()) // Writing Data.
     {
     		 gaddagFile << gaddagRootNode[index];
              if(index != TOTAL_GADDAG_NODES-1){

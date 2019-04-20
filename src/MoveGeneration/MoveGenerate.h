@@ -22,9 +22,10 @@ using namespace std;
 // a particular sqaure. 
 #define HorizCrossSet 1; // each will be replaced by the coreponding sqaure crossset 
 #define VerticalCrossSet 0;
-#define BLANK '~'
+#define BLANK '~' // CHANGE IT IF WANTED NOT DEPENDANT ..
 
-
+//TODO: Section Will Be Removed After Adding a "MOVE CLASS"
+///
 struct Position{ // defines what a "Move" is.
     char ROW;
     char COL;
@@ -37,6 +38,7 @@ struct Move{ // defines what a "Move" is.
     bool horizontal; // true -> horiz false -> vertical.
     char moveUsedTiles;
 };
+///
 
 class WordGenerate { // just a static class no need to create an explicit object.
 
@@ -47,6 +49,7 @@ class WordGenerate { // just a static class no need to create an explicit object
     list<Move> moves; // all possible moves provided a Rack and and a Board at a given instant.
     Node*root; // gaddag root tree.
     unordered_map<char,int> tilesCount;
+    list<string> nonRepeatedMoves;
     char maxBorder; // Utility Variables inside fuctions helping in Transformation from Vertical to Horiz and vice versa.
     char colOffset;
     char rowOffset;
@@ -94,10 +97,13 @@ class WordGenerate { // just a static class no need to create an explicit object
        list<Move> allMoves(); // Returns all moves.
        void setDirectionOptions(int row,int col ,bool isHorizontal); // Sets the Options needed for transforming from Horiz. to vertical and vice versa.
        void duplicateMovesRemoval(); // TODO: removes duplicate moves occuring from a one tile play. (vertically + Horizonatally)
+       void generateEmpty(Node* node, string &word); // For Empty Board State Moves.
        void emptyBoardMoves(); // Generate all possible moves availabe given certain Rack when the status of the board is empty only.
 	   void crosssets(); // calculate the crosssets of each square.
+       void updateCrossSet(Move*move); //TODO: Just Updates Changed CrossSet.
        bool checkWordDict(string word); // Given a Word it checks Whether This word in Dict or NOT.
        Move* bestScoreMove(); // TODO: Returns Best (Highest Score) Move From The Last Generated Moves RUN.
+       void moveCalcHeuristic(); // TODO: Calculates 'RackLeave' Heuristic of a Move with Accumalation with its score.
        //--> TODO: Optimize CrossSet Calculation Each Move Played. Should Be Called After Each Play t.
        void printCrossSet(); // TEST FUNCTION ONLY.
 };
