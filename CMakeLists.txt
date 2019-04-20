@@ -1,37 +1,36 @@
 # Specify minimum CMake version and project name
 #
 cmake_minimum_required(VERSION 3.0)
-project(Scrabble.AI)
+project(Scrabble.AI VERSION 0.1.0)
 
-#set(CMAKE_CXX_COMPILER C:/TDM-GCC-64/bin/gcc.exe CACHE PATH "" FORCE)
+
+include(CTest)
+
+
+set(CPACK_PROJECT_NAME ${PROJECT_NAME})
+set(CPACK_PROJECT_VERSION ${PROJECT_VERSION})
+include(CPack)
 #
 # CMake setup
 #
+set(CMAKE_CXX_STANDARD 11)
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 set (CMAKE_VERBOSE_MAKEFILE 0) # 1 should be used for debugging
 set (CMAKE_SUPPRESS_REGENERATION TRUE) # Suppresses ZERO_CHECK
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -W4")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wall")
-#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic -std=c++11")
-#set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall") 
-
 
 if(MSVC)
   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -W4")
   set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wall")
-# else()
-#   set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -Wpedantic -std=c++11")
 endif()
 
 
 message("Generated with config types: ${CMAKE_CONFIGURATION_TYPES}")
 
-#
-# GLFW options
 
-#
-# Set include paths
+# Set include paths for header files
 #
 include_directories (src/
                     # Add More Direct. Here if needed.
@@ -83,11 +82,4 @@ set_target_properties (${PROJECT_NAME} PROPERTIES
 
 
 
-#add_executable(Test src/MoveGeneration/TestGaddag.cpp)
-
-#target_include_directories(test PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
-
-# add_library(src/MoveGeneration/ mysqrt.cxx)
-#add_subdirectory (src/MoveGeneration/) 
-# (${PROJECT_BINARY_DIR})
 
