@@ -100,7 +100,7 @@ class WordGenerate { // just a static class no need to create an explicit object
        void generateEmpty(Node* node, string &word); // For Empty Board State Moves.
        void emptyBoardMoves(); // Generate all possible moves availabe given certain Rack when the status of the board is empty only.
 	   void crosssets(); // calculate the crosssets of each square.
-       void updateCrossSet(Move*move); //TODO: Just Updates Changed CrossSet.
+       void updateCrossSet(Move*move); /////TODO: Just Updates Changed CrossSet.
        bool checkWordDict(string word); // Given a Word it checks Whether This word in Dict or NOT.
        Move* bestScoreMove(); // TODO: Returns Best (Highest Score) Move From The Last Generated Moves RUN.
        void moveCalcHeuristic(); // TODO: Calculates 'RackLeave' Heuristic of a Move with Accumalation with its score.

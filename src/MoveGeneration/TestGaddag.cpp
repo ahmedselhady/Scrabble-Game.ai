@@ -366,12 +366,19 @@ int main() {
     //     Ptr2G->SetChar('S', 12, 13);        
        
        //TEST FOR WORD DICT CHECK :
-        cout<<Gen->checkWordDict("yahia")<<endl;
-        cout<<Gen->checkWordDict("Cat")<<endl;
-        cout<<Gen->checkWordDict("Catz")<<endl;
-        cout<<Gen->checkWordDict("zCat")<<endl;
-        cout<<Gen->checkWordDict("syz")<<endl;
-        cout<<Gen->checkWordDict("syzxxx")<<endl;
+        cout<<"yahia"<<(bool)Gen->checkWordDict("yahia")<<endl;
+        cout<<"YDF"<<(bool)Gen->checkWordDict("YDF")<<endl;
+        cout<<"cat"<<(bool)Gen->checkWordDict("cat")<<endl;
+        cout<<"catz"<<(bool)Gen->checkWordDict("catz")<<endl;
+        cout<<"zcat"<<(bool)Gen->checkWordDict("zcat")<<endl;
+        cout<<"syz"<<(bool)Gen->checkWordDict("syz")<<endl;
+        cout<<"syzxxx"<<(bool)Gen->checkWordDict("syzxxx")<<endl;
+        cout<<"malpractitioner"<<(bool)Gen->checkWordDict("malpractitionerx")<<endl;
+        cout<<"malpractitionerx"<<(bool)Gen->checkWordDict("malpractitionerx")<<endl;
+        cout<<"xmalpractitioner"<<(bool)Gen->checkWordDict("xmalpractitioner")<<endl;
+        cout<<"malpracvvtitioner"<<(bool)Gen->checkWordDict("malpracvvtitioner")<<endl;
+
+        
         ///
 
         Ptr2G->PrintBitBoard();
