@@ -5,8 +5,8 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "/usr/include/linux",
-                "/usr/include/c++/8.2.1/tr1",
-                "C:/Program Files/boost/boost_1_69_0"
+                "/usr/include/c++/8.2.1/tr1"
+            
             ],
             "defines": [
                 "_DEBUG",
