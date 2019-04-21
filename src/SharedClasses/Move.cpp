@@ -5,6 +5,9 @@
 
 //NOTE: Feel Free To Add But See Notes in Move.h Before Adding .....
 // Initialize
+Move::Move(){
+    //EMPTY
+}
 Move::Move(std::string word,bool horizontal,Position position,int usedTiles){   
     this->word = word;
     this->horizontal = horizontal;

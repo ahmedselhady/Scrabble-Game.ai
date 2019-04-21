@@ -257,27 +257,15 @@ int main() {
 
 
          //TEST CASE 4:
-        Ptr2G->SetChar('C', 7, 2);
-	    Ptr2G->SetChar('A', 7, 3);
- 	    Ptr2G->SetChar('T', 7, 4);
-        Ptr2G->SetChar('A', 7, 5);
-        Ptr2G->SetChar('S', 7, 6);
-        Ptr2G->SetChar('T', 7, 7);
-         
-        Ptr2G->SetChar('R', 7, 8);
-	    Ptr2G->SetChar('O', 7, 9);
- 	    Ptr2G->SetChar('P', 7, 10);
-        Ptr2G->SetChar('H', 7, 11);
-        Ptr2G->SetChar('I', 7, 12);
-        Ptr2G->SetChar('C', 7, 13);
+       
     
      //TEST CASE 3:
-    //     Ptr2G->SetChar('E', 7, 2);
-	//     Ptr2G->SetChar('Q', 7, 3);
- 	//     Ptr2G->SetChar('U', 7, 4);
-    //     Ptr2G->SetChar('I', 7, 5);
-    //     Ptr2G->SetChar('P', 7, 6);
-    //     Ptr2G->SetChar('S', 7, 7);
+        Ptr2G->SetChar('E', 7, 2);
+	    Ptr2G->SetChar('Q', 7, 3);
+ 	    Ptr2G->SetChar('U', 7, 4);
+        Ptr2G->SetChar('I', 7, 5);
+        Ptr2G->SetChar('P', 7, 6);
+        Ptr2G->SetChar('S', 7, 7);
 	//    // BABE
     //     Ptr2G->SetChar('U', 1, 2);
 	//     Ptr2G->SetChar('T', 2, 2);
@@ -373,7 +361,7 @@ int main() {
         cout<<"zcat"<<(bool)Gen->checkWordDict("zcat")<<endl;
         cout<<"syz"<<(bool)Gen->checkWordDict("syz")<<endl;
         cout<<"syzxxx"<<(bool)Gen->checkWordDict("syzxxx")<<endl;
-        cout<<"malpractitioner"<<(bool)Gen->checkWordDict("malpractitionerx")<<endl;
+        cout<<"malpractitioner"<<(bool)Gen->checkWordDict("malpractitioner")<<endl;
         cout<<"malpractitionerx"<<(bool)Gen->checkWordDict("malpractitionerx")<<endl;
         cout<<"xmalpractitioner"<<(bool)Gen->checkWordDict("xmalpractitioner")<<endl;
         cout<<"malpracvvtitioner"<<(bool)Gen->checkWordDict("malpracvvtitioner")<<endl;

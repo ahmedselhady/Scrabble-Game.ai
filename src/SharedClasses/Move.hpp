@@ -26,6 +26,7 @@ public:
     char moveUsedTiles; // Number of Tiles used in a Move Excluding Already on-Board Tiles. 
     bool isBingo; // Can Be Removed Redundant. Ask First if Before Removal To Check That Nobody Uses it.
 
+    Move::Move();
     Move(std::string word,bool horizontal,Position position,int usedTiles); // Init. 
     void setScore(int score);   // Setting Move Score.
 };
