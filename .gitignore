@@ -1,5 +1,19 @@
+# ignore all json files
+*.json
+*.vscode
+*.md
+LICENSE
 
 # Prerequisites
+moves.txt
+out.txt
+
+*_builds
+*build
+*_ReleaseVer
+*.project
+
+# Prerequisites 
 *.d
 
 # Compiled Object files
@@ -21,6 +35,15 @@
 *.mod
 *.smod
 
+# Visual C++ cache files
+ipch/
+*.aps
+*.ncb
+*.opendb
+*.opensdf
+*.sdf
+*.cachefile
+
 # Compiled Static libraries
 *.lai
 *.la
@@ -34,6 +57,12 @@
 
 # visual studio code folder:
 .vscode/
+
+# visual studio folder:
+.vs/
+Debug/
+*.sln
+*.suo
 
 # CMake build directory
 build/
