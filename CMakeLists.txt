@@ -40,12 +40,12 @@ include_directories (src/
                     src/GuiInterface/
                     src/MoveGeneration/
                     src/SharedClasses/
+                    src/Communication/
                     )
 
 #
 # Add files
 #
-file (GLOB         VENDORS_SOURCES vendor/glad/src/glad.c)
 file (GLOB_RECURSE PROJECT_HEADERS src/*.hpp
                                    src/*.h)
 file (GLOB_RECURSE PROJECT_SOURCES src/*.cpp
