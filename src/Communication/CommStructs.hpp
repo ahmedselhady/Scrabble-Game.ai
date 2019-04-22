@@ -47,8 +47,8 @@ enum EndReasons {
 };
 
 // Request means client (us) <== server
-// Response means client (us) ==> server and
-// this is handled by our BinaryEnvelope
+// Response means client (us) ==> server
+// and this is handled by our BinaryEnvelope
 
 // no instanse of BaseSocket is ever parsed
 // it just makes for the template
