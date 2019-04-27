@@ -35,7 +35,7 @@ list<Move> listOfMoves = MovesGenerationThread.get();
 
 listOfMoves.sort([](const Move & a, const Move & b) { return a.moveScore > b.moveScore; });
 
-if(listOfMoves.size > 23){
+if(listOfMoves.size() > 23){
 
     listOfMoves.resize(23);
 
@@ -76,7 +76,7 @@ list<Move>::iterator it = listOfMoves.begin();
 // Advance the iterator by n->index positions,
 std::advance(it, Index);
 //Assign BestMove to the n-th element in Moves List.
-AI_MODE::BestMove = listOfMoves.front;
+AI_MODE::BestMove = listOfMoves.front();
 
 
 
@@ -100,6 +100,7 @@ Move AI_MODE::getBestMove(){
 
         AI_MODE::TheOpponentRack = R;
  }
+
 
 
 Move AI_Mode_Function(unordered_map<char,int>& Tiles, vector<char>& Rack, bool isEmpty){

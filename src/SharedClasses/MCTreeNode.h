@@ -3,13 +3,16 @@
 #include <string>
 #include <vector>
 #include<list>
+#include "Move.hpp"
+#include "Opponent-Rack-Generator/Opponent.h"
+
 using namespace std;
 
-struct Move { // defines what a "Move" is.
-	int moveScore;
-	int startPosition;
-	bool horizontal; // true -> horiz false -> vertical.
-};
+//struct Move { // defines what a "Move" is.
+//	int moveScore;
+//	int startPosition;
+//	bool horizontal; // true -> horiz false -> vertical.
+//};
 
 class MCTreeNode {
 //This class Represents a state weather for the player or the opponent in the monte carlo search tree
