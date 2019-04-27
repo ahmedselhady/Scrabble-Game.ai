@@ -53,8 +53,14 @@ void TrainerComm::SendReceivedPlayerMoveToGUI()
 
 int TrainerComm::ReceiveScoreFromServer(int Score)
 {
-    return Score;
+	return Score;
 }
+
+Move* TrainerComm::SendPlayerMove()
+{
+	return PlayerMoveFromServer;
+}
+
 void TrainerComm::ReceiveMoveFromGUI()
 {
 	zmq::context_t context(1);
@@ -73,17 +79,34 @@ void TrainerComm::ReceiveMoveFromGUI()
 		if (!zmq_msg_more(&message))
 			break;      //  Last message frame
 	}
-    position pos;
-    pos.ROW=ReceivedMove[0][0];
-    pos.COL=ReceivedMove[1][0];
-    bool IsHorizontal;
-    if (ReceivedMove[3]=="true")
-        IsHorizontal=true;
-    else
-        IsHorizontal=false;
-    PlayerMoveFromServer=new Move(ReceivedMove[2],IsHorizontal,pos,0);//0 is dummy
-    BoardCommunicator BoardComm;
-    PlayerMoveFromServer->setScore(BoardComm.calculateScore(ReceivedMove[2],(int)pos.ROW,(int)pos.COL,IsHorizontal));
+	position pos;
+	pos.ROW = ReceivedMove[0][0];
+	pos.COL = ReceivedMove[1][0];
+	bool IsHorizontal;
+	if (ReceivedMove[3] == "true")
+		IsHorizontal = true;
+	else
+		IsHorizontal = false;
+	PlayerMoveFromServer = new Move(ReceivedMove[2], IsHorizontal, pos, 0);//0 is dummy
+	BoardCommunicator BoardComm;
+	PlayerMoveFromServer->setScore(BoardComm.calculateScore(ReceivedMove[2], (int)pos.ROW, (int)pos.COL, IsHorizontal));
+}
+
+void TrainerComm::ReceiveString(string str)
+{
+	ReceivedString = str;
+}
+
+void TrainerComm::SendReceivedStringToGUI()
+{
+	zmq::context_t context(1);
+	zmq::socket_t socket(context, ZMQ_REQ);
+	socket.connect("tcp://localhost:5552");
+	zmq_msg_t Msg;
+	zmq_msg_init_size(&Msg, ReceivedString.length());
+	memcpy(zmq_msg_data(&Msg), ReceivedString.c_str(), ReceivedString.length());
+	zmq_msg_send(&Msg, socket, 0);
+	
 }
 
 TrainerComm::~TrainerComm()
