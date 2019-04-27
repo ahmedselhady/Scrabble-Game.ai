@@ -15,7 +15,7 @@ MCTreeNode:: MCTreeNode(list<Move> Moves) {
 	this->NumberOfVisits = 0;
 	this->PossibleMoves = Moves;
 	this->Expandable = true;
-	for (int i = 0; i < Moves.size(); i++) {
+	for (int i = 0; (unsigned)i < Moves.size(); i++) {
 		std::list<Move>::iterator it = Moves.begin();
 		std::advance(it, i);
 		Children.push_back(new MCTreeNode(this, it->moveScore));

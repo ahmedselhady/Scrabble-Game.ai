@@ -372,8 +372,8 @@ void WordGenerate::goOn(int pos, char boardLetter, string word, Node *gaddagNode
             Move *newMove = new Move();
             newMove->word = word;
             newMove->horizontal = (cancelIndex == 0 ? true : false);
-            newMove->startPosition.ROW = anchorRow + pos * (cancelIndex) + (1 - word.length()) * (cancelIndex);
-            newMove->startPosition.COL = anchorCol + pos * (1 - cancelIndex) + (1 - word.length()) * (1 - cancelIndex);
+            newMove->startPosition.ROW =(char) (anchorRow + pos * (cancelIndex) + (1 - word.length()) * (cancelIndex));
+            newMove->startPosition.COL = (char)(anchorCol + pos * (1 - cancelIndex) + (1 - word.length()) * (1 - cancelIndex));
 
             if (usedTiles == 7)
             { // BINGO
@@ -415,7 +415,7 @@ void WordGenerate::countTilesRack(vector<char> *rackTiles)
         tilesCount[index] = 0;
     }
 
-    for (int index = 0; index < rack->size(); ++index)
+    for (int index = 0; (unsigned)index < rack->size(); ++index)
     {
         tilesCount[(*rack)[index] - CHAR_OFFSET]++;
     }
@@ -801,10 +801,10 @@ void WordGenerate::emptyBoardMoves()
             {
                 Move move;
                 move.word = (*it);
-                move.moveUsedTiles = (*it).length();
+                move.moveUsedTiles =(char) ((*it).length());
                 move.horizontal = true;
                 move.startPosition.ROW = 7;
-                move.startPosition.COL = 7 - ((*it).length()) + 1 + k;
+                move.startPosition.COL = (char)(7 - ((*it).length()) + 1 + k);
 
                 if (move.startPosition.COL < 0)
                 {

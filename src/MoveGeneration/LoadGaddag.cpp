@@ -27,17 +27,17 @@ void LoadGaddag::readDictFile(vector<string> &dictGaddagWords, const char *fileN
         while (myFile >> word)
         {
             // Each word will be multipied by number of its characters. ex: "cat" will have three entries in GADDAG.
-            for (int index = 0; index < word.size(); ++index)
+            for (int index = 0; (unsigned)index < word.size(); ++index)
             {
                 gaddagWord = ""; //reset word.
                 for (int prefix = index; prefix >= 0; --prefix)
                 {
                     gaddagWord.insert(index - prefix, 1, word[prefix]);
                 }                            // prefix part
-                if (index < word.size() - 1) // no delimiter for last word inverted.
+                if ((unsigned)index < word.size() - 1) // no delimiter for last word inverted.
                 {
                     gaddagWord.push_back(GADDAG_DELIMITER);
-                    for (int suffix = index + 2; suffix <= word.size(); ++suffix)
+                    for (int suffix = index + 2; (unsigned)suffix <= word.size(); ++suffix)
                     {
                         gaddagWord.push_back((word[suffix - 1]));
                     } // suffix part
@@ -89,7 +89,7 @@ Node *LoadGaddag::constructGaddag()
 
         while (inputGaddagFile >> nodeInfo)
         {
-            gaddagRootNode[index] = nodeInfo;
+            gaddagRootNode[index] =(unsigned) nodeInfo;
             index++;
         }
         //cout << " NODES: "<<index<<endl;
@@ -101,7 +101,7 @@ Node *LoadGaddag::constructGaddag()
     vector<string> dictGaddagWords; // GADDAG words from given dict. file.
     vector<LoadNode *> gaddagNodes; // store all nodes to then output a compressed structure then.
     readDictFile(dictGaddagWords, DICT_FILE_NAME);
-    for (int index = 0; index < dictGaddagWords.size(); ++index)
+    for (int index = 0; (unsigned)index < dictGaddagWords.size(); ++index)
     {
         Root.insertGaddagWord(dictGaddagWords[index]); //inserting word into GADDAG.
     }
@@ -145,7 +145,7 @@ void LoadGaddag::compressGaddag(unsigned int *&gaddagRootNode, vector<LoadNode *
     // as an offset in offset byte array.
     unsigned letter;
 
-    for (int index = 0; index < gaddagNodes.size(); ++index)
+    for (int index = 0; (unsigned)index < gaddagNodes.size(); ++index)
     {
         letter = (gaddagNodes[index])->getLetter();
         if (letter != GADDAG_DELIMITER && letter != GADDAG_ROOT)

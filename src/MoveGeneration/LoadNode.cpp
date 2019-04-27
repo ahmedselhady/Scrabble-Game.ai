@@ -55,7 +55,7 @@ bool LoadNode::isLastChild(){
 //Function getChild get child corresponding to the node letter.
 inline int LoadNode::getChild(char letter){
 
-     for (int index = 0; index < this->childeren.size(); ++index)
+     for (int index = 0; (unsigned)index < this->childeren.size(); ++index)
 	 {
 		if (childeren[index].letter == letter)
 		{
@@ -139,7 +139,7 @@ void LoadNode::storeNodes(vector< LoadNode* >& gaddagNodes)
 	this->numberChilds = gaddagNodes.size();  // usefull for byte offset indexing.
 	childeren[childeren.size() - 1].lastChild = true;
 
-	for (int index = 0; index < childeren.size(); ++index)
+	for (int index = 0; (unsigned)index < childeren.size(); ++index)
     {
         gaddagNodes.push_back(&childeren[index]);
 
@@ -153,7 +153,7 @@ void LoadNode::storeNodes(vector< LoadNode* >& gaddagNodes)
 //		cout<<"Level : "<<count<<endl;
 //	}
 
-	for (int index = 0; index < childeren.size(); ++index)
+	for (int index = 0; (unsigned)index < childeren.size(); ++index)
     {
 		childeren[index].storeNodes(gaddagNodes); // recursively for all nodes.
     }
