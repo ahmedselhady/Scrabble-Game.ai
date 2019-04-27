@@ -40,6 +40,8 @@ include_directories (src/
                     src/GuiInterface/
                     src/MoveGeneration/
                     src/SharedClasses/
+                    src/Opponent-Rack-Generator/
+                    src/TrainerMode/
                     )
 
 #

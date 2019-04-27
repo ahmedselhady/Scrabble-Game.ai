@@ -14,6 +14,7 @@
 #include "SharedClasses/MCTSearch.h"
 #include "../src/MoveGeneration/LoadGaddag.h"
 #include "../src/MoveGeneration/MoveGenerate.h"
+#include "Move.hpp"
 #include "../src/MoveGeneration/Gaddag.h"
 #include <algorithm>
 #include <string> 

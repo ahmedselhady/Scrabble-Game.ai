@@ -106,8 +106,7 @@ Move AI_MODE::getBestMove(){
 Move AI_Mode_Function(unordered_map<char,int>& Tiles, vector<char>& Rack, bool isEmpty){
     
     AI_MODE* AI = new AI_MODE(Tiles,Rack,isEmpty);
-    Move M = AI->getBestMove();
-    return M;
+    return AI->getBestMove();
 }
 
 
