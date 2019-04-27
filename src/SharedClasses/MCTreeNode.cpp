@@ -34,7 +34,11 @@ MCTreeNode::MCTreeNode(MCTreeNode* parent,int moveScore) {
 
 	//expand the node only if it is non terminal node
 	if(this->Depth<3){
+		
 		//TODO: with the given rack generate all the possible moves to fill the vector of children
+			// given and 
+
+		
 
 		//TODO: Using the Rack Generated we need to generate all the possible moves "Just Call the Function" and Assign it to 
 		//List Moves
