@@ -53,6 +53,7 @@ bool AI_Human::SetAgent(AI_MODE* AI_Agent)
         return false;
     }
     AI_Agent= new AI_MODE(*this->Bag, *HumanTiles,this->IsEmptyBoard());
+    return true;
 }
 
 bool AI_Human::SetBoard(Board* MyBoard)
