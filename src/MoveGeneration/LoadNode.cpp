@@ -4,9 +4,12 @@
 #include <unordered_map>
 #include<iostream>
 #include "LoadNode.h"
+//#include "LoadGaddag.h"
 using namespace std;
 
 int count = 0;
+// char wordLength; // for now.
+// vector<LoadNode*> linkNodes;
 //Funtion LoadNode is constructor is for initialization
 LoadNode::LoadNode(char letter){
     this->letter = letter;
@@ -16,8 +19,13 @@ LoadNode::LoadNode(char letter){
     this->numberChilds = 0;
 }
 
+// void LoadNode::setWordLength(int value){
+//     wordLength = value;
+// }
+
+
 //Function addChild it adds a successor.
-inline void LoadNode::addChild(char letter ,LoadNode& node){
+inline void LoadNode::addChild(char letter ,LoadNode &node){
         this->childeren.push_back(node);
 }
 
@@ -71,7 +79,13 @@ void LoadNode::insertGaddagWord(string gaddagWord){
 
   char firstChar = gaddagWord[0];
   string remainingChars = gaddagWord.substr(1,gaddagWord.size()-1);
-
+//   if(wordLength >= 4){
+//       linkNodes.push_back(this);
+//   }
+//   if(wordLength<5 && wordLength != -1){
+//       wordLength++;
+//   }
+//       int linkIndex = this->getChild(firstChar);
   int childIndex = getChild(firstChar);
   if(childIndex == -1)
   {
@@ -81,7 +95,21 @@ void LoadNode::insertGaddagWord(string gaddagWord){
   }
 
   childeren[childIndex].insertGaddagWord(remainingChars);
+//       if(this->letter == GADDAG_DELIMITER&&linkNodes.size() != 0){
 
+//             bool check = (linkNodes[0]->letter == firstChar);     
+//             this->addChild(firstChar,linkNodes[0]); //Dummy FirstChar.
+//             linkNodes.erase(linkNodes.begin());
+//       }
+//       else{
+//              if(linkIndex == -1)
+//              {
+//                   LoadNode* child = new LoadNode(firstChar);
+//                   this->addChild(firstChar,child); //Dummy FirstChar.
+//                   linkIndex = childeren.size() - 1; // as it was the last one pushed.
+//              }
+//              childeren[linkIndex]->insertGaddagWord(remainingChars);
+//       }
 }
 
 bool LoadNode::findWord(string word){

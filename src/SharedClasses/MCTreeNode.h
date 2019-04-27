@@ -50,7 +50,7 @@ public:
 	int getMoveScore();
 	void expandMidGame();
 	void expandEndGame();
-	~MCTreeNode();
+	//~MCTreeNode();
 private:
 
 	MCTreeNode* Parent;		//Parent Node

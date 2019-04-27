@@ -9,43 +9,43 @@ inline Node* createGaddag(){ // just a test function.
 	 return gaddagRoot;
 }
 
-AI_MODE::AI_MODE(unordered_map<char,int>& Tiles, vector<char>& Rack, bool isEmpty) {
+AI_MODE::AI_MODE(unordered_map<char, int>& Tiles, vector<char>& Rack, bool isEmpty) {
 
-BoardToGrammer* B = new BoardToGrammer() ;
-Node* gaddagRoot;
-gaddagRoot = createGaddag();
+	BoardToGrammer* B = new BoardToGrammer();
+	Node* gaddagRoot;
+	gaddagRoot = createGaddag();
 
-//Thread 1:
-/////////////////////////////////////////////////////
+	//Thread 1:
+	/////////////////////////////////////////////////////
 
-std::future<list<Move>> MovesGenerationThread = std::async(MovesGeneration,B,Rack,gaddagRoot,isEmpty); 
+	std::future<list<Move>> MovesGenerationThread = std::async(MovesGeneration, B, Rack, gaddagRoot, isEmpty);
 
-////////////////////////////////////////////////
+	////////////////////////////////////////////////
 
-//Thread 2:
-//////////////////////////////////////////////////////////
+	//Thread 2:
+	//////////////////////////////////////////////////////////
 
-std::future<void> RackGenerator = std::async (RackGen,Tiles);
+	std::future<void> RackGenerator = std::async(RackGen, Tiles, this);
 
-/////////////////////////////////////*////////////////////////
+	/////////////////////////////////////*////////////////////////
 
-//Thread Joining.
-RackGenerator.get();
-list<Move> listOfMoves = MovesGenerationThread.get();
+	//Thread Joining.
+	RackGenerator.get();
+	list<Move> listOfMoves = MovesGenerationThread.get();
 
-listOfMoves.sort([](const Move & a, const Move & b) { return a.moveScore > b.moveScore; });
+	listOfMoves.sort([](const Move & a, const Move & b) { return a.moveScore > b.moveScore; });
 
-if(listOfMoves.size() > 23){
+	if (listOfMoves.size() > 23) {
 
-    listOfMoves.resize(23);
+		listOfMoves.resize(23);
 
-}
-cout<< "List of moves: ";
-for(auto Literator: listOfMoves){
-    cout<< "Word Score: "<<Literator.moveScore << "Word: " << Literator.word <<endl;
-}
-/////////////////////////////////////////////////////////////////////
-int TilesLeft =0;
+	}
+	cout << "List of moves: ";
+	for (auto Literator : listOfMoves) {
+		cout << "Word Score: " << Literator.moveScore << "Word: " << Literator.word << endl;
+	}
+	/////////////////////////////////////////////////////////////////////
+	int TilesLeft = 0;
 
 
 	for (auto Letter_Iterator : Tiles) {
@@ -55,28 +55,38 @@ int TilesLeft =0;
 	}
 
 
-// Create the Monte Carlo Search Tree:
-MCTSearch MonteCarlo(listOfMoves);
+	// Create the Monte Carlo Search Tree:
+	MCTSearch MonteCarlo(listOfMoves);
 
-int Index = 0; //Index of best Move in Moves Lists.
+	int Index = 0; //Index of best Move in Moves Lists.
 
-//Get Game Phase:
-if(TilesLeft > 9){
+	//Get Game Phase:
+	if (TilesLeft > 9) {
 
-Index = MonteCarlo.midGameMCTS();
+		Index = MonteCarlo.midGameMCTS();
 
-}else{
+	}
+	else {
 
-Index = MonteCarlo.endGameMCTS();
+		Index = MonteCarlo.endGameMCTS();
 
-}
+	}
 
-// Create iterator pointing to first element
-list<Move>::iterator it = listOfMoves.begin();
-// Advance the iterator by n->index positions,
-std::advance(it, Index);
-//Assign BestMove to the n-th element in Moves List.
-AI_MODE::BestMove = listOfMoves.front();
+	// Create iterator pointing to first element
+	list<Move>::iterator it = listOfMoves.begin();
+	// Advance the iterator by n->index positions
+
+	if (Index != -1) {
+		std::advance(it, Index);
+		//Assign BestMove to the n-th element in Moves List.
+		AI_MODE::BestMove = listOfMoves.front();
+	}
+	else {
+		Move DummyMove;
+		DummyMove.moveScore = -1;
+		AI_MODE::BestMove = DummyMove;
+	}
+
 
 
 
@@ -98,9 +108,9 @@ Move AI_MODE::getBestMove(){
 
  void AI_MODE::setOpponentRack(vector<char>R){
 
-        AI_MODE::TheOpponentRack = R;
+      AI_MODE::TheOpponentRack = R;
  }
-
+ 
 
 
 Move AI_Mode_Function(unordered_map<char,int>& Tiles, vector<char>& Rack, bool isEmpty){
@@ -111,9 +121,9 @@ Move AI_Mode_Function(unordered_map<char,int>& Tiles, vector<char>& Rack, bool i
 }
 
 
-void RackGen(unordered_map<char,int>& Tiles) {
+void RackGen(unordered_map<char,int>& Tiles, AI_MODE* AI) {
     OpponentRack OP;
-    AI_MODE::setOpponentRack(OP.RackGenerator(Tiles));
+    AI->setOpponentRack(OP.RackGenerator(Tiles));
 }
 
 
@@ -133,5 +143,6 @@ Gen->countTilesRack(&Rack);
 
 
 list<Move> L = Gen->allMoves();
+return L;
 
 }

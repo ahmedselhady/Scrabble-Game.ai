@@ -32,11 +32,11 @@ public:
     AI_MODE(unordered_map<char,int>&, vector<char>&, bool);
     vector<char> getOpponentRack();
     Move getBestMove();
-    static void setOpponentRack(vector<char>);
+    void setOpponentRack(vector<char>);
 	
 private:
 
-  static  vector<char> TheOpponentRack;
+  vector<char> TheOpponentRack;
  
   Move BestMove;
 	///////////////////////////////////////////////////////////////
@@ -50,4 +50,4 @@ Move AI_Mode_Function(unordered_map<char,int>& Tiles, vector<char>& Rack, bool);
 list <Move> MovesGeneration (BoardToGrammer* B , vector<char>& Rack, Node*,bool );
 
 //Thread 2: Rack Generation:
-void RackGen(unordered_map<char,int>& Tiles);
+void RackGen(unordered_map<char,int>& Tiles, AI_MODE*);

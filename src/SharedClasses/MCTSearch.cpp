@@ -101,13 +101,14 @@ int MCTSearch::midGameMCTS() {
 
 	}
 	float BestMoveScore = FLT_MIN;
-	int BestMoveIndex;
+	int BestMoveIndex =-1;
 	for (int j = 0; j < Root->Children.size(); j++) {
 		if (Root->Children[j]->getAverageReward() > BestMoveScore) {
 			BestMoveIndex = j;
 			BestMoveScore = Root->Children[j]->getAverageReward();
 		}
 	}
+
 	this->destroyMCTree(this->Root);
 	return BestMoveIndex;
 

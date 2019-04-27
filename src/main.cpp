@@ -1,5 +1,5 @@
 #include <iostream>
-#include "AI_MODE.cpp"
+#include "AI_MODE.h"
 
 
 void main()
@@ -18,7 +18,7 @@ void main()
 	vector<char> Rack;
     Rack.push_back('A');
     Rack.push_back('L');
-    Rack.push_back('K');
+    Rack.push_back('L');
     Rack.push_back('D');
 
     Rack.push_back('Z');
@@ -27,5 +27,5 @@ void main()
     bool isEmpty=true;
     Move recommendedMove = AI_Mode_Function(Tiles,Rack,isEmpty);
     std::cout <<"Move word: "<< recommendedMove.word<< "recommended move score:" << recommendedMove.moveScore<<endl;
-
+	system("pause");
 }
