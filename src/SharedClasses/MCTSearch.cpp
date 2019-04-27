@@ -1,8 +1,9 @@
-#pragma once
+
 
 #include <string>
 #include <vector>
 #include "MCTSearch.h"
+#include<float.h>
 
 
 MCTSearch::MCTSearch(list<Move> Moves) {
@@ -11,13 +12,13 @@ MCTSearch::MCTSearch(list<Move> Moves) {
 
 MCTreeNode* MCTSearch:: SelectBestMove(MCTreeNode* Parent) {
 	MCTreeNode* BestChild = NULL;
-	float BestScore = FLT_MIN;
-	float CurrentScore = 0;;
+	double BestScore = FLT_MIN;
+	double CurrentScore = 0;;
 	int cp = 30;
-	for (int i = 0; i < Parent->Children.size(); i++) {
+	for (int i = 0; (unsigned)i < Parent->Children.size(); i++) {
 		if (Parent->Children[i]->getNumberOfVisits() == 0 ) {
 			cout << "Parent never visited" << endl;
-			CurrentScore = Parent->Children[i]->getMoveScore();
+			CurrentScore = (float)Parent->Children[i]->getMoveScore();
 		}
 		else {
 			cout << "Normal Visit" << endl;
@@ -60,7 +61,7 @@ int MCTSearch::endGameMCTS() {
 		//to the tree
 		int MySecondMove = SecondMove->Children.back()->getMoveScore();
 		//Finally the value will be back propagated to the d=1 node
-		float MoveDifference = FirstMove->getMoveScore() + MySecondMove - SecondMove->getMoveScore();
+		float MoveDifference =(float) FirstMove->getMoveScore() + MySecondMove - SecondMove->getMoveScore();
 		if (MoveDifference > FirstMove->getAverageReward()) {
 			FirstMove->setAverageReward(MoveDifference);
 		}
@@ -69,7 +70,7 @@ int MCTSearch::endGameMCTS() {
 
 	float BestMoveScore=FLT_MIN;
 	int BestMoveIndex = -1;
-	for (int j = 0; j < Root->Children.size(); j++) {
+	for (int j = 0; (unsigned)j < Root->Children.size(); j++) {
 		if (Root->Children[j]->getAverageReward() > BestMoveScore) {
 			BestMoveIndex = j;
 			BestMoveScore = Root->Children[j]->getAverageReward();
@@ -111,7 +112,7 @@ int MCTSearch::midGameMCTS() {
 
 		//Finally the value will be back propagated to the d=1 node to calculate the move score
 		//For now we will be saving the maximum score in the branch
-		float MoveDifferenece = FirstMove->getMoveScore() - OpponentMoveScore;
+		float MoveDifferenece = (float)FirstMove->getMoveScore() - OpponentMoveScore;
 		if (MoveDifferenece > FirstMove->getAverageReward()) {
 			FirstMove->setAverageReward(MoveDifferenece);
 		}
@@ -120,7 +121,7 @@ int MCTSearch::midGameMCTS() {
 	}
 	float BestMoveScore = FLT_MIN;
 	int BestMoveIndex =-1;
-	for (int j = 0; j < Root->Children.size(); j++) {
+	for (int j = 0; (unsigned)j < Root->Children.size(); j++) {
 		if (Root->Children[j]->getAverageReward() > BestMoveScore) {
 			BestMoveIndex = j;
 			BestMoveScore = Root->Children[j]->getAverageReward();
