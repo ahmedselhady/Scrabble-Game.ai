@@ -1,7 +1,9 @@
 
 #include "LoadGaddag.h"
+#include "LoadNode.h"
 #include <sys/stat.h>
-#define DICT_FILE_NAME "./src/MoveGeneration/GADDAG_Dict.txt"
+#include <algorithm> 
+#define DICT_FILE_NAME "./src/MoveGeneration/Dict.txt"
 #define GADDAG_FILE_NAME "./src/MoveGeneration/GADDAG.txt"
 #define TOTAL_GADDAG_NODES 6419512
 
@@ -58,6 +60,12 @@ void LoadGaddag::readDictFile(vector<string> &dictGaddagWords, const char *fileN
     }
 }
 
+// for String Comparison.
+bool compare(string &s1,string &s2) 
+{ 
+    return s1.size() > s2.size(); 
+} 
+
 //Function constructGaddag it builds Gaddag trie and returns compressed trie node.
 Node *LoadGaddag::constructGaddag()
 {
@@ -101,6 +109,8 @@ Node *LoadGaddag::constructGaddag()
     //bool check = Root.findWord("legovsaa");
 
     gaddagNodes.push_back(&Root);
+    cout<<"HERE 2"<<endl;
+
     Root.storeNodes(gaddagNodes);
     unsigned int *gaddagRootNode = new unsigned int[gaddagNodes.size()];
     compressGaddag(gaddagRootNode, gaddagNodes);
