@@ -197,55 +197,55 @@ int main()
 
 #elif TEST == REGULAR_BOARD_TEST // i.e. : Contains Words.
     //TEST CASE 2:
-    //  Ptr2G->SetChar('B', 6, 7);
-    //  Ptr2G->SetChar('A', 7, 7);
-    //  Ptr2G->SetChar('B', 8, 7);
-    //  Ptr2G->SetChar('E', 9, 7);
+    // Ptr2G->SetChar('B', 6, 7);
+    // Ptr2G->SetChar('A', 7, 7);
+    // Ptr2G->SetChar('B', 8, 7);
+    // Ptr2G->SetChar('E', 9, 7);
 
-    //  Ptr2G->SetChar('A', 9, 8);
-    //  Ptr2G->SetChar('R', 9, 9);
-    //  Ptr2G->SetChar('S', 9, 10);
+    // Ptr2G->SetChar('A', 9, 8);
+    // Ptr2G->SetChar('R', 9, 9);
+    // Ptr2G->SetChar('S', 9, 10);
 
-    //  Ptr2G->SetChar('A', 6, 8);
-    //  Ptr2G->SetChar('L', 6, 9);
-    //  Ptr2G->SetChar('L', 6, 10);
+    // Ptr2G->SetChar('A', 6, 8);
+    // Ptr2G->SetChar('L', 6, 9);
+    // Ptr2G->SetChar('L', 6, 10);
 
-    //  Ptr2G->SetChar('O', 5, 10);
+    // Ptr2G->SetChar('O', 5, 10);
 
-    //  Ptr2G->SetChar('D', 7, 10);
-    //  Ptr2G->SetChar('O', 7, 11);
-    //  Ptr2G->SetChar('G', 7, 12);
+    // Ptr2G->SetChar('D', 7, 10);
+    // Ptr2G->SetChar('O', 7, 11);
+    // Ptr2G->SetChar('G', 7, 12);
 
-    //  Ptr2G->SetChar('O', 8, 12);
-    //  Ptr2G->SetChar('O', 9, 12);
-    //  Ptr2G->SetChar('D', 10, 12);
+    // Ptr2G->SetChar('O', 8, 12);
+    // Ptr2G->SetChar('O', 9, 12);
+    // Ptr2G->SetChar('D', 10, 12);
 
-    //  Ptr2G->SetChar('O', 10, 13);
-    //  Ptr2G->SetChar('L', 10, 14);
+    // Ptr2G->SetChar('O', 10, 13);
+    // Ptr2G->SetChar('L', 10, 14);
 
     //TEST CASE:1
-    //     Ptr2G->SetChar('B', 7, 4);
-    //     Ptr2G->SetChar('A', 7, 5);
-    //     Ptr2G->SetChar('B', 7, 6);
-    //     Ptr2G->SetChar('E', 7, 7);
-    //    // BABE
+    // Ptr2G->SetChar('B', 7, 4);
+    // Ptr2G->SetChar('A', 7, 5);
+    // Ptr2G->SetChar('B', 7, 6);
+    // Ptr2G->SetChar('E', 7, 7);
+    // // BABE
 
-    //     // EAR
-    //     Ptr2G->SetChar('A', 8, 7);
-    //     Ptr2G->SetChar('R', 9, 7);
+    // // EAR
+    // Ptr2G->SetChar('A', 8, 7);
+    // Ptr2G->SetChar('R', 9, 7);
 
-    //      //RAM
-    //     Ptr2G->SetChar('A', 9, 8);
-    //     Ptr2G->SetChar('M', 9, 9);
+    // //RAM
+    // Ptr2G->SetChar('A', 9, 8);
+    // Ptr2G->SetChar('M', 9, 9);
 
-    //     // DOM
-    //     Ptr2G->SetChar('O', 8, 9);
-    //     Ptr2G->SetChar('D', 7, 9);
+    // // DOM
+    // Ptr2G->SetChar('O', 8, 9);
+    // Ptr2G->SetChar('D', 7, 9);
 
-    //     //DAM
+    // //DAM
 
-    //     Ptr2G->SetChar('A', 7, 10);
-    //     Ptr2G->SetChar('M', 7, 11);
+    // Ptr2G->SetChar('A', 7, 10);
+    // Ptr2G->SetChar('M', 7, 11);
 
     //TEST CASE 4:
 
@@ -257,88 +257,88 @@ int main()
     Ptr2G->SetChar('P', 7, 6);
     Ptr2G->SetChar('S', 7, 7);
     //    // BABE
-    //     Ptr2G->SetChar('U', 1, 2);
-    //     Ptr2G->SetChar('T', 2, 2);
-    //     Ptr2G->SetChar('I', 3, 2);
-    //     Ptr2G->SetChar('L', 4, 2);
-    //     Ptr2G->SetChar('I', 5, 2);
-    //     Ptr2G->SetChar('Z', 6, 2);
+    Ptr2G->SetChar('U', 1, 2);
+    Ptr2G->SetChar('T', 2, 2);
+    Ptr2G->SetChar('I', 3, 2);
+    Ptr2G->SetChar('L', 4, 2);
+    Ptr2G->SetChar('I', 5, 2);
+    Ptr2G->SetChar('Z', 6, 2);
 
-    //     Ptr2G->SetChar('L', 1, 3);
-    //     Ptr2G->SetChar('T', 1, 4);
-    //     Ptr2G->SetChar('R', 1, 5);
-    //     Ptr2G->SetChar('A', 1, 6);
+    Ptr2G->SetChar('L', 1, 3);
+    Ptr2G->SetChar('T', 1, 4);
+    Ptr2G->SetChar('R', 1, 5);
+    Ptr2G->SetChar('A', 1, 6);
 
-    //     Ptr2G->SetChar('S', 0, 6);
-    //     Ptr2G->SetChar('B', 2, 6);
+    Ptr2G->SetChar('S', 0, 6);
+    Ptr2G->SetChar('B', 2, 6);
 
-    //     Ptr2G->SetChar('U', 8, 3);
-    //     Ptr2G->SetChar('A', 9, 3);
-    //     Ptr2G->SetChar('L', 10, 3);
-    //     Ptr2G->SetChar('I', 11, 3);
-    //     Ptr2G->SetChar('T', 12, 3);
-    //     Ptr2G->SetChar('Y', 13, 3);
+    Ptr2G->SetChar('U', 8, 3);
+    Ptr2G->SetChar('A', 9, 3);
+    Ptr2G->SetChar('L', 10, 3);
+    Ptr2G->SetChar('I', 11, 3);
+    Ptr2G->SetChar('T', 12, 3);
+    Ptr2G->SetChar('Y', 13, 3);
 
-    //     Ptr2G->SetChar('A', 4, 4);
-    //     Ptr2G->SetChar('D', 5, 4);
-    //     Ptr2G->SetChar('J', 6, 4);
-    //     Ptr2G->SetChar('S', 8, 4);
-    //     Ptr2G->SetChar('T', 9, 4);
+    Ptr2G->SetChar('A', 4, 4);
+    Ptr2G->SetChar('D', 5, 4);
+    Ptr2G->SetChar('J', 6, 4);
+    Ptr2G->SetChar('S', 8, 4);
+    Ptr2G->SetChar('T', 9, 4);
 
-    //     Ptr2G->SetChar('D', 12, 0);
-    //     Ptr2G->SetChar('A', 12, 1);
-    //     Ptr2G->SetChar('R', 12, 2);
+    Ptr2G->SetChar('D', 12, 0);
+    Ptr2G->SetChar('A', 12, 1);
+    Ptr2G->SetChar('R', 12, 2);
 
-    //     Ptr2G->SetChar('T', 9, 5);
-    //     Ptr2G->SetChar('A', 9, 6);
-    //     Ptr2G->SetChar('C', 9, 7);
-    //     Ptr2G->SetChar('K', 9, 8);
-    //     Ptr2G->SetChar('E', 9, 9);
-    //     Ptr2G->SetChar('R', 9, 10);
-    //     Ptr2G->SetChar('S', 9, 11);
+    Ptr2G->SetChar('T', 9, 5);
+    Ptr2G->SetChar('A', 9, 6);
+    Ptr2G->SetChar('C', 9, 7);
+    Ptr2G->SetChar('K', 9, 8);
+    Ptr2G->SetChar('E', 9, 9);
+    Ptr2G->SetChar('R', 9, 10);
+    Ptr2G->SetChar('S', 9, 11);
 
-    //     Ptr2G->SetChar('S', 5, 7);
-    //     Ptr2G->SetChar('O', 6, 7);
+    Ptr2G->SetChar('S', 5, 7);
+    Ptr2G->SetChar('O', 6, 7);
 
-    //     Ptr2G->SetChar('E', 5, 8);
-    //     Ptr2G->SetChar('X', 5, 9);
+    Ptr2G->SetChar('E', 5, 8);
+    Ptr2G->SetChar('X', 5, 9);
 
-    //     Ptr2G->SetChar('I', 6, 9);
-    //     Ptr2G->SetChar('S', 7, 9);
+    Ptr2G->SetChar('I', 6, 9);
+    Ptr2G->SetChar('S', 7, 9);
 
-    //     Ptr2G->SetChar('O', 7, 10);
-    //     Ptr2G->SetChar('U', 7, 11);
-    //     Ptr2G->SetChar('L', 7, 12);
+    Ptr2G->SetChar('O', 7, 10);
+    Ptr2G->SetChar('U', 7, 11);
+    Ptr2G->SetChar('L', 7, 12);
 
-    //     Ptr2G->SetChar('A', 5, 11);
-    //     Ptr2G->SetChar('M', 6, 11);
+    Ptr2G->SetChar('A', 5, 11);
+    Ptr2G->SetChar('M', 6, 11);
 
-    //     Ptr2G->SetChar('L', 5, 12);
+    Ptr2G->SetChar('L', 5, 12);
 
-    //     Ptr2G->SetChar('A', 10, 5);
-    //     Ptr2G->SetChar('K', 11, 5);
-    //     Ptr2G->SetChar('E', 12, 5);
+    Ptr2G->SetChar('A', 10, 5);
+    Ptr2G->SetChar('K', 11, 5);
+    Ptr2G->SetChar('E', 12, 5);
 
-    //     Ptr2G->SetChar('D', 12, 6);
+    Ptr2G->SetChar('D', 12, 6);
 
-    //     Ptr2G->SetChar('O', 13, 6);
-    //     Ptr2G->SetChar('M', 14, 6);
+    Ptr2G->SetChar('O', 13, 6);
+    Ptr2G->SetChar('M', 14, 6);
 
-    //     Ptr2G->SetChar('A', 14, 7);
-    //     Ptr2G->SetChar('N', 14, 8);
+    Ptr2G->SetChar('A', 14, 7);
+    Ptr2G->SetChar('N', 14, 8);
 
-    //     Ptr2G->SetChar('A', 10, 11);
-    //     Ptr2G->SetChar('B', 11, 11);
-    //     Ptr2G->SetChar('A', 12, 11);
-    //     Ptr2G->SetChar('L', 13, 11);
-    //     Ptr2G->SetChar('S', 14, 11);
+    Ptr2G->SetChar('A', 10, 11);
+    Ptr2G->SetChar('B', 11, 11);
+    Ptr2G->SetChar('A', 12, 11);
+    Ptr2G->SetChar('L', 13, 11);
+    Ptr2G->SetChar('S', 14, 11);
 
-    //     Ptr2G->SetChar('O', 14, 12);
-    //     Ptr2G->SetChar('U', 14, 13);
-    //     Ptr2G->SetChar('P', 14, 14);
+    Ptr2G->SetChar('O', 14, 12);
+    Ptr2G->SetChar('U', 14, 13);
+    Ptr2G->SetChar('P', 14, 14);
 
-    //     Ptr2G->SetChar('S', 12, 12);
-    //     Ptr2G->SetChar('S', 12, 13);
+    Ptr2G->SetChar('S', 12, 12);
+    Ptr2G->SetChar('S', 12, 13);
 
     //TEST FOR WORD DICT CHECK :
     cout << "yahia" << (bool)Gen->checkWordDict("yahia") << endl;
