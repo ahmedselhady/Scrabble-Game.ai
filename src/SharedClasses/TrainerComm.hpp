@@ -13,13 +13,19 @@ using namespace std;
 class TrainerComm
 {
 	Move* ReceivedPlayerMove;
-    Move* PlayerMoveFromServer;
+	Move* PlayerMoveFromServer;
+	string ReceivedString;
 public:
 	TrainerComm();
 	void SetReceivedPlayerMove(Move* ReceivedMove);
 	void SendReceivedPlayerMoveToGUI();
+
 	void ReceiveMoveFromGUI();
-    int ReceiveScoreFromServer(int Score);
+	int ReceiveScoreFromServer(int Score);
+	Move* SendPlayerMove();
+
+	void ReceiveString(string str);
+	void SendReceivedStringToGUI();
 	~TrainerComm();
 };
 
