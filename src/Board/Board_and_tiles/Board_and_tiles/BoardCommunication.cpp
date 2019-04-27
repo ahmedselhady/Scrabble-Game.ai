@@ -31,9 +31,7 @@ Board & BoardToGrammer::getBoard()
 {
 	return*(BoardPtr);
 }
-std::vector<char>& BoardToGrammer::getTiles() {
-	return (*new std::vector<char>(TilesPtr->getRackTiles()));
-}
+
 //This Function will get the tile that is in the given rows and coloumns
 char BoardToGrammer::getTileAtPosition(int row, int col) {
 	vector<char> CurrentRow = BoardPtr->getNextHorizontal(row);

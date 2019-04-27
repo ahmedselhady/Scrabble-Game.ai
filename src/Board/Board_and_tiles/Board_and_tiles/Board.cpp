@@ -66,11 +66,7 @@ std::vector<char> &Board::getNextHorizontal(int HorizontalIndex)
 		}
 	}
 	int mOffsit = HorizontalIndex;
-<<<<<<< HEAD
-	for (int j = 0; j < 15; j++)// looping on the col
-=======
-	for (int i = 0; i < 15; i++) // looping on the col
->>>>>>> 2c4aafe98f337eb4886e6f87a27aeb2f119030ab
+	for (int j = 0; j < 15; j++) // looping on the col
 	{
 
 		for (std::size_t i = 0; i < CharVect.size(); ++i) // looking on the char board that has  this bit
