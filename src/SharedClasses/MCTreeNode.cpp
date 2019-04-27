@@ -5,6 +5,8 @@
 #include "MCTreeNode.hpp"
 using namespace std;
 
+unordered_map<char, int> globalBag;
+
 
 MCTreeNode:: MCTreeNode(list<Move> Moves) {
 	this->Depth = 0;
@@ -33,7 +35,11 @@ MCTreeNode::MCTreeNode(MCTreeNode* parent,int moveScore) {
 
 	//expand the node only if it is non terminal node
 	if(this->Depth<3){
+		
 		//TODO: with the given rack generate all the possible moves to fill the vector of children
+			// given and 
+
+		
 
 		//TODO: Using the Rack Generated we need to generate all the possible moves "Just Call the Function" and Assign it to 
 		//List Moves
@@ -64,11 +70,18 @@ float MCTreeNode::getAverageReward() {
 
 
 vector<char> MCTreeNode::generateRack() {
-	
-	unordered_map<char, int> Tiles;
-	// = getTiles(); //WTF 7d y3melha implement f ay kosom 7etta
+	globalBag['A'] = 1;
+	globalBag['B'] = 2;
+	globalBag['L'] = 3;
+	globalBag['D'] = 2;
+	globalBag['K'] = 2;
+	globalBag['G'] = 2;
+	globalBag['H'] = 2;
+	globalBag['O'] = 2;
+	globalBag['Q'] = 3;
+	globalBag['Z'] = 2;
 	OpponentRack OP;
-	OP.RackGenerator(Tiles);
+	OP.RackGenerator(globalBag);
 	return OP.GetRack();
 
 }

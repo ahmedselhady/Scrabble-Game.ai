@@ -131,10 +131,10 @@ vector<char> OpponentRack::RackGenerator(unordered_map<char, int> Letters) {
 		if (OpponentRack::Rack.size() >= 7)
 			return OpponentRack::Rack;
 
-		//TODO: Add Comment
 		if (Copy_Letters[Letter_Ascii].second > 0) {
-			OpponentRack::Rack.push_back(Letter_Ascii);
 
+			OpponentRack::Rack.push_back(Copy_Letters[Letter_Ascii].first);
+		
 			//Decrement remaining Number of all characters:
 			Number_Of_Remaining_Letters--;
 
