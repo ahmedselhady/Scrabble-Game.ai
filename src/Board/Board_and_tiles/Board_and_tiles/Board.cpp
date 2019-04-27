@@ -275,7 +275,6 @@ int Board::calculateScore(int offsit, bool horizontal, char intersectionLetter)
 
 void Board::print()
 {
-	BoardMask AllCharBoard;
 	for (auto Instance : BoardMap) // an instance of a letter
 	{
 		AllCharBoard = AllCharBoard | Instance.second;
