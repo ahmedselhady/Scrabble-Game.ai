@@ -49,4 +49,4 @@ Move AI_Mode_Function(unordered_map<char,int>& Tiles, vector<char>& Rack, bool);
 list <Move> MovesGeneration (BoardToGrammer* B , vector<char>& Rack, Node*,bool );
 
 //Thread 2: Rack Generation:
-void RackGen(unordered_map<char,int>& Tiles);
+void RackGen(unordered_map<char,int>& Tiles, AI_MODE*);

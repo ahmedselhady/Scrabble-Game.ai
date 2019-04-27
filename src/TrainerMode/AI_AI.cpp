@@ -2,8 +2,13 @@
 #pragma once
 #include "AI_AI.hpp"
 AI_AI::AI_AI()
-{
-    AI_Agent(Bag,HumanTiles,isEmty);
+{ this->MyBoard = NULL;
+    this->AI_Tiles = NULL;
+    this->AI_Agent = NULL;
+    this->Bag = NULL;
+    this->BoardStatus = NULL;
+    this->Communicator = NULL;
+   
 }
 bool AI_AI::SetBag(unordered_map<char,int>* Bag)
 {
@@ -19,26 +24,13 @@ bool AI_AI::SetBag(unordered_map<char,int>* Bag)
         
     return false;
 }
-    bool AI_AI::SetisEmtyBoard(bool isEmty)
-    {
-        try
-        {
-            this->isEmty=isEmty;
-            return true;
-        }
-        catch(const std::exception& e)
-        {
-            std::cerr << e.what() << '\n';
-        }
-            
-        return false;
-    }
+    
 
-    bool AI_AI::SetTiles(vector<char> &HumanTiles)
+    bool AI_AI::SetTiles(vector<char> *AI_Tiles)
     {
         try
         {
-                 this->HumanTiles=HumanTiles;
+                 this->AI_Tiles=AI_Tiles;
                  return true;
         }
         catch(const std::exception& e)
@@ -65,11 +57,16 @@ bool AI_AI::SetBag(unordered_map<char,int>* Bag)
     return false;
 
     }
-
+bool AI_AI::IsEmptyBoard()
+{
+    
+    this->BoardStatus=&this->MyBoard->getBoardStatus();
+   return this->BoardStatus->isEmpty();
+}
     Move* AI_AI::DoWork()
     {
         
-      Move* BestMove=AI_Agent.getBestMove();
-       return BestMove;
+      Move BestMove=AI_Agent->getBestMove();
+       return &BestMove;
     }
 
