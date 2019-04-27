@@ -1,20 +1,26 @@
 #ifndef COMM_SCRABBLE_CLIENT_CPP
 #define COMM_SCRABBLE_CLIENT_CPP
 
-//#include "easywsclient/easywsclient.hpp"
 #include <assert.h>
 #include <future>
 #include <iostream>
 #include <string>
 #include "BinaryEnvelope.hpp"
 #include "SharedClasses/TrainerComm.hpp"
-#include "easywsclient/easywsclient.cpp"  // <-- include only if you don't want compile separately
+#include "easywsclient/easywsclient.hpp"
+//#include "easywsclient/easywsclient.cpp"  // <-- include only if you don't
+// want compile separately
 
 using easywsclient::WebSocket;
 static WebSocket::pointer ws_connection = NULL;
 
 // this is used to hold the current state of our communcation
 States state = States::INIT;
+
+void sendMsgToGUI(std::string str) {
+  std::thread t(sendStringToGUI, str);
+  t.detach();
+}
 
 void print_vec(const std::vector<uint8_t>& msg) {
   std::cout << std::endl;
@@ -36,6 +42,7 @@ void handle_message(const std::vector<uint8_t>& message) {
 
   // always send the envelope unless it doesn't matter
   bool sendMessage = true;
+  std::string GUIMsg = "";
   // this should be true when we have to make a play then send it
   BinaryEnvelope env;
 
@@ -51,7 +58,12 @@ void handle_message(const std::vector<uint8_t>& message) {
   } else if (msgType == MessageTypes::START) {
     auto smsg = deserializeReadyMessage(message);
     // TODO: Construct the board and hold it from here
-
+    GUIMsg += "BOARD / ";
+    for (int i = 0; i < 15; i++) {
+      for (int j = 0; j < 15; j++) {
+        GUIMsg += std::to_string(smsg.board[i][j]) + " ";
+      }
+    }
     if (smsg.order == 1) {
       // * well this is our turn
       state = States::THINKING;
@@ -136,6 +148,11 @@ void handle_message(const std::vector<uint8_t>& message) {
     std::cerr << "Unknown Message Type, ya bashmo7nds zbt acoadk" << std::endl;
   }
 
+  if (!GUIMsg.empty()) {
+    std::cout << "Sending to GUI NOWWWWWWW";
+    sendMsgToGUI(GUIMsg);
+  }
+
   if (state == States::AWAIT_AGENT_CHALLENGE) {
     // * we are challenging, huh ?
     // if challenging
@@ -183,7 +200,7 @@ void handle_message(const std::vector<uint8_t>& message) {
 
 int main(int argc, char** argv) {
   // use the default local machine socket
-  std::string hostname = "ws_connection://localhost:8080/";
+  std::string hostname = "ws://localhost:8080/";
 
   if (argc > 1) {
     hostname = argv[1];
@@ -204,6 +221,7 @@ int main(int argc, char** argv) {
 
     // receive binary message as long as there is connection
     // if the connection dies, loop back to try to connect again
+
     while (ws_connection->getReadyState() != WebSocket::CLOSED) {
       ws_connection->poll();
       ws_connection->dispatchBinary(handle_message);
@@ -211,8 +229,6 @@ int main(int argc, char** argv) {
       // here we are chillin'
       // do something non-blocking !!!!
       // TODO: maybe send a non-blocking message to the GUI, maybe ?
-
-      auto fut = std::async(sendStringToGUI, "a7a");
     }
 
     // * Reset the state to start a new connection

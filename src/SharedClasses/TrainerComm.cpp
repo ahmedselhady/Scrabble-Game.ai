@@ -83,20 +83,18 @@ void TrainerComm::ReceiveString(string str) { ReceivedString = str; }
 void TrainerComm::SendReceivedStringToGUI() {
   zmq::context_t context(1);
   zmq::socket_t socket(context, ZMQ_REQ);
-  socket.connect("tcp://localhost:5552");
+  socket.connect("tcp://192.168.88.208:5555");
   zmq_msg_t Msg;
   zmq_msg_init_size(&Msg, ReceivedString.length());
   memcpy(zmq_msg_data(&Msg), ReceivedString.c_str(), ReceivedString.length());
-  zmq_msg_send(&Msg, socket, 0);
+  zmq_msg_send(&Msg, socket, !ZMQ_DONTWAIT);
+  zmq_msg_recv(&Msg, socket, !ZMQ_DONTWAIT);
 }
 
 TrainerComm::~TrainerComm() {}
 
 void sendStringToGUI(string str) {
-  cout << "Called send String" << endl;
   TrainerComm tc;
-
   tc.ReceiveString(str);
-
   tc.SendReceivedStringToGUI();
 }

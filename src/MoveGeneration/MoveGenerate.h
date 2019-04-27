@@ -73,6 +73,8 @@ class WordGenerate {  // just a static class no need to create an explicit
   char anchorCol;
   char usedTiles = 0;
 
+  bool emptyBoard = false;
+
  public:
   WordGenerate(BoardToGrammer *board,
                Node *root);                   // Takes a Reference to the Board.

@@ -30,7 +30,7 @@ inline Node *createGaddag() {  // just a test function.
   return gaddagRoot;
 }
 
-int main() {
+/* int main() {
   Node *gaddagRoot;
   using namespace std::chrono;
 
@@ -416,7 +416,7 @@ int main() {
   // cout<<endl<<l<<endl;
   system("pause");
   return 0;
-}
+} */
 
 // NOTE: The Generated Moves are From Type Move in The Struct "Move" inside
 // "MoveGenerate.h"

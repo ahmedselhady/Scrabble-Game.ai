@@ -18,7 +18,7 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 set (CMAKE_VERBOSE_MAKEFILE 0) # 1 should be used for debugging
 set (CMAKE_SUPPRESS_REGENERATION TRUE) # Suppresses ZERO_CHECK
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -W")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -lpthread -W")
 set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -Wall")
 
 if(MSVC)
@@ -68,6 +68,8 @@ source_group ("vendors" FILES ${VENDORS_SOURCES})
 # configure_file(${CMAKE_CURRENT_SOURCE_DIR}/src/MoveGeneration/Dict.txt
 #     ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
 
+
+
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/src/MoveGeneration/Dict.txt
      DESTINATION ${CMAKE_BINARY_DIR}/Scrabble.AI/Debug)
 
@@ -76,6 +78,7 @@ add_definitions (-DGLFW_INCLUDE_NONE
 add_executable (${PROJECT_NAME} ${PROJECT_SOURCES} ${PROJECT_HEADERS}
                                 ${COMMON_SOURCES} ${COMMON_HEADERS}
                                 ${PROJECT_CONFIGS} ${VENDORS_SOURCES})
+target_link_libraries(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/vendor/libzmq.so ${CMAKE_THREAD_LIBS_INIT})
 #target_link_libraries (${PROJECT_NAME})
 set_target_properties (${PROJECT_NAME} PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${PROJECT_NAME})

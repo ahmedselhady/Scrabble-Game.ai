@@ -3,6 +3,7 @@
 #include <string.h>
 #include <zmq.h>
 #include <cstdint>
+#include <future>
 #include <iostream>
 #include <string>
 #include <vector>
