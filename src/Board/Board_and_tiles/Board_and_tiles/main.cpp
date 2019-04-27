@@ -41,7 +41,6 @@
 
 // // 	cout << "\n---------------------------------------------------";
 
-
 // // 	VerticalVector = Ptr->getNextVertical(0);
 // // 	PrintNext(0, VerticalVector);
 // // 	VerticalVector = Ptr->getNextVertical(1);
@@ -82,7 +81,6 @@
 
 // // 	cout << "\n---------------------------------------------------";
 
-
 // // 	VerticalVector = Ptr->getNextVertical(0);
 // // 	PrintNext(0, VerticalVector);
 // // 	VerticalVector = Ptr->getNextVertical(1);
@@ -94,7 +92,6 @@
 // // 	VerticalVector = Ptr->getNextVertical(5);
 // // 	PrintNext(5, VerticalVector);
 // // 	//delete Ptr;
-
 
 // // 	//----------------------- testing for Tiles:
 // // 	Tiles* t = Tiles::getTiles();
@@ -112,13 +109,6 @@
 // // 	val = &b2g.getNextVerticalState();
 
 // // 	val = &b2g.getTiles();
-
-
-
-
-
-
-
 
 // // 	return 0;
 // // }
@@ -145,11 +135,7 @@
 // 	std::cout<<b2g.hasaTile(0,0)<<" "<<b2g.getTileAtPosition(1,1)<<std::endl;
 // 	std::cout<<b2g.hasaTile(0,1)<<" "<<b2g.getTileAtPosition(2,1)<<std::endl;
 
-
-
 // 	system("pause");
-
-
 
 // 	return 0;
 // }

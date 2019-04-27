@@ -29,7 +29,6 @@ with this specific letter returns NULL if not found.
 Node* Node::findChildChar(char letter){
     Node*child = getFirstChild();
     //cout<<std::hex<<this<<endl;
-    int index = 0;
     while(child!=NULL){
     	//cout<<std::hex<<this<<" .. "<<++index<<endl;
     	char temp = child->getNodeLetter();
