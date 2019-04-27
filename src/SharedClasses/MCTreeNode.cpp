@@ -63,7 +63,13 @@ float MCTreeNode::getAverageReward() {
 
 
 vector<char> MCTreeNode::generateRack() {
-	//TODO:implement this function
+	
+	unordered_map<char, int> Tiles;
+	// = getTiles(); //WTF 7d y3melha implement f ay kosom 7etta
+	OpponentRack OP;
+	OP.RackGenerator(Tiles);
+	return OP.GetRack();
+
 }
 
 vector<MCTreeNode*> MCTreeNode::getChildren() {

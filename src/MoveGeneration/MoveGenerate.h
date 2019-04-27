@@ -13,6 +13,7 @@
 #include "Gaddag.h"
 #include "../SharedClasses/Move.hpp"
 #include "..\Board\Board_and_tiles\Board_and_tiles\BoardCommunication.h"
+#include "../SharedClasses/Move.hpp"
 using namespace std;
 
 #define MAX_BOARD_ROWS 15
@@ -40,6 +41,18 @@ using namespace std;
 //     char moveUsedTiles;
 // };
 ///
+//struct Position{ // defines what a "Move" is.
+//    char ROW;
+//    char COL;
+//};
+//
+//struct Move{ // defines what a "Move" is.
+//    string word;
+//    int moveScore;
+//    Position startPosition;
+//    bool horizontal; // true -> horiz false -> vertical.
+//    char moveUsedTiles;
+//};
 
 class WordGenerate
 { // just a static class no need to create an explicit object.

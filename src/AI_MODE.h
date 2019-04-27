@@ -7,9 +7,9 @@
 #include <utility>
 #include <future>
 
-#include "Board/Board_and_tiles/Board_and_tiles/Board.h";
-#include "Board/Board_and_tiles/Board_and_tiles/BoardCommunication.h";
-#include "Board/Board_and_tiles/Board_and_tiles/Tiles.h";
+#include "Board/Board_and_tiles/Board_and_tiles/Board.h"
+#include "Board/Board_and_tiles/Board_and_tiles/BoardCommunication.h"
+#include "Board/Board_and_tiles/Board_and_tiles/Tiles.h"
 #include "Opponent-Rack-Generator/Opponent.h"
 #include "SharedClasses/MCTSearch.h"
 #include "../src/MoveGeneration/LoadGaddag.h"
@@ -33,9 +33,11 @@ public:
     vector<char> getOpponentRack();
     Move getBestMove();
     static void setOpponentRack(vector<char>);
+	
 private:
 
   static  vector<char> TheOpponentRack;
+ 
   Move BestMove;
 	///////////////////////////////////////////////////////////////
 };

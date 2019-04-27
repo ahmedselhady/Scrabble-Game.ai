@@ -1,4 +1,3 @@
-#pragma once
 
 #include "AI_MODE.h"
 
@@ -36,12 +35,15 @@ list<Move> listOfMoves = MovesGenerationThread.get();
 
 listOfMoves.sort([](const Move & a, const Move & b) { return a.moveScore > b.moveScore; });
 
-if(listOfMoves.size > 23){
+if(listOfMoves.size() > 23){
 
     listOfMoves.resize(23);
 
 }
-
+cout<< "List of moves: ";
+for(auto Literator: listOfMoves){
+    cout<< "Word Score: "<<Literator.moveScore << "Word: " << Literator.word <<endl;
+}
 /////////////////////////////////////////////////////////////////////
 int TilesLeft =0;
 
@@ -74,7 +76,7 @@ list<Move>::iterator it = listOfMoves.begin();
 // Advance the iterator by n->index positions,
 std::advance(it, Index);
 //Assign BestMove to the n-th element in Moves List.
-AI_MODE::BestMove = listOfMoves.front;
+AI_MODE::BestMove = listOfMoves.front();
 
 
 
@@ -100,6 +102,7 @@ Move AI_MODE::getBestMove(){
  }
 
 
+
 Move AI_Mode_Function(unordered_map<char,int>& Tiles, vector<char>& Rack, bool isEmpty){
     
     AI_MODE* AI = new AI_MODE(Tiles,Rack,isEmpty);
@@ -121,6 +124,7 @@ list <Move> MovesGeneration (BoardToGrammer* B , vector<char>& Rack, Node* gadda
 Gen->countTilesRack(&Rack); 
 
     if(isEmpty){
+        cout<< "Empty board"<<endl;
     Gen->emptyBoardMoves();
     }else{
     Gen->crosssets(); // Gen->Updatecrosssets();
