@@ -14,7 +14,13 @@ static WebSocket::pointer ws = NULL;
 // this is used to hold the current state of our communcation
 States state = States::INIT;
 
-void func() {}
+void print_vec(const std::vector<uint8_t>& msg) {
+  std::cout << std::endl;
+  for (auto m : msg) {
+    std::cout << std::to_string(m) << ", ";
+  }
+  std::cout << std::endl;
+}
 
 void handle_message(const std::vector<uint8_t>& message) {
   // the message type always exist in the first
@@ -24,10 +30,7 @@ void handle_message(const std::vector<uint8_t>& message) {
   // printing the buffer just for debugging
   // TODO: Remove this when finished the game
   std::cout << "Received buffer: ";
-  for (auto& m : message) {
-    std::cout << std::to_string(m) << ", ";
-  }
-  std::cout << std::endl;
+  print_vec(message);
 
   // always send the envelope unless it doesn't matter
   bool sendMessage = true;
@@ -47,7 +50,7 @@ void handle_message(const std::vector<uint8_t>& message) {
     auto smsg = deserializeReadyMessage(message);
     // TODO: Construct the board and hold it from here
 
-    if (smsg.order = 1) {
+    if (smsg.order == 1) {
       // * well this is our turn
       state = States::THINKING;
     } else {
@@ -72,11 +75,12 @@ void handle_message(const std::vector<uint8_t>& message) {
     // ? state should be known after the play is known
   } else if (msgType == MessageTypes::PLAY) {
     auto playFromOpponent = deserializePlayMessage(message);
-    // TODO: here we can update the gui maybe
+    // TODO: here we can update the gui mayb
     state = States::AWAIT_AGENT_CHALLENGE;
   } else if (msgType == MessageTypes::INVALID) {
     if (state == States::AWAIT_PLAY_RESPONSE) {
       auto invalidPlay = deserializeInvalidPlayMessage(message);
+      state = States::THINKING;
     } else if (state == States::AWAIT_EXCHANGE_RESPONSE) {
       auto invalidEx = deserializeInvalidExchangeMessage(message);
       state = States::THINKING;
@@ -142,12 +146,36 @@ void handle_message(const std::vector<uint8_t>& message) {
     // TODO: playing should modify state, WIP
     // * should investigate doing an async task right here
     env.clear();
-    env.insertUInt8(MessageTypes::PASS);  // PASS all the moves for now
+    env.insertUInt8(MessageTypes::PLAY);
+
+    std::cout << std::endl << "Please enter play: " << std::flush;
+
+    int row, col, dir, score;
+    int tiles[7];
+    std::cin >> col >> row >> dir;
+    for (int i = 0; i < 7; i++) {
+      std::cin >> tiles[i];
+      // tiles[i] -= '0';
+    }
+    std::cin >> score;
+
+    env.insertUInt8(col);
+    env.insertUInt8(row);
+    env.insertUInt8(dir);
+    for (int i = 0; i < 7; i++) {
+      env.insertUInt8(tiles[i]);
+    }
+    env.insert32BitInt(score);
+
+    state = States::AWAIT_PLAY_RESPONSE;
   }
 
   // finished the message, if we need to send then send it
   if (sendMessage) {
-    ws->sendBinary(env.serialize());
+    auto ser = env.serialize();
+    std::cout << "Sending: ";
+    print_vec(ser);
+    ws->sendBinary(ser);
   }
 }
 

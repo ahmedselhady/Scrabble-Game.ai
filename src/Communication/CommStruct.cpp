@@ -2,6 +2,7 @@
 #define COMM_PROTOCOL_CPP
 
 #include <cstdint>
+#include <iostream>
 #include <vector>
 #include "CommStructs.hpp"
 
@@ -76,6 +77,7 @@ ReadyRequestMessage deserializeReadyMessage(
                          binary[index++] << 8 | binary[index++];
   msg.totalRemainingTime = binary[index++] << 24 | binary[index++] << 16 |
                            binary[index++] << 8 | binary[index++];
+
   return msg;
 };
 

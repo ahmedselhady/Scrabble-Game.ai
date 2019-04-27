@@ -24,6 +24,8 @@ void BinaryEnvelope::insertUInt8(uint8_t x) {
 
   // get the byte representation of a uint8
   auto result = std::bitset<8>(x).to_string();
+  // std::cout << x << " bitset: " << result << std::endl;
+
   this->buffer.append(result);
 }
 
@@ -47,9 +49,12 @@ void BinaryEnvelope::insertString(std::string str) {
 std::vector<uint8_t> BinaryEnvelope::serialize() const {
   std::vector<uint8_t> data;
 
+  std::cout << buffer << std::endl;
+
   for (int i = 0; i < this->buffer.length(); i += 8) {
     auto st = this->buffer.substr(i, 8);
-    data.emplace_back(std::stoi(st, nullptr, 2));
+    auto num = std::stoi(st, nullptr, 2);
+    data.emplace_back(num);
   }
 
   return data;

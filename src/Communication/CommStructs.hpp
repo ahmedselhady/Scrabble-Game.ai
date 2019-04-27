@@ -46,6 +46,10 @@ enum EndReasons {
   STOP_BUTTON_PRESSED,
 };
 
+struct PlayData {
+  uint8_t* tiles;
+};
+
 // Request means client (us) <== server
 // Response means client (us) ==> server
 // and this is handled by our BinaryEnvelope
