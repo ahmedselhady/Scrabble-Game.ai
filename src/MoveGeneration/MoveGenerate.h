@@ -13,6 +13,7 @@
 #include "Gaddag.h"
 #include "../SharedClasses/Move.hpp"
 #include "..\Board\Board_and_tiles\Board_and_tiles\BoardCommunication.h"
+#include "../SharedClasses/Move.hpp"
 using namespace std;
 
 #define MAX_BOARD_ROWS 15
@@ -50,7 +51,7 @@ private:
     BoardToGrammer *board;
     list<Move> moves; // all possible moves provided a Rack and and a Board at a given instant.
     Node *root;       // gaddag root tree.
-    unordered_map<char, int> tilesCount;
+    unordered_map <char, int> tilesCount;
     list<string> nonRepeatedMoves;
     char maxBorder; // Utility Variables inside fuctions helping in Transformation from Vertical to Horiz and vice versa.
     char colOffset;

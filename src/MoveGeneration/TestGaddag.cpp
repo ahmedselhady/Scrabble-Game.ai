@@ -30,7 +30,7 @@ inline Node *createGaddag()
     Node *gaddagRoot = gaddagConstructor.constructGaddag();
     return gaddagRoot;
 }
-
+/*
 int main()
 {
     Node *gaddagRoot;
@@ -411,7 +411,7 @@ int main()
     // cout<<endl<<l<<endl;
     system("pause");
     return 0;
-}
+}*/
 
 // NOTE: The Generated Moves are From Type Move in The Struct "Move" inside "MoveGenerate.h"
 /*

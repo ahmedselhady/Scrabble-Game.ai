@@ -4,7 +4,7 @@
 #include <sys/stat.h>
 #include <algorithm> 
 #define DICT_FILE_NAME "./src/MoveGeneration/Dict.txt"
-#define GADDAG_FILE_NAME "./src/MoveGeneration/GADDAG.txt"
+#define GADDAG_FILE_NAME "D:/Faculty Stuff/CCE-C semester 6/Machine intellegence/Wehrmacht/Scrabble-Game.ai/src/MoveGeneration/GADDAG.txt"
 #define TOTAL_GADDAG_NODES 6419512
 
 using namespace std;
