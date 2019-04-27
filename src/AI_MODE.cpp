@@ -17,20 +17,27 @@ AI_MODE::AI_MODE(unordered_map<char, int>& Tiles, vector<char>& Rack, bool isEmp
 
 	//Thread 1:
 	/////////////////////////////////////////////////////
-
+	cout << "Starting thread 1: Move generation"<<endl;
 	std::future<list<Move>> MovesGenerationThread = std::async(MovesGeneration, B, Rack, gaddagRoot, isEmpty);
 
 	////////////////////////////////////////////////
 
 	//Thread 2:
 	//////////////////////////////////////////////////////////
-
+	cout << "Starting thread 2: rack generation" << endl;
 	std::future<void> RackGenerator = std::async(RackGen, Tiles, this);
 
 	/////////////////////////////////////*////////////////////////
 
 	//Thread Joining.
 	RackGenerator.get();
+	cout << "Opponent Rack:" << endl;
+	for (auto it: AI_MODE::TheOpponentRack) {
+	
+		cout << it << " ";
+	}
+	cout <<endl;
+
 	list<Move> listOfMoves = MovesGenerationThread.get();
 
 	listOfMoves.sort([](const Move & a, const Move & b) { return a.moveScore > b.moveScore; });
