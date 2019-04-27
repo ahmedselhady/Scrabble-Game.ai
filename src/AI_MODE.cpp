@@ -2,16 +2,6 @@
 
 #include "AI_MODE.h"
 
-/*
-Written By: Amr Khaled
-
-Note for Developers: 20/4/2019
-
-- Include Board, I don't know where to find it that is why iput it as int to elemenate errors only..
-- Assuming that unordered_map<char,int> Tiles contains all tiles that aren't played yet after removing our tiles.
--
-
-*/
 
 //Constructor for Ai_Mode:
 inline Node* createGaddag(){ // just a test function.
@@ -20,36 +10,51 @@ inline Node* createGaddag(){ // just a test function.
 	 return gaddagRoot;
 }
 
-AI_MODE::AI_MODE(BoardToGrammer* B,unordered_map<char,int> Tiles, vector<char>& Rack) {
-////////////////////////////////////////////
+AI_MODE::AI_MODE(unordered_map<char,int>& Tiles, vector<char>& Rack, bool isEmpty) {
 
-
+BoardToGrammer* B = new BoardToGrammer() ;
 Node* gaddagRoot;
-gaddagRoot = createGaddag(); // THIS FUCNTION ONLY USED FOR TESTING.
-WordGenerate * Gen = new WordGenerate(B,gaddagRoot);
+gaddagRoot = createGaddag();
 
+//Thread 1:
+/////////////////////////////////////////////////////
 
-Gen->countTilesRack(&Rack); 
-
-// Next line or the following two:
-//  Gen->emptyBoardMoves();
-Gen->crosssets(); // Gen->Updatecrosssets();
-Gen->generateWords();
-
-list<Move> L = Gen->allMoves();
+std::future<list<Move>> MovesGenerationThread = std::async(MovesGeneration,B,Rack,gaddagRoot,isEmpty); 
 
 ////////////////////////////////////////////////
-OpponentRack OP;
-AI_MODE::TheOpponentRack = OP.RackGenerator(Tiles);
+
+//Thread 2:
+//////////////////////////////////////////////////////////
+
+std::future<void> RackGenerator = std::async (RackGen,Tiles);
+
+/////////////////////////////////////*////////////////////////
+
+//Thread Joining.
+RackGenerator.get();
+list<Move> listOfMoves = MovesGenerationThread.get();
+
+listOfMoves.sort([](const Move & a, const Move & b) { return a.moveScore > b.moveScore; });
+
+if(listOfMoves.size > 23){
+
+    listOfMoves.resize(23);
+
+}
+
+/////////////////////////////////////////////////////////////////////
 int TilesLeft =0;
+
+
 	for (auto Letter_Iterator : Tiles) {
 
 		TilesLeft += Letter_Iterator.second;
 
 	}
 
+
 // Create the Monte Carlo Search Tree:
-MCTSearch MonteCarlo(L);
+MCTSearch MonteCarlo(listOfMoves);
 
 int Index = 0; //Index of best Move in Moves Lists.
 
@@ -65,25 +70,19 @@ Index = MonteCarlo.endGameMCTS();
 }
 
 // Create iterator pointing to first element
-list<Move>::iterator it = L.begin();
+list<Move>::iterator it = listOfMoves.begin();
 // Advance the iterator by n->index positions,
 std::advance(it, Index);
 //Assign BestMove to the n-th element in Moves List.
-AI_MODE::BestMove = L.front;
+AI_MODE::BestMove = listOfMoves.front;
 
-// AI_MODE::MyRack = OurRack // I don't know if a function to change from unordered_map to vector was already implmeneted in another module.
 
 
 
 }
-
-
 
 
 //Getters for Private Elements: 
-vector<char> AI_MODE::getMyRack(){
-    return AI_MODE::MyRack;
-}
 
 vector<char> AI_MODE::getOpponentRack(){
     return AI_MODE::TheOpponentRack;
@@ -95,10 +94,40 @@ Move AI_MODE::getBestMove(){
 }
 
 
+ void AI_MODE::setOpponentRack(vector<char>R){
 
-Move AI_Mode_Function(BoardToGrammer* B,unordered_map<char,int> Tiles, vector<char>& Rack){
+        AI_MODE::TheOpponentRack = R;
+ }
+
+
+Move AI_Mode_Function(unordered_map<char,int>& Tiles, vector<char>& Rack, bool isEmpty){
     
-    AI_MODE* AI = new AI_MODE(B,Tiles,Rack);
+    AI_MODE* AI = new AI_MODE(Tiles,Rack,isEmpty);
     Move M = AI->getBestMove();
     return M;
+}
+
+
+void RackGen(unordered_map<char,int>& Tiles) {
+    OpponentRack OP;
+    AI_MODE::setOpponentRack(OP.RackGenerator(Tiles));
+}
+
+
+list <Move> MovesGeneration (BoardToGrammer* B , vector<char>& Rack, Node* gaddagRoot, bool isEmpty)
+{
+    WordGenerate * Gen = new WordGenerate(B,gaddagRoot);
+// the & is not essintial
+Gen->countTilesRack(&Rack); 
+
+    if(isEmpty){
+    Gen->emptyBoardMoves();
+    }else{
+    Gen->crosssets(); // Gen->Updatecrosssets();
+    Gen->generateWords();
+    }
+
+
+list<Move> L = Gen->allMoves();
+
 }

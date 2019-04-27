@@ -5,6 +5,7 @@
 #include <unordered_map>
 #include <math.h> 
 #include <utility>
+#include <future>
 
 #include "Board/Board_and_tiles/Board_and_tiles/Board.h";
 #include "Board/Board_and_tiles/Board_and_tiles/BoardCommunication.h";
@@ -28,16 +29,23 @@ class AI_MODE {
 
 public:
 
-    AI_MODE(BoardToGrammer* ,unordered_map<char,int>, vector<char>&);
-    vector<char> getMyRack();
+    AI_MODE(unordered_map<char,int>&, vector<char>&, bool);
     vector<char> getOpponentRack();
     Move getBestMove();
+    static void setOpponentRack(vector<char>);
 private:
 
-  	vector<char> MyRack;
-    vector<char> TheOpponentRack;
-    Move BestMove;
+  static  vector<char> TheOpponentRack;
+  Move BestMove;
 	///////////////////////////////////////////////////////////////
 };
 
-Move AI_Mode_Function(BoardToGrammer* B,unordered_map<char,int> Tiles, vector<char>& Rack);
+//Functions outside the class:
+
+Move AI_Mode_Function(unordered_map<char,int>& Tiles, vector<char>& Rack, bool);
+
+//Thread 1: Moves Generation:
+list <Move> MovesGeneration (BoardToGrammer* B , vector<char>& Rack, Node*,bool );
+
+//Thread 2: Rack Generation:
+void RackGen(unordered_map<char,int>& Tiles);
