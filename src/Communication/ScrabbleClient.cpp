@@ -3,13 +3,15 @@
 
 //#include "easywsclient/easywsclient.hpp"
 #include <assert.h>
+#include <future>
 #include <iostream>
 #include <string>
 #include "BinaryEnvelope.hpp"
+#include "SharedClasses/TrainerComm.hpp"
 #include "easywsclient/easywsclient.cpp"  // <-- include only if you don't want compile separately
 
 using easywsclient::WebSocket;
-static WebSocket::pointer ws = NULL;
+static WebSocket::pointer ws_connection = NULL;
 
 // this is used to hold the current state of our communcation
 States state = States::INIT;
@@ -175,13 +177,13 @@ void handle_message(const std::vector<uint8_t>& message) {
     auto ser = env.serialize();
     std::cout << "Sending: ";
     print_vec(ser);
-    ws->sendBinary(ser);
+    ws_connection->sendBinary(ser);
   }
 }
 
 int main(int argc, char** argv) {
   // use the default local machine socket
-  std::string hostname = "ws://localhost:8080/";
+  std::string hostname = "ws_connection://localhost:8080/";
 
   if (argc > 1) {
     hostname = argv[1];
@@ -194,27 +196,29 @@ int main(int argc, char** argv) {
 
   while (true) {
     // * try to connect to the host using the library
-    ws = WebSocket::from_url(hostname);
-    ws->sendPing();
+    ws_connection = WebSocket::from_url(hostname);
+    ws_connection->sendPing();
 
     // ! make sure we got the connection, if not fail and exit
-    assert(ws);
+    assert(ws_connection);
 
     // receive binary message as long as there is connection
     // if the connection dies, loop back to try to connect again
-    while (ws->getReadyState() != WebSocket::CLOSED) {
-      ws->poll();
-      ws->dispatchBinary(handle_message);
+    while (ws_connection->getReadyState() != WebSocket::CLOSED) {
+      ws_connection->poll();
+      ws_connection->dispatchBinary(handle_message);
 
       // here we are chillin'
       // do something non-blocking !!!!
       // TODO: maybe send a non-blocking message to the GUI, maybe ?
+
+      auto fut = std::async(sendStringToGUI, "a7a");
     }
 
     // * Reset the state to start a new connection
     state = States::INIT;
 
-    delete ws;
+    delete ws_connection;
 
     std::cerr << "The Connection was weirdly closed for the " << ++retries
               << " time, attempting to reconnect..." << std::endl;

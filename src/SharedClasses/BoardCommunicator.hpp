@@ -1,12 +1,12 @@
 #pragma once
-#include<vector>
+#include <vector>
 #include "../Board/Board_and_tiles/Board_and_tiles/Board.h"
 #include "../Board/Board_and_tiles/Board_and_tiles/Tiles.h"
 
-class BoardCommunicator {
+class BoardCommunicator
+{
 
 public:
-
 	/*
 	 * Constructor
 	 *     The communication module creates and instance of the current board state 
@@ -16,8 +16,7 @@ public:
 	 * returns:
 	 *      Instance of Board Communicator
 	*/
-	
-	
+
 	//Assuming the next state is an integer, Might be changed later as the moves will be updated to the board
 	/**
 	 * function: 
@@ -27,8 +26,7 @@ public:
 	 * returns:
 	 * 		the next column in the board
 	*/
-	virtual std::vector<char>& getNextVerticalState()=0;
-
+	virtual std::vector<char> &getNextVerticalState() = 0;
 
 	/**
 	 * function: 
@@ -38,7 +36,7 @@ public:
 	 * returns:
 	 * 		the next row in the board
 	*/
-	virtual std::vector<char>& getNextHorizontalState()=0;
+	virtual std::vector<char> &getNextHorizontalState() = 0;
 
 	//assume tiles chosen in player mode from thew GUI return in an array, will be changed later
 	/**
@@ -49,7 +47,7 @@ public:
 	 * returns:
 	 * 		the rack of tiles with player
 	*/
-	virtual std::vector<char>& getTiles()=0;
+	virtual std::vector<char> &getTiles() = 0;
 
 	/**
 	 * function: getTiles; calculates and returns the Score gained by the suggested move
@@ -64,21 +62,17 @@ public:
 	 * returns:
 	 * 		score: integer; The score calculated for the suggested move
 	*/
-	int calculateScore(std::vector<char>& suggestedMove, int position, bool horizontal);
+	int calculateScore(string suggestedMove, int row, int col, bool horizontal);
 
 protected:
-
 	// TODO: add the Board Class as a data member:
-	Board*BoardPtr;
-	Tiles*TilesPtr;
+	Board *BoardPtr;
+	Tiles *TilesPtr;
 
 private:
-
 	//Data members
 	/*
 	* datastructure(i.e the container) of the tiles on the board.
 	*board state
 	*/
-
-
 };
