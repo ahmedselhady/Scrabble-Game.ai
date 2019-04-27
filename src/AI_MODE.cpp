@@ -1,4 +1,3 @@
-#pragma once
 
 #include "AI_MODE.h"
 
@@ -41,7 +40,10 @@ if(listOfMoves.size > 23){
     listOfMoves.resize(23);
 
 }
-
+cout<< "List of moves: ";
+for(auto Literator: listOfMoves){
+    cout<< "Word Score: "<<Literator.moveScore << "Word: " << Literator.word <<endl;
+}
 /////////////////////////////////////////////////////////////////////
 int TilesLeft =0;
 
@@ -121,6 +123,7 @@ list <Move> MovesGeneration (BoardToGrammer* B , vector<char>& Rack, Node* gadda
 Gen->countTilesRack(&Rack); 
 
     if(isEmpty){
+        cout<< "Empty board"<<endl;
     Gen->emptyBoardMoves();
     }else{
     Gen->crosssets(); // Gen->Updatecrosssets();
