@@ -1,5 +1,5 @@
 #include "./BoardCommunicator.hpp"
-#include "../Board/Board_and_tiles/Board_and_tiles/BoardConst.h"
+#include "../Board/Board_and_tiles/Board_and_tiles/BoardConst.hpp"
 
 int BoardCommunicator::calculateScore(string suggestedMove, int row, int col, bool horizontal)
 {

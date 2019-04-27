@@ -4,8 +4,8 @@
 #include <iostream>
 #include <math.h>
 #include <unordered_map>
-#include "Gaddag.h"
-#include "LoadGaddag.h"
+#include "Gaddag.hpp"
+#include "LoadGaddag.hpp"
 using namespace std;
 
 #define ADDRESS_OFFSET_CASTING 0x00FFFFFF // To get the address part of a node's first child from the "node info" data member.

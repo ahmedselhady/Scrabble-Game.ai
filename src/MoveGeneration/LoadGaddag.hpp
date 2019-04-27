@@ -11,8 +11,8 @@
 #include <string.h>
 #include <string>
 
-#include"LoadNode.h"
-#include "Gaddag.h"
+#include"LoadNode.hpp"
+#include "Gaddag.hpp"
 using namespace std;
 
 #define GADDAG_DELIMITER '^'

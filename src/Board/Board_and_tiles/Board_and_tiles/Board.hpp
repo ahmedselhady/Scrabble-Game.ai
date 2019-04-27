@@ -1,8 +1,6 @@
 #pragma once
 
-#include "../Board_and_tiles/BoardMask.h"
-#include "../Board_and_tiles/BoardMask.h"
-
+#include "../Board_and_tiles/BoardMask.hpp"
 #include <vector>
 #include <unordered_map>
 #include <iostream>

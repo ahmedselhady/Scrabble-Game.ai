@@ -1,7 +1,7 @@
 #pragma once
 #include <vector>
-#include "../Board/Board_and_tiles/Board_and_tiles/Board.h"
-#include "../Board/Board_and_tiles/Board_and_tiles/Tiles.h"
+#include "../Board/Board_and_tiles/Board_and_tiles/Board.hpp"
+#include "../Board/Board_and_tiles/Board_and_tiles/Tiles.hpp"
 #include "../SharedClasses/Move.hpp"
 
 class BoardCommunicator

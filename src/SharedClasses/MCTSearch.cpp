@@ -2,7 +2,7 @@
 
 #include <string>
 #include <vector>
-#include "MCTSearch.h"
+#include "MCTSearch.hpp"
 
 
 MCTSearch::MCTSearch(list<Move> Moves) {

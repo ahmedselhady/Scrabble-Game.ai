@@ -7,19 +7,17 @@
 #include <utility>
 #include <future>
 
-#include "Board/Board_and_tiles/Board_and_tiles/Board.h"
-#include "Board/Board_and_tiles/Board_and_tiles/BoardCommunication.h"
-#include "Board/Board_and_tiles/Board_and_tiles/Tiles.h"
+#include "Board/Board_and_tiles/Board_and_tiles/Board.hpp"
+#include "Board/Board_and_tiles/Board_and_tiles/Tiles.hpp"
 #include "Opponent-Rack-Generator/Opponent.h"
-#include "SharedClasses/MCTSearch.h"
-#include "../src/MoveGeneration/LoadGaddag.h"
-#include "../src/MoveGeneration/MoveGenerate.h"
+#include "SharedClasses/MCTSearch.hpp"
+#include "../src/MoveGeneration/LoadGaddag.hpp"
+#include "../src/MoveGeneration/MoveGenerate.hpp"
 #include "Move.hpp"
-#include "../src/MoveGeneration/Gaddag.h"
+#include "../src/MoveGeneration/Gaddag.hpp"
 #include <algorithm>
 #include <string> 
-#include "../src/Board/Board_and_tiles/Board_and_tiles/Tiles.h"
-#include "../src/Board/Board_and_tiles/Board_and_tiles/BoardCommunication.h"
+#include "../src/Board/Board_and_tiles/Board_and_tiles/BoardCommunication.hpp"
 #include <iostream>
 #include <cctype>
 

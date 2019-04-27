@@ -1,8 +1,8 @@
 
 //TODO: Completion of Move Generation Algorithm.
-#include "MoveGenerate.h"
-#include "LoadGaddag.h"
-#include "Gaddag.h"
+#include "MoveGenerate.hpp"
+#include "LoadGaddag.hpp"
+#include "Gaddag.hpp"
 #include <iostream>
 
 using namespace std;

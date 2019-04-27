@@ -1,4 +1,4 @@
-#include "./BoardMask.h"
+#include "./BoardMask.hpp"
 
 #include <iostream>
 

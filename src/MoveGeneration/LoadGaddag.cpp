@@ -1,6 +1,6 @@
 
-#include "LoadGaddag.h"
-#include "LoadNode.h"
+#include "LoadGaddag.hpp"
+#include "LoadNode.hpp"
 #include <sys/stat.h>
 #include <algorithm> 
 #define DICT_FILE_NAME "./src/MoveGeneration/Dict.txt"

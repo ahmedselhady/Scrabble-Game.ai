@@ -3,7 +3,7 @@
 #include "AI_AI.hpp"
 AI_AI::AI_AI()
 {
-    AI_Agent(MyBoard,Bag,HumanTiles);
+    AI_Agent(Bag,HumanTiles,isEmty);
 }
 bool AI_AI::SetBag(unordered_map<char,int>* Bag)
 {
@@ -19,6 +19,20 @@ bool AI_AI::SetBag(unordered_map<char,int>* Bag)
         
     return false;
 }
+    bool AI_AI::SetisEmtyBoard(bool isEmty)
+    {
+        try
+        {
+            this->isEmty=isEmty;
+            return true;
+        }
+        catch(const std::exception& e)
+        {
+            std::cerr << e.what() << '\n';
+        }
+            
+        return false;
+    }
 
     bool AI_AI::SetTiles(vector<char> &HumanTiles)
     {

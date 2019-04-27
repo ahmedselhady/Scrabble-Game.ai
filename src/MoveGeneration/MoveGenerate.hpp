@@ -10,9 +10,9 @@
 #include <string.h>
 #include <string>
 
-#include "Gaddag.h"
+#include "Gaddag.hpp"
 #include "../SharedClasses/Move.hpp"
-#include "..\Board\Board_and_tiles\Board_and_tiles\BoardCommunication.h"
+#include "..\Board\Board_and_tiles\Board_and_tiles\BoardCommunication.hpp"
 #include "../SharedClasses/Move.hpp"
 using namespace std;
 

@@ -2,13 +2,13 @@
 
 //INCLUDES:
 
-#include "LoadGaddag.h"
-#include "MoveGenerate.h"
-#include "Gaddag.h"
+#include "LoadGaddag.hpp"
+#include "MoveGenerate.hpp"
+#include "Gaddag.hpp"
 #include <algorithm>
 #include <string>
-#include "../Board/Board_and_tiles/Board_and_tiles/Tiles.h"
-#include "../Board/Board_and_tiles/Board_and_tiles/BoardCommunication.h"
+#include "../Board/Board_and_tiles/Board_and_tiles/Tiles.hpp"
+#include "../Board/Board_and_tiles/Board_and_tiles/BoardCommunication.hpp"
 #include <iostream>
 #include <cctype>
 #include <time.h>

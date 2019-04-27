@@ -1,6 +1,6 @@
-#include "./Tiles.h"
-#include "./BoardCommunication.h"
-#include "./Board.h"
+#include "./Tiles.hpp"
+#include "./BoardCommunication.hpp"
+#include "./Board.hpp"
 
 //Constructor
 BoardToGrammer::BoardToGrammer() {

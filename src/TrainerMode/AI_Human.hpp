@@ -1,6 +1,6 @@
 #pragma once
 #include"../SharedClasses/BoardCommunicator.hpp"
-#include"../AI_MODE.h"
+#include"../AI_MODE.hpp"
 #include"../SharedClasses/TrainerComm.hpp"
 
 class AI_Human{

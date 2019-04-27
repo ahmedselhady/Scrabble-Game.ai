@@ -1,7 +1,7 @@
 #include <iostream>
 #include "Definitions.hpp"
 #include"Board\Board_and_tiles\Board_and_tiles\BoardCommunication.h"
-int main(int, char**) {
+/*int main(int, char**) {
 	//----------------------- Game Definitions:
 	AgentResponse AI;
 	GamePhase CurrentPhase=GamePhase::MID_GAME_MODE;
@@ -20,7 +20,7 @@ int main(int, char**) {
 
 		}
 	}
-}
+}*/
 #include "AI_MODE.cpp"
 
 
