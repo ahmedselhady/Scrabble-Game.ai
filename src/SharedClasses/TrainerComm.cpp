@@ -83,7 +83,7 @@ void TrainerComm::ReceiveString(string str) { ReceivedString = str; }
 void TrainerComm::SendReceivedStringToGUI() {
   zmq::context_t context(1);
   zmq::socket_t socket(context, ZMQ_REQ);
-  socket.connect("tcp://192.168.88.208:5555");
+  socket.connect("tcp://41.235.88.109:5555");
   zmq_msg_t Msg;
   zmq_msg_init_size(&Msg, ReceivedString.length());
   memcpy(zmq_msg_data(&Msg), ReceivedString.c_str(), ReceivedString.length());
