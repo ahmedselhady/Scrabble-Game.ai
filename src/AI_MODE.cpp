@@ -31,15 +31,10 @@ AI_MODE::AI_MODE(unordered_map<char, int>& Tiles, vector<char>& Rack, bool isEmp
 
 	//Thread Joining.
 	RackGenerator.get();
-	cout << "Opponent Rack:" << endl;
-	for (auto it: AI_MODE::TheOpponentRack) {
-	
-		cout << it << " ";
-	}
-	cout <<endl;
-
 	list<Move> listOfMoves = MovesGenerationThread.get();
 
+	cout << endl;
+	
 	listOfMoves.sort([](const Move & a, const Move & b) { return a.moveScore > b.moveScore; });
 
 	if (listOfMoves.size() > 23) {
@@ -47,10 +42,7 @@ AI_MODE::AI_MODE(unordered_map<char, int>& Tiles, vector<char>& Rack, bool isEmp
 		listOfMoves.resize(23);
 
 	}
-	cout << "List of moves: ";
-	for (auto Literator : listOfMoves) {
-		cout << "Word Score: " << Literator.moveScore << "Word: " << Literator.word << endl;
-	}
+
 	/////////////////////////////////////////////////////////////////////
 	int TilesLeft = 0;
 
@@ -60,9 +52,14 @@ AI_MODE::AI_MODE(unordered_map<char, int>& Tiles, vector<char>& Rack, bool isEmp
 		TilesLeft += Letter_Iterator.second;
 
 	}
+	cout << "List of Moves Arr:";
+	for (auto tryIt: listOfMoves) {
+		cout << "Word: " << tryIt.word << " Score:" << tryIt.moveScore << endl;
+	}
 
-
+	/*
 	// Create the Monte Carlo Search Tree:
+	cout << "Entering Monte Carlo!"<<endl;
 	MCTSearch MonteCarlo(listOfMoves);
 
 	int Index = 0; //Index of best Move in Moves Lists.
@@ -93,7 +90,9 @@ AI_MODE::AI_MODE(unordered_map<char, int>& Tiles, vector<char>& Rack, bool isEmp
 		DummyMove.moveScore = -1;
 		AI_MODE::BestMove = DummyMove;
 	}
+	*/
 
+	AI_MODE::BestMove = listOfMoves.front();
 
 
 
@@ -137,13 +136,14 @@ void RackGen(unordered_map<char,int>& Tiles, AI_MODE* AI) {
 list <Move> MovesGeneration (BoardToGrammer* B , vector<char>& Rack, Node* gaddagRoot, bool isEmpty)
 {
     WordGenerate * Gen = new WordGenerate(B,gaddagRoot);
-// the & is not essintial
-Gen->countTilesRack(&Rack); 
+
+	Gen->countTilesRack(&Rack); 
 
     if(isEmpty){
         cout<< "Empty board"<<endl;
     Gen->emptyBoardMoves();
     }else{
+		cout << "Non-Empty board" << endl;
     Gen->crosssets(); // Gen->Updatecrosssets();
     Gen->generateWords();
     }

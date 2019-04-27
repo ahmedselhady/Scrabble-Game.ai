@@ -5,25 +5,25 @@
 void main()
 {
 	unordered_map<char,int> Tiles;
-	Tiles['A'] = 1;
-	Tiles['B'] = 1;
-	Tiles['L'] = 1;
-	Tiles['D'] = 1;
-	Tiles['K'] = 1;
-	Tiles['G'] = 1;
-	Tiles['H'] = 1;
-	//Tiles['O'] = 1;
-	//Tiles['Q'] = 1;
-	//Tiles['Z'] = 1;
+	Tiles['b'] = 1;
+	Tiles['e'] = 1;
+	Tiles['l'] = 1;
+	Tiles['z'] = 1;
+	Tiles['n'] = 1;
+	Tiles['g'] = 1;
+	Tiles['h'] = 1;
+	Tiles['o'] = 1;
+	Tiles['q'] = 1;
+	Tiles['y'] = 1;
 	vector<char> Rack;
-    Rack.push_back('A');
-    Rack.push_back('L');
-    Rack.push_back('L');
-    Rack.push_back('D');
+    Rack.push_back('f');
+    Rack.push_back('x');
+    Rack.push_back('a');
+    Rack.push_back('g');
 
-    Rack.push_back('O');
-    Rack.push_back('V');
-    Rack.push_back('B');
+    Rack.push_back('o');
+    Rack.push_back('v');
+    Rack.push_back('b');
     bool isEmpty=true;
     Move recommendedMove = AI_Mode_Function(Tiles,Rack,isEmpty);
     std::cout <<"Move word: "<< recommendedMove.word<< "recommended move score:" << recommendedMove.moveScore<<endl;

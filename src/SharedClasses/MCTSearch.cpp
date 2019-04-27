@@ -12,11 +12,20 @@ MCTSearch::MCTSearch(list<Move> Moves) {
 MCTreeNode* MCTSearch:: SelectBestMove(MCTreeNode* Parent) {
 	MCTreeNode* BestChild = NULL;
 	float BestScore = FLT_MIN;
-	float CurrentScore;
+	float CurrentScore = 0;;
 	int cp = 30;
 	for (int i = 0; i < Parent->Children.size(); i++) {
-		CurrentScore = Parent->Children[i]->getMoveScore() +
-			2 * cp*log((2 * Parent->getNumberOfVisits()) / Parent->Children[i]->getNumberOfVisits());
+		if (Parent->Children[i]->getNumberOfVisits() == 0 ) {
+			cout << "Parent never visited" << endl;
+			CurrentScore = Parent->Children[i]->getMoveScore();
+		}
+		else {
+			cout << "Normal Visit" << endl;
+			CurrentScore = Parent->Children[i]->getMoveScore() +
+				2 * cp*log((2 * Parent->getNumberOfVisits()) / Parent->Children[i]->getNumberOfVisits());
+		}
+		
+		
 		if (CurrentScore > BestScore &&Parent->Children[i]->isExpandable()) {
 			BestChild = Parent->Children[i];
 			BestChild->incrementVisits();
@@ -89,7 +98,16 @@ int MCTSearch::midGameMCTS() {
 		
 		//We will not select again but instead perform simulation on the last expanded node as it is the newest node to the path
 		//to the tree
-		int OpponentMoveScore = FirstMove->Children.back()->getMoveScore();
+
+		int OpponentMoveScore = 0;
+		if (FirstMove->Children.size()==0) {
+		
+			OpponentMoveScore = 10;
+		}
+		else {
+			OpponentMoveScore = FirstMove->Children.back()->getMoveScore();
+		}
+		
 
 		//Finally the value will be back propagated to the d=1 node to calculate the move score
 		//For now we will be saving the maximum score in the branch
