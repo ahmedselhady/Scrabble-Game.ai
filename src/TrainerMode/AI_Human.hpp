@@ -18,6 +18,6 @@ class AI_Human{
     bool SetBag(unordered_map<char,int>* Bag);
     bool SetTiles(vector<char>* HumanTiles);
     bool SetBoard(Board* MyBoard);
-    bool SetAgent();
+    bool SetAgent(AI_MODE* AI_Agent);
     bool DoWork();
 };

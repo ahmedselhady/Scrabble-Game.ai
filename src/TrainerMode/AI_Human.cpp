@@ -47,7 +47,7 @@ bool AI_Human::SetTiles(vector<char>* HumanTiles)
     return false;
 }
   
-bool AI_Human::SetAgent()
+bool AI_Human::SetAgent(AI_MODE* AI_Agent)
 {
     if( this->Bag==NULL || this->BoardStatus==NULL || this->Communicator==NULL || this->HumanTiles == NULL || this->MyBoard==NULL){
         return false;

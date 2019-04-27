@@ -41,7 +41,13 @@ bool AI_AI::SetBag(unordered_map<char,int>* Bag)
     return false;
 
     }
-
+bool AI_AI::SetAgent(AI_MODE* AI_Agent)
+{
+    if( this->Bag==NULL || this->BoardStatus==NULL || this->Communicator==NULL || this->AI_Tiles == NULL || this->MyBoard==NULL){
+        return false;
+    }
+    AI_Agent= new AI_MODE(*this->Bag, *AI_Tiles,this->IsEmptyBoard());
+}
     bool AI_AI::SetBoard(Board* MyBoard)
     {
         try
