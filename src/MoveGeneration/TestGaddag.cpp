@@ -18,7 +18,7 @@
 
 #define EMPTY_BOARD_TEST 1
 #define REGULAR_BOARD_TEST 0
-#define TEST 0
+#define TEST 1
 // NOTE: when printing cout use the Logger class utility function 'log'.
 // Description of How Classes Work Down Below.
 
@@ -144,12 +144,18 @@ int main()
     // Rack.push_back('s');
 
     Rack.push_back('a');
-    Rack.push_back('d');
+    Rack.push_back('d'); ///////////////////////////////////////////////////////////////////
     Rack.push_back('p');
     Rack.push_back('c');
     Rack.push_back(BLANK);
     Rack.push_back('e');
     Rack.push_back('w');
+
+    // Rack.push_back(BLANK);
+    // Rack.push_back('a');
+    // Rack.push_back('s'); ///////////////////////////////////////////////////////////////////
+    // Rack.push_back('e');
+    // Rack.push_back('c');
 
     // Rack.push_back('f');
     // Rack.push_back('g');
@@ -258,7 +264,7 @@ int main()
     Ptr2G->SetChar('S', 7, 7);
     //    // BABE
     Ptr2G->SetChar('U', 1, 2);
-    Ptr2G->SetChar('T', 2, 2);
+    Ptr2G->SetChar('t', 2, 2);
     Ptr2G->SetChar('I', 3, 2);
     Ptr2G->SetChar('L', 4, 2);
     Ptr2G->SetChar('I', 5, 2);

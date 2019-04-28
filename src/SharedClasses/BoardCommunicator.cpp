@@ -21,9 +21,11 @@ int BoardCommunicator::calculateScore(string suggestedMove, int row, int col, bo
 	BoardMask CurrentBoard = BoardPtr->getBoardStatus();
 	int preOffsit = (horizontal) ? offsit - 1 : offsit - 15;
 	int posOffsit = (horizontal) ? offsit + 1 : offsit + 15;
+	int boarderCheck = (horizontal) ? row : col; // above or bellow and vice versa.
+
 	bool blank = false;
 	int x;
-	if (suggestedMove == "Adaw" && col == 4 && row == 6)
+	if (suggestedMove == "ae" && col == 3 && row == 0)
 	{
 		x = 9;
 
@@ -72,7 +74,7 @@ int BoardCommunicator::calculateScore(string suggestedMove, int row, int col, bo
 				Wsx3 = true;
 				Wsx3M *= 3;
 			}
-			if ((CurrentBoard.getBit(preOffsit) && preOffsit >= 0 && preOffsit <= 224) || (CurrentBoard.getBit(posOffsit) && posOffsit >= 0 && preOffsit <= 224)) // there is an intersecition with other word
+			if (((boarderCheck > 0 && boarderCheck <= 14) && CurrentBoard.getBit(preOffsit) && preOffsit >= 0 && preOffsit <= 224) || ((boarderCheck >= 0 && boarderCheck < 14) && CurrentBoard.getBit(posOffsit) && posOffsit >= 0 && preOffsit <= 224)) // there is an intersecition with other word
 			{
 				if (!CurrentBoard.getBit(offsit))
 				{

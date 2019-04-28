@@ -826,9 +826,9 @@ void WordGenerate::emptyBoardMoves()
     }
 } //TODO: Generate all possible moves availabe given certain Rack when the status of the board is empty only.
 
-void WordGenerate::generateEmpty(Node *node, string &word)
+void WordGenerate::generateEmpty(Node *node, string word)
 {
-    for (Node *child = node->getFirstChild(); child; child = child->getNextChild())
+    for (Node *child = node->getFirstChild(); child != NULL; child = child->getNextChild())
     {
         char childLetter = child->getNodeLetter();
 
@@ -848,6 +848,10 @@ void WordGenerate::generateEmpty(Node *node, string &word)
             nonRepeatedMoves.push_back(newPrefix);
         }
 
+        // if (childLetter == 'c' && word == "")
+        // {
+
+        // }
         if (child->getFirstChild())
         {
             generateEmpty(child, newPrefix);
@@ -858,11 +862,11 @@ void WordGenerate::generateEmpty(Node *node, string &word)
 
     if (tilesCount[BLANK - CHAR_OFFSET] >= 1)
     {
-        for (Node *child = node->getFirstChild(); child; child = child->getNextChild())
+        for (Node *child = node->getFirstChild(); child != NULL; child = child->getNextChild())
         {
             char childLetter = child->getNodeLetter();
 
-            if (childLetter == GADDAG_DELIMITER || tilesCount[childLetter - CHAR_OFFSET] <= 0)
+            if (childLetter == GADDAG_DELIMITER)
             {
                 continue;
             }
