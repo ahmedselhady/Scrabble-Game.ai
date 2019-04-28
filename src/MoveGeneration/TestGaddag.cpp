@@ -15,6 +15,7 @@
 #include <ctime>
 #include <ratio>
 #include <chrono>
+#include "../SharedClasses/Options.hpp"
 
 #define EMPTY_BOARD_TEST 1
 #define REGULAR_BOARD_TEST 0
@@ -35,6 +36,24 @@ int main()
 {
     Node *gaddagRoot;
     using namespace std::chrono;
+    Move *move = new Move();
+    vector<char> TestRack;
+    vector<char> *rem;
+    vector<char> *sorted;
+    TestRack.push_back('a');
+    TestRack.push_back('d');
+    TestRack.push_back('p');
+    TestRack.push_back('c');
+    TestRack.push_back(BLANK);
+    TestRack.push_back('e');
+    TestRack.push_back('w');
+
+    sorted = Options::sortRack(&TestRack);
+    char onboard = 2;
+    move->word = "Ae";
+    move->word = onboard + move->word;
+    rem = Options::unusedRackTiles(&TestRack, move);
+    int y = 0;
 
     // string move;
     // string move2;

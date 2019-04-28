@@ -268,6 +268,11 @@ void WordGenerate::goOn(int pos, char boardLetter, string word, Node *gaddagNode
         bool boardEdge = false;
         bool directlyLeft = false;
         //al ahly
+
+        if (board->hasaTile(anchorRow + pos * (cancelIndex), anchorCol + pos * (1 - cancelIndex)))
+        {
+            boardLetter -= ON_BOARD_CHAR;
+        }
         word = boardLetter + word;
 
         if (((anchorCol + pos) * (1 - cancelIndex) + (anchorRow + pos) * (cancelIndex)) <= 0)
@@ -346,6 +351,12 @@ void WordGenerate::goOn(int pos, char boardLetter, string word, Node *gaddagNode
         bool roomRight = true;
         bool rightboardEdge = false;
         //al ahly
+
+        if (board->hasaTile(anchorRow + pos * (cancelIndex), anchorCol + pos * (1 - cancelIndex)))
+        {
+            boardLetter -= ON_BOARD_CHAR;
+        }
+
         word = word + boardLetter;
 
         if ((anchorCol + pos) * (1 - cancelIndex) + (anchorRow + pos) * (cancelIndex) == maxBorder - 1)

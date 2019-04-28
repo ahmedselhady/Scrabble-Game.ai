@@ -10,6 +10,13 @@
     2- Please Feel Free To Add Any Needed Attributes OR Functions To Suit Your Modules.
     3- Refer To Ahmed Salem For Any Adjustments.
 */
+
+/* CHAR : 
+    1- if a small (97->122) regular char so it is a new tile that will be played in this turn.
+    2- if Large (65->90) it means a Blank so it is a new tile that will be played in this turn.
+    3- from (0->25) (26 Letters) means that it was on board before 
+   */
+#define ON_BOARD_CHAR 97
 struct Position
 { // defines what a "Move" is.
     char ROW;
