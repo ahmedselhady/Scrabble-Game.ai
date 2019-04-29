@@ -91,7 +91,7 @@ void LoadNode::insertGaddagWord(string gaddagWord){
   {
       LoadNode child(firstChar);
       this->addChild(firstChar,child);
-      childIndex = childeren.size() - 1; // as it was the last one pushed.
+      childIndex =(int) childeren.size() - 1; // as it was the last one pushed.
   }
 
   childeren[childIndex].insertGaddagWord(remainingChars);
@@ -114,7 +114,7 @@ void LoadNode::insertGaddagWord(string gaddagWord){
 
 bool LoadNode::findWord(string word){
 
-	int size = word.length();
+	int size =(int) word.length();
 	if(size == 0){return true;}
 
 	int index;
@@ -132,11 +132,11 @@ bool LoadNode::findWord(string word){
 //Function storeNodes it store nodes in gaddagNodes.
 void LoadNode::storeNodes(vector< LoadNode* >& gaddagNodes)
 {
-	int size = childeren.size() ;
+	int size =(int) childeren.size() ;
 	if (childeren.size() == 0){return;}
 
 
-	this->numberChilds = gaddagNodes.size();  // usefull for byte offset indexing.
+	this->numberChilds =(int) gaddagNodes.size();  // usefull for byte offset indexing.
 	childeren[childeren.size() - 1].lastChild = true;
 
 	for (int index = 0; index < childeren.size(); ++index)

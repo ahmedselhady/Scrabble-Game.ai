@@ -150,7 +150,7 @@ void LoadGaddag::compressGaddag(unsigned int *&gaddagRootNode, vector<LoadNode *
         letter = (gaddagNodes[index])->getLetter();
         if (letter != GADDAG_DELIMITER && letter != GADDAG_ROOT)
         {
-            compressedLetter = (letter - CHAR_OFFSET);
+            compressedLetter =(char) (letter - CHAR_OFFSET);
         }
         else
         {

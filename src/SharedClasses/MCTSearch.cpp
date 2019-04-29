@@ -1,4 +1,4 @@
-#pragma once
+
 
 #include <string>
 #include <vector>
@@ -17,12 +17,12 @@ MCTreeNode* MCTSearch:: SelectBestMove(MCTreeNode* Parent) {
 	for (int i = 0; i < Parent->Children.size(); i++) {
 		if (Parent->Children[i]->getNumberOfVisits() == 0 ) {
 			cout << "Parent never visited" << endl;
-			CurrentScore = Parent->Children[i]->getMoveScore();
+			CurrentScore =(float) (Parent->Children[i]->getMoveScore());
 		}
 		else {
 			cout << "Normal Visit" << endl;
-			CurrentScore = Parent->Children[i]->getMoveScore() +
-				2 * cp*log((2 * Parent->getNumberOfVisits()) / Parent->Children[i]->getNumberOfVisits());
+			CurrentScore = (float) (Parent->Children[i]->getMoveScore() +
+				2 * cp*log((2 * Parent->getNumberOfVisits()) / Parent->Children[i]->getNumberOfVisits()));
 		}
 		
 		
@@ -60,7 +60,7 @@ int MCTSearch::endGameMCTS() {
 		//to the tree
 		int MySecondMove = SecondMove->Children.back()->getMoveScore();
 		//Finally the value will be back propagated to the d=1 node
-		float MoveDifference = FirstMove->getMoveScore() + MySecondMove - SecondMove->getMoveScore();
+		float MoveDifference =(float) (FirstMove->getMoveScore() + MySecondMove - SecondMove->getMoveScore());
 		if (MoveDifference > FirstMove->getAverageReward()) {
 			FirstMove->setAverageReward(MoveDifference);
 		}
@@ -111,7 +111,7 @@ int MCTSearch::midGameMCTS() {
 
 		//Finally the value will be back propagated to the d=1 node to calculate the move score
 		//For now we will be saving the maximum score in the branch
-		float MoveDifferenece = FirstMove->getMoveScore() - OpponentMoveScore;
+		float MoveDifferenece = (float)(FirstMove->getMoveScore() - OpponentMoveScore);
 		if (MoveDifferenece > FirstMove->getAverageReward()) {
 			FirstMove->setAverageReward(MoveDifferenece);
 		}
