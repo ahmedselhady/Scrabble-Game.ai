@@ -3,6 +3,10 @@
 //Constructor
 Board::Board()
 {
+	blankCounter = 0;
+	blank_ = new int[2];
+	blank_[0] = -1;
+	blank_[1] = -1;
 	for (int i = 0; i < 26; i++) // i want to create them at insertion of the letter as i dont need the whole 26 char along the game
 	{
 		BoardMap[(char)('A' + i)] = BoardMask(0b0000000000000000000000000000000000000000000000000000000000000000, 0b0000000000000000000000000000000000000000000000000000000000000000, 0b0000000000000000000000000000000000000000000000000000000000000000, 0b0000000000000000000000000000000000000000000000000000000000000000);
@@ -123,8 +127,16 @@ std::vector<char> &Board::getNextVertical(int VerticalIndex)
 void Board::SetCharPos(char Letter, int Row, int Col)
 {
 	int Offsit = Row + 15 * Col;
+
+	if (Letter >= (65 + 32) && Letter <= (90 + 32)) //  blank
+	{
+		blank_[blankCounter++] = Offsit;
+		Letter -= 32;
+	}
 	if (Offsit < 0 || Offsit > (14 + 15 * 14))
+	{
 		return;
+	}
 	BoardMap[Letter].setBit(Offsit);
 	AllCharBoard.setBit(Offsit); // for all Titles
 }
@@ -210,7 +222,11 @@ int Board::calculateScore(int offsit, bool horizontal, char intersectionLetter)
 			{
 				if (!isBlank)
 				{
-					WordScore += TileValues[Tile - charOffsit];
+					bool boardblank = ((blank_[0] == mStartOffsit) || (blank_[1] == mStartOffsit)) ? true : false;
+					if (!boardblank)
+					{
+						WordScore += TileValues[Tile - charOffsit];
+					}
 				}
 			}
 
@@ -293,7 +309,11 @@ int Board::calculateScore(int offsit, bool horizontal, char intersectionLetter)
 			{
 				if (!isBlank)
 				{
-					WordScore += TileValues[Tile - charOffsit];
+					bool boardblank = ((blank_[0] == mStartOffsit) || (blank_[1] == mStartOffsit)) ? true : false;
+					if (!boardblank)
+					{
+						WordScore += TileValues[Tile - charOffsit];
+					}
 				}
 			}
 

@@ -2,17 +2,17 @@
 
 #include "Evaluator.hpp"
 
-double Evaluator::equity(std::vector<char> &Rack, bool isEmptyBoard, Move &move) const
+double Evaluator::equity(std::vector<char> *Rack, bool isEmptyBoard, Move *move)
 {
-    return move.moveScore;
+    return move->moveScore;
 }
 
-double Evaluator::CalculateRackLeave(std::vector<char> &Rack, Move &move) const
+double Evaluator::CalculateRackLeave(std::vector<char> *Rack, Move *move)
 {
     return 0;
 }
 
-double Evaluator::leaveValue(std::vector<char> &Rack) const
+double Evaluator::leaveValue(std::vector<char> *Rack)
 {
     return 0;
 }

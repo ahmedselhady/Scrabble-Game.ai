@@ -1,131 +1,47 @@
+#include <map>
+#include <vector>
+#include <string>
+#include <string.h>
+#include <iostream>
+#include <fstream>
+#include "../MoveGeneration/MoveGenerate.h"
 
+#define SYNERGY "./Heuristics/Synergy"
+#define VC_PLACE "./Heuristics/VCPlace"
+#define WORTHS "./Heuristics/Worths"
+#define SUPER_LEAVES "./Heuristics/superleaves"
+#define BLANK_OFFSET BLANK - 27 + 1 // remove 5 from 32 which is the ' ' (BLANK) CHANG it if you changed the blank char
+// BLANK is 26 char  starting from 0
+#define NUM_LETTERS 26            // English Letters + include BLANK
+#define MAX_VC_EMPTY_BOARD_MOVE 7 // beacuse I have 7 tiles + empty board max length = 7.
+#define VC_PACKET 128             // For a Max 7 word move each bit represent cosseponding VC ratio.
 
-// #include <map>
-// #include "alphabetparameters.h"
+class LoadHeuristics
+{
+public:
+    LoadHeuristics(); // for loading 3 Heuristics : Synergy, Worths, VCplace.
+    double syn2(char letter1, char letter2);
+    double tileWorth(char letter);
+    double vcPlace(int start, int length, int consbits);
+    //double bogowin(int lead, int unseen, int blanks);
+    double superleave(std::vector<char> *Rack);
 
+protected:
+    bool loadSyn2(const std::string &filename = SYNERGY);
+    bool loadWorths(const std::string &filename = WORTHS);
+    bool loadVcPlace(const std::string &filename = VC_PLACE);
+    //bool loadBogowin(const std::string &filename = WORTHS);
+    bool loadSuperleaves(const std::string &filename = SUPER_LEAVES);
 
-// class StrategyParameters
-// {
-//     public:
-//         StrategyParameters();
+    int mapLetter(char letter);
 
-//         void initialize(const string &lexicon);
-//         bool hasSyn2() const;
-//         bool hasWorths() const;
-//         bool hasVcPlace() const;
-//         bool hasBogowin() const;
-//         bool hasSuperleaves() const;
+    double m_syn2[27][27];
+    double m_tileWorths[27];
+    double m_vcPlace[15][15][128];
 
-//         // letters are raw letters include bottom marks
-//         double syn2(Letter letter1, Letter letter2) const;
-//         double tileWorth(Letter letter) const;
-//         double vcPlace(int start, int length, int consbits);
-//         double bogowin(int lead, int unseen, int blanks);
-//         double superleave(LetterString leave);
-
-//     protected:
-//         bool loadSyn2(const string &filename);
-//         bool loadWorths(const string &filename);
-//         bool loadVcPlace(const string &filename);
-//         bool loadBogowin(const string &filename);
-//         bool loadSuperleaves(const string &filename);
-
-//         int mapLetter(Letter letter) const;
-
-//         double m_syn2[QUACKLE_FIRST_LETTER + QUACKLE_MAXIMUM_ALPHABET_SIZE][QUACKLE_FIRST_LETTER + QUACKLE_MAXIMUM_ALPHABET_SIZE];
-//         double m_tileWorths[QUACKLE_FIRST_LETTER + QUACKLE_MAXIMUM_ALPHABET_SIZE];
-//         double m_vcPlace[QUACKLE_MAXIMUM_BOARD_SIZE][QUACKLE_MAXIMUM_BOARD_SIZE][128];
-
-//         static const int m_bogowinArrayWidth = 601;
-//         static const int m_bogowinArrayHeight = 94;
-//         double m_bogowin[m_bogowinArrayWidth][m_bogowinArrayHeight];
-//         typedef map<LetterString, double> SuperLeavesMap;
-//         SuperLeavesMap m_superleaves;
-//         bool m_hasSyn2;
-//         bool m_hasWorths;
-//         bool m_hasVcPlace;
-//         bool m_hasBogowin;
-//         bool m_hasSuperleaves;
-//     };
-
-//     inline bool StrategyParameters::hasSyn2() const
-//     {
-//         return m_hasSyn2;
-//     }
-
-//     inline bool StrategyParameters::hasWorths() const
-//     {
-//         return m_hasWorths;
-//     }
-
-//     inline bool StrategyParameters::hasVcPlace() const
-//     {
-//         return m_hasVcPlace;
-//     }
-
-//     inline bool StrategyParameters::hasBogowin() const
-//     {
-//         return m_hasBogowin;
-//     }
-
-//     inline bool StrategyParameters::hasSuperleaves() const
-//     {
-//         return m_hasSuperleaves;
-//     }
-
-//     inline int StrategyParameters::mapLetter(Letter letter) const
-//     {
-//         // no mapping needed
-//         return letter;
-//     }
-
-//     inline double StrategyParameters::syn2(Letter letter1, Letter letter2) const
-//     {
-//         return m_syn2[mapLetter(letter1)][mapLetter(letter2)];
-//     }
-
-//     inline double StrategyParameters::tileWorth(Letter letter) const
-//     {
-//         return m_tileWorths[mapLetter(letter)];
-//     }
-
-//     inline double StrategyParameters::vcPlace(int start, int length, int consbits)
-//     {
-//         if ((consbits < 0) || (consbits >= 128) ||
-//             (start < 0) || (start >= QUACKLE_MAXIMUM_BOARD_SIZE) ||
-//             (length < 0) || (length >= QUACKLE_MAXIMUM_BOARD_SIZE))
-//             return 0;
-
-//         return m_vcPlace[start][length][consbits];
-//     }
-
-//     inline double StrategyParameters::bogowin(int lead, int unseen, int /* blanks */)
-//     {
-//         if (lead < -300)
-//             return 0;
-//         if (lead > 300)
-//             return 1;
-
-//         if (unseen > 93)
-//             unseen = 93;
-
-//         if (unseen == 0)
-//         {
-//             if (lead < 0)
-//                 return 0;
-//             else if (lead == 0)
-//                 return 0.5;
-//             else
-//                 return 1;
-//         }
-
-//         return m_bogowin[lead + 300][unseen];
-//     }
-
-//     inline double StrategyParameters::superleave(LetterString leave)
-//     {
-//         if (leave.length() == 0)
-//             return 0.0;
-//         return m_superleaves[leave];
-//     }
-// }
+    static const int m_bogowinArrayWidth = 601;
+    static const int m_bogowinArrayHeight = 94;
+    double m_bogowin[m_bogowinArrayWidth][m_bogowinArrayHeight];
+    typedef map<std::vector<char>, double> SuperLeavesMap; // preCalculated Rack leaves.
+    SuperLeavesMap superLeaves;
+};

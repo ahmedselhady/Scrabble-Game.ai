@@ -2,9 +2,15 @@
 #include "Options.hpp"
 #include <unordered_map>
 
+static unordered_map<char, bool> VOWELS = {{'a', true}, {'b', false}, {'c', false}, {'d', false}, {'e', true}, {'f', false}, {'g', false}, {'h', false}, {'i', true}, {'j', false}, {'k', false}, {'l', false}, {'m', false}, {'n', false}, {'o', true}, {'p', false}, {'q', false}, {'r', false}, {'s', false}, {'t', false}, {'u', true}, {'v', false}, {'w', false}, {'x', false}, {'y', false}, {'z', false}};
 Options::Options()
 { //nothing
 }
+bool Options::isVowel(char *letter)
+{
+    return VOWELS[*letter];
+} // Returns Alphabetic Sorted Rack.
+
 std::vector<char> *Options::unusedRackTiles(std::vector<char> *Rack, Move *move)
 {
     std::unordered_map<char, int> rackLetters;
@@ -59,7 +65,7 @@ std::vector<char> *Options::unusedRackTiles(std::vector<char> *Rack, Move *move)
 
     return remainedTiles;
 } // Returns unusedTile in a rack given a move.
-std::vector<char> *sortRack(std::vector<char> *Rack)
+std::vector<char> *Options::sortRack(std::vector<char> *Rack)
 {
     std::vector<char> *sortedTiles = new std::vector<char>();
     std::unordered_map<char, int> rackLetters;
