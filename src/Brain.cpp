@@ -1,6 +1,9 @@
 
 #include "Brain.hpp"
 #include <utility>
+
+Node *GameBrain::_gaddagInstance = nullptr;
+
 void GameBrain::updateBag(std::vector<char> &tilesToReduce)
 {
     for (int i = 0; i < tilesToReduce.size(); ++i)
@@ -17,6 +20,16 @@ void GameBrain::updateBag(std::vector<char> &tilesToReduce)
     }
 
     GameBrain::game_phase = (bagSize <= 7) ? END_GAME_MODE : (bagSize <= 9) ? PREEND_GAME_MODE : MID_GAME_MODE;
+}
+
+Node *GameBrain::__get_gaddag()
+{
+    if (GameBrain::_gaddagInstance == nullptr)
+    {
+        GameBrain::_gaddagInstance = createGaddag();
+    }
+
+    return GameBrain::_gaddagInstance;
 }
 
 GameBrain::GameBrain()

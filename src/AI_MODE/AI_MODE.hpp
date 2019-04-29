@@ -13,13 +13,6 @@
 #include "./SharedClasses/Game_Evaluator.hpp"
 #include "./Brain.hpp"
 
-inline Node *createGaddag()
-{ // just a test function.
-    LoadGaddag gaddagConstructor;
-    Node *gaddagRoot = gaddagConstructor.constructGaddag();
-    return gaddagRoot;
-}
-
 class AI_MODE
 {
 public:

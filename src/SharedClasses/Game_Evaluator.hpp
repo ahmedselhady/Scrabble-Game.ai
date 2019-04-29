@@ -16,6 +16,14 @@ public:
 
     int moveUtility(Move &, GamePhase);
 
+    /** evaluate Move Heuristic:  this function evaluates the static score for the suggested move by the Grammar as the first step in game evaluation process
+     * 
+     * inputs: 
+     *      list of moves: list<T>; the list of suggested moves --passed by reference 
+     *      current game phase: GamePhase; the game phase depending on the number of tiles in bag 
+     * returns:
+     *      returns the list of moves with their modified static scores 
+    */
     void evaluateMovesHuristic(std::list<Move> &, GamePhase);
 
 private:

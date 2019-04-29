@@ -5,7 +5,7 @@
 
 AI_MODE::AI_MODE()
 {
-    this->gaddag_instance = createGaddag();
+    this->gaddag_instance = GameBrain::__get_gaddag();
 }
 
 Move *AI_MODE::doWork()
