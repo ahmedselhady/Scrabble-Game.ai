@@ -1,5 +1,4 @@
 #include "./Brain.hpp"
-#include "./Brain.cpp"
 #include "./Definitions.hpp"
 
 int main()
