@@ -16,6 +16,7 @@ void GameBrain::updateBag(std::vector<char> &tilesToReduce)
         catch (const std::exception &e)
         {
             // ! how on earth did you place a non alphabet character!
+            std::cout << e.what() << std::endl;
         }
     }
 
