@@ -198,6 +198,45 @@ void TrainerComm::SendStringToGUI(string str) {
   zmq_msg_recv(&Msg, socket, !ZMQ_DONTWAIT);
 }
 
+void TrainerComm:: RecCPPServerSendGUI(uint8_t SRow, uint8_t SCol, uint8_t Dir, vector <uint8_t> LettArr)
+{
+  zmq::context_t context(1);
+	zmq::socket_t socket(context, ZMQ_REQ);
+	socket.connect("tcp://localhost:5555");//edit it
+	
+	vector <uint8_t> RowColDir;
+	RowColDir.push_back(SRow);
+	RowColDir.push_back(SCol);
+	RowColDir.push_back(Dir);
+
+	for (auto it = RowColDir.begin(); it != RowColDir.end(); it++) //Sending SRow, SCol, Dir
+	{
+		zmq_msg_t Msg;
+		string StringToBeSent = to_string((int)*it);
+		int SizeOfSentMsg = StringToBeSent.size();
+		zmq_msg_init_size(&Msg, SizeOfSentMsg);
+		memcpy(zmq_msg_data(&Msg), StringToBeSent.c_str(), SizeOfSentMsg);
+		zmq_msg_send(&Msg, socket, ZMQ_SNDMORE);
+	}
+
+	for (auto it = LettArr.begin(); it != LettArr.end(); it++) //sending the vector LettArr
+	{
+		zmq_msg_t Msg;
+		string StringToBeSent = to_string((int)*it);
+		int SizeOfSentMsg = StringToBeSent.size();
+		zmq_msg_init_size(&Msg, SizeOfSentMsg);
+		memcpy(zmq_msg_data(&Msg), StringToBeSent.c_str(), SizeOfSentMsg);
+		if (it == LettersArray.end() - 1)
+		{
+			zmq_msg_send(&Msg, socket, 0);
+		}
+    else
+    {
+			zmq_msg_send(&Msg, socket, ZMQ_SNDMORE);      
+    }
+	}	
+}
+
 TrainerComm::~TrainerComm() {}
 
 void sendStringToGUI(string str) {

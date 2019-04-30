@@ -8,6 +8,7 @@
 #include <string>
 #include <vector>
 #include <zmq.hpp>
+#include <cstdint>
 #include "BoardCommunicator.hpp"
 #include "Move.hpp"
 
@@ -31,7 +32,9 @@ class TrainerComm {
   void ReceiveString(string str);
   void SendStringToGUI(string str);
 
-  string ReceiveSTRFromGUI(string str)
+  string ReceiveSTRFromGUI(string str);
+  void RecCPPServerSendGUI(uint8_t SRow, uint8_t SCol, uint8_t Dir, vector <uint8_t> LettArr);
+
   ~TrainerComm();
 };
 
