@@ -16,7 +16,9 @@ class Board {
   BoardMask AllCharBoard;
 
  public:
-  static Board *getBoard();    // it gets instance of the board
+  void setBoard(uint8_t board[15][15]);
+  static Board *getBoard();  // it gets instance of the board
+
   BoardMask getBoardStatus();  // it returns all charcters in board
   char getCharByOffsit(
       int offsit);  // it gets the character whose offset is given

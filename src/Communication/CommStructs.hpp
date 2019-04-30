@@ -187,7 +187,7 @@ extern OkExchangeRequestMessage deserializeOkExchangeMessage(
 extern ChallengeRejectedRequestMessage deserializeChallengeRejectedMessage(
     const std::vector<uint8_t>&);
 extern NoChallengeRequestMessage deserializeNoChallengeMessage(
-    const std::vector<uint8_t>&);
+    const std::vector<uint8_t>&, States);
 extern ChallengeAcceptedRequestMessage deserializeChallengeAcceptedMessage(
     const std::vector<uint8_t>&);
 extern PassRequestMessage deserializePassMessage(const std::vector<uint8_t>&);

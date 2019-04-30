@@ -7,13 +7,22 @@
 #include <iostream>
 #include <string>
 #include "BinaryEnvelope.hpp"
+#include "Board/Board_and_tiles/Board_and_tiles/Board.h"
+#include "Brain.hpp"
+#include "Move.hpp"
 #include "SharedClasses/TrainerComm.hpp"
 #include "easywsclient/easywsclient.hpp"
 //#include "easywsclient/easywsclient.cpp"  // <-- include only if you don't
 // want compile separately
 
 using easywsclient::WebSocket;
-static WebSocket::pointer ws_connection = NULL;
+static WebSocket::pointer ws_connection = nullptr;
+
+static std::string mode = "";
+
+Board* board = nullptr;
+GameBrain* brain = nullptr;
+std::future<Move*>* nMove = nullptr;  // the move we are thinking right now
 
 // this is used to hold the current state of our communcation
 States state = States::INIT;
@@ -30,6 +39,17 @@ void print_vec(const std::vector<uint8_t>& msg) {
   }
   std::cout << std::endl;
 }
+
+void playTeacherMode() {
+  auto vec = getMsgFromGUI("MAKE_PASS");
+  std::cout << "GOT FROM GUI: ";
+  for (auto m : vec) {
+    std::cout << m << " ";
+  }
+  std::cout << std::endl;
+}
+
+Move* playAIMode() { return brain->work_computer_vs_computer(); }
 
 void handle_message(const std::vector<uint8_t>& message) {
   // the message type always exist in the first
@@ -59,12 +79,16 @@ void handle_message(const std::vector<uint8_t>& message) {
   } else if (msgType == MessageTypes::START) {
     auto smsg = deserializeReadyMessage(message);
     // TODO: Construct the board and hold it from here
+
+    board = Board::getBoard();
+
     GUIMsg += "BOARD / ";
     for (int i = 0; i < 15; i++) {
       for (int j = 0; j < 15; j++) {
         GUIMsg += std::to_string(smsg.board[i][j]) + " ";
       }
     }
+    brain->setTiles(smsg.tiles);
     if (smsg.order == 1) {
       // * well this is our turn
       state = States::THINKING;
@@ -90,7 +114,7 @@ void handle_message(const std::vector<uint8_t>& message) {
     // ? state should be known after the play is known
   } else if (msgType == MessageTypes::PLAY) {
     auto playFromOpponent = deserializePlayMessage(message);
-    // TODO: here we can update the gui mayb
+    // TODO: here we can update the gui maybe
     state = States::AWAIT_AGENT_CHALLENGE;
   } else if (msgType == MessageTypes::INVALID) {
     if (state == States::AWAIT_PLAY_RESPONSE) {
@@ -124,11 +148,17 @@ void handle_message(const std::vector<uint8_t>& message) {
 
     // TODO: update the gui
   } else if (msgType == MessageTypes::NO_CHALLENGE) {
-    auto nochg = deserializeNoChallengeMessage(message);
+    auto nochg = deserializeNoChallengeMessage(message, state);
+
+    // * our extra tiles are given to us at NO_CHALLENGE
+
     if (state == States::AWAIT_CHALLENGE_RESPONSE) {
       state = States::THINKING;
     } else if (state == States::AWAIT_AGENT_CHALLENGE) {
       state = States::THINKING;
+    } else if (state == States::AWAIT_PLAY_RESPONSE) {
+      brain->setTiles(nochg.tiles);
+      state = States::IDLE;
     }
   } else if (msgType == MessageTypes::EXCHANGE) {
     if (state == States::AWAIT_EXCHANGE_RESPONSE) {
@@ -144,16 +174,15 @@ void handle_message(const std::vector<uint8_t>& message) {
           << state;
     }
   } else if (msgType == MessageTypes::CHALLENGE) {
-    
   } else {
     // ? this is the default if the message is weird
     std::cerr << "Unknown Message Type, ya bashmo7nds zbt acoadk" << std::endl;
   }
 
-  if (!GUIMsg.empty()) {
+  /* if (!GUIMsg.empty()) {
     std::cout << "Sending to GUI NOWWWWWWW";
     sendMsgToGUI(GUIMsg);
-  }
+  } */
 
   if (state == States::AWAIT_AGENT_CHALLENGE) {
     // * we are challenging, huh ?
@@ -163,39 +192,13 @@ void handle_message(const std::vector<uint8_t>& message) {
   }
 
   if (state == States::THINKING) {
-    // clear the envelope anyway because I might have polluted it
-    // TODO: playing should modify state, WIP
+    // clear the envelope anyway because I might have pollute`  ng should modify
+    // state, WIP
     // * should investigate doing an async task right here
     env.clear();
 
-    auto vec = getMsgFromGUI("MAKE_PASS");
-    std::cout << "GOT FROM GUI: ";
-    for (auto m : vec) {
-      std::cout << m << " ";
-    }
-    std::cout << std::endl;
-    /* env.insertUInt8(MessageTypes::PLAY);
-
-    std::cout << std::endl << "Please enter play: " << std::flush;
-
-    int row, col, dir, score;
-    int tiles[7];
-    std::cin >> col >> row >> dir;
-    for (int i = 0; i < 7; i++) {
-      std::cin >> tiles[i];
-      // tiles[i] -= '0';
-    }
-    std::cin >> score;
-
-    env.insertUInt8(col);
-    env.insertUInt8(row);
-    env.insertUInt8(dir);
-    for (int i = 0; i < 7; i++) {
-      env.insertUInt8(tiles[i]);
-    }
-    env.insert32BitInt(score); */
-
-    state = States::AWAIT_PLAY_RESPONSE;
+    auto x = std::async(playAIMode);
+    nMove = &x;
   }
 
   // finished the message, if we need to send then send it
@@ -205,23 +208,29 @@ void handle_message(const std::vector<uint8_t>& message) {
     print_vec(ser);
     ws_connection->sendBinary(ser);
   }
+  std::cout << "HERE: ";
 }
 
 int main(int argc, char** argv) {
   // use the default local machine socket
   std::string hostname = "ws://localhost:8080/";
 
-  if (argc > 1) {
-    hostname = argv[1];
+  if (argc == 2) {
+    mode = argv[1];
   }
 
-  // TODO: change the flow of commands between GUI and the Agent
-  string mode = getenv("MODE");
+  if (argc == 3) {
+    hostname = argv[2];
+  }
+
+  brain = new GameBrain();
 
   // * amount of connection retries to the server
   int retries = 0;
 
   std::cout << "Will try to connect to " << hostname << std::endl;
+
+  std::chrono::milliseconds span(100);
 
   while (true) {
     // * try to connect to the host using the library
@@ -234,6 +243,20 @@ int main(int argc, char** argv) {
     // if the connection dies, loop back to try to connect again
 
     while (ws_connection->getReadyState() != WebSocket::CLOSED) {
+      if (nMove != nullptr && nMove->valid() &&
+          nMove->wait_for(span) == std::future_status::ready) {
+        std::cout << "no seg fault until here" << std::endl;
+        BinaryEnvelope env;
+        Move* theMove = nMove->get();
+
+        env.insertUInt8(MessageTypes::PLAY);
+        env.insertUInt8(theMove->startPosition.COL);
+        env.insertUInt8(theMove->startPosition.ROW);
+        env.insertUInt8(theMove->horizontal ? 0 : 1);
+        env.insert32BitInt(theMove->evaluatedScore);
+
+        ws_connection->sendBinary(env.serialize());
+      }
       ws_connection->poll();
       ws_connection->dispatchBinary(handle_message);
 

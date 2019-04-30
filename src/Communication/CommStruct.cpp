@@ -132,7 +132,7 @@ ChallengeRejectedRequestMessage deserializeChallengeRejectedMessage(
 };
 
 NoChallengeRequestMessage deserializeNoChallengeMessage(
-    const std::vector<uint8_t>& binary) {
+    const std::vector<uint8_t>& binary, States state) {
   NoChallengeRequestMessage msg;
   int index = 0;
   msg.type = binary[index++];
