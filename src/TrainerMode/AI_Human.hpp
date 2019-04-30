@@ -19,5 +19,5 @@ class AI_Human{
     bool SetTiles(vector<char>* HumanTiles);
     bool SetBoard(Board* MyBoard);
     bool SetAgent();
-    bool DoWork();
+    Move* DoWork();
 };

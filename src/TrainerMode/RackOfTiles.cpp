@@ -61,8 +61,6 @@ std::vector<char> RackOfTiles:: RandomizeTiles(int WantedTiles)
             count++;
             Rack.push_back((char)Tile);
             SendRack+=(char)Tile;
-            if(count!=SizeOfTiles-1)
-                SendRack+=',';
         }  
     }
     //Communicator->ReceiveRackString(SendRack);

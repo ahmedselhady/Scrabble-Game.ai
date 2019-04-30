@@ -70,29 +70,32 @@ bool AI_Human::SetBoard(Board* MyBoard)
 return false;
 }
 
-bool AI_Human::DoWork()
+Move* AI_Human::DoWork()
     {
         Move BestMove=AI_Agent->getBestMove();
         
-        Move *PlayerMove=Communicator->SendPlayerMove();
+        Move *PlayerMove=nullptr;
+        while(PlayerMove==nullptr)
+        {
+            PlayerMove=Communicator->SendPlayerMove();
+        }
+        
+
         if(BestMove.moveScore>PlayerMove->moveScore)
         {
             Communicator->ReceiveString("AI Move was Better than Player Move ");
             Communicator->SetReceivedPlayerMove(&BestMove);
-            return true;
         }
         
         if(BestMove.moveScore<PlayerMove->moveScore)
         {
             Communicator->ReceiveString("Congratulations !!!!!!! your move is better than what I thought");
-            return true;
         }
         
         if(BestMove.moveScore==PlayerMove->moveScore)
         {
             Communicator->ReceiveString("Congratulations !!!!!!! your move is equal to what I thought");
-            return true;
         }
-            return false;
+            return PlayerMove;
     }
 

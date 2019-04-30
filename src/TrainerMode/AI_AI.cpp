@@ -65,10 +65,17 @@ bool AI_AI::IsEmptyBoard()
     this->BoardStatus=&this->MyBoard->getBoardStatus();
    return this->BoardStatus->isEmpty();
 }
-    Move* AI_AI::DoWork()
-    {
-        
-      Move BestMove=AI_Agent->getBestMove();
-       return &BestMove;
-    }
+    
+Move* AI_AI::DoWork()
+{     
+    Move BestMove=AI_Agent->getBestMove();
+    return &BestMove;
+}
 
+bool AI_AI::SetAgent()
+{
+    if( this->Bag==NULL || this->BoardStatus==NULL || this->Communicator==NULL || this->HumanTiles == NULL || this->MyBoard==NULL){
+        return false;
+    }
+    AI_Agent= new AI_MODE(*this->Bag, *AI_Tiles,this->IsEmptyBoard());
+}

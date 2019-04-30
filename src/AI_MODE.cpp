@@ -146,6 +146,6 @@ list <Move> MovesGeneration (BoardToGrammer* B , vector<char>& Rack, Node* gadda
     }
 
 
-list<Move> L = Gen->allMoves();
+return Gen->allMoves();
 
 }

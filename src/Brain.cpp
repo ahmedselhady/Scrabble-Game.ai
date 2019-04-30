@@ -33,8 +33,10 @@ Node *GameBrain::__get_gaddag()
     return GameBrain::_gaddagInstance;
 }
 
-GameBrain::GameBrain()
+GameBrain::GameBrain() 
 {
+    rackoftiles = new RackOfTiles(&bag,bagSize,comm);
+    MyBoard=Board::getBoard();
     this->bagSize = 100;
     game_phase = MID_GAME_MODE;
 
@@ -64,6 +66,8 @@ GameBrain::GameBrain()
     bag['x'] = 1;
     bag['y'] = 2;
     bag['z'] = 1;
+    bag[' '] = 2;
+
 }
 
 void GameBrain::work_computer_vs_computer()
@@ -95,4 +99,53 @@ void GameBrain::work_computer_vs_computer()
 
     Move *move = aimode->doWork();
     std::cout << "Move Score: " << move->evaluatedScore << std::endl;
+}
+
+
+void GameBrain::work_human_vs_computer()
+{
+    trainer.AI.SetBoard(MyBoard);
+    trainer.Human.SetBoard(MyBoard);
+
+    AI_Tiles=rackoftiles->RandomizeTiles(7);
+    HumanTiles=rackoftiles->RandomizeTiles(7);
+    
+    trainer.AI.SetTiles(&AI_Tiles);
+    trainer.Human.SetTiles(&HumanTiles);
+
+    trainer.AI.SetBag(&bag);
+    trainer.Human.SetBag(&bag);
+
+    trainer.AI.SetAgent();
+    trainer.Human.SetAgent();
+
+    bool turn=true;
+    while(!IsFinished())
+    {
+        if(turn==true)
+        {
+            Move* move=trainer.Human.DoWork();
+            turn=false;
+        }
+        else
+        {
+            Move* move=trainer.AI.DoWork();
+            turn=true;
+        }
+    }
+    
+    
+}
+
+bool GameBrain::IsFinished()
+{
+    if(this->bagSize==0&&((AI_Tiles.size()==0)||(HumanTiles.size()==0)))
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+    
 }
