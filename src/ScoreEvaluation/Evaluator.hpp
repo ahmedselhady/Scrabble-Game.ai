@@ -9,6 +9,6 @@ public:
     virtual ~Evaluator(){};
 
     virtual double CalculateRackLeave(std::vector<char> *Rack, Move *move);
-    virtual double equity(std::vector<char> *Rack, bool isEmptyBoard, Move *move);
+    virtual double equity(std::vector<char> *Rack, bool isEmptyBoard, bool bagSizeGreaterThanZero, Move *move);
     virtual double leaveValue(std::vector<char> *Rack);
 };

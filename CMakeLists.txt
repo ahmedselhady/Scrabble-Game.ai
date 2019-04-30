@@ -41,6 +41,9 @@ include_directories (src/
                     src/MoveGeneration/
                     src/SharedClasses/
                     src/AI_MODE/
+                    src/ScoreEvaluation/
+                    src/Opponent-Rack-Generator/
+                    src/TrainerMode/
                     )
 
 #

@@ -13,7 +13,6 @@
 #include "Gaddag.h"
 #include "../SharedClasses/Move.hpp"
 #include "..\Board\Board_and_tiles\Board_and_tiles\BoardCommunication.h"
-#include "../SharedClasses/Move.hpp"
 using namespace std;
 
 #define MAX_BOARD_ROWS 15
@@ -51,7 +50,7 @@ private:
     BoardToGrammer *board;
     list<Move> moves; // all possible moves provided a Rack and and a Board at a given instant.
     Node *root;       // gaddag root tree.
-    unordered_map <char, int> tilesCount;
+    unordered_map<char, int> tilesCount;
     list<string> nonRepeatedMoves;
     char maxBorder; // Utility Variables inside fuctions helping in Transformation from Vertical to Horiz and vice versa.
     char colOffset;
@@ -60,7 +59,7 @@ private:
     bitset<27> Horiz_crossset[15][15];
     bitset<27> Vertical_crossset[15][15];
     bitset<27> (*currCrossSet)[15][15];
-    bool boardChanged = false;
+    bool boardChanged = true;
     //bitset<27> (*currCrossSet)(int row,int col);
     char countRoomLeft = 0; // count of chars directly left to an anchor sqaure.
     char cancelIndex = 0;   // just a factor to eliminate duplicate of code.
@@ -109,7 +108,8 @@ public:
     void moveCalcHeuristic();                                            // TODO: Calculates 'RackLeave' Heuristic of a Move with Accumalation with its score.
     void sortMoves(MoveRank rank, int numberMoves);                      // TODO: Sorts Moves Based on a Given Criteria and Returns The 'K' Highest Moves Controlled By numberMoves.
     //--> TODO: Optimize CrossSet Calculation Each Move Played. Should Be Called After Each Play t.
-    void printCrossSet(); // TEST FUNCTION ONLY.
+    void printCrossSet();              // TEST FUNCTION ONLY.
+    void crosssetsManager(Move *move); // TODO: Whether To Update or Generate New Crosssets.
 };
 
 // NOTES: (Put Critical Questions Here For Furthur Development)

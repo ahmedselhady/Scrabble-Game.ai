@@ -11,7 +11,8 @@ public:
     static std::vector<char> *unusedRackTiles(std::vector<char> *Rack, Move *move); // Returns unusedTile in a rack given a move.
     static std::vector<char> *sortRack(std::vector<char> *Rack);                    // Returns Alphabetic Sorted Rack.
     static bool isVowel(char *letter);                                              // Returns if the given letter is vowel.
-    //
+    static vector<char> *readSuperLeave(const char *rack, unsigned int rackSize);   // Returns rack-leave read from superLeaves File.
+    
 private:
     Options();
 };

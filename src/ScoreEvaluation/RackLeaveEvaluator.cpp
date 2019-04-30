@@ -1,7 +1,12 @@
 #pragma once
 #include "RackLeaveEvaluator.hpp"
 
-double RackLeaveEvaluator::equity(std::vector<char> *Rack, bool isEmptyBoard, Move *move)
+RackLeaveEvaluator::RackLeaveEvaluator(LoadHeuristics *heuristicsValues)
+{
+    this->heuristicsValues = heuristicsValues;
+}
+
+double RackLeaveEvaluator::equity(std::vector<char> *Rack, bool isEmptyBoard, bool bagSizeGreaterThanZero, Move *move)
 {
     return CalculateRackLeave(Rack, move);
 }
@@ -18,6 +23,7 @@ double RackLeaveEvaluator::leaveValue(std::vector<char> *Rack)
 
     // if (QUACKLE_STRATEGY_PARAMETERS->hasSuperleaves() && QUACKLE_STRATEGY_PARAMETERS->superleave(alphabetized))
     //     return QUACKLE_STRATEGY_PARAMETERS->superleave(alphabetized);
+    return heuristicsValues->superleave(sortedRack);
 
     double value = 0;
 
@@ -26,31 +32,43 @@ double RackLeaveEvaluator::leaveValue(std::vector<char> *Rack)
         double synergy = 0;
         vector<char> uniqueRack;
 
-            for (const auto &leaveIt : leave)
-                value += QUACKLE_STRATEGY_PARAMETERS->tileWorth(leaveIt);
-
-        if (QUACKLE_STRATEGY_PARAMETERS->hasSyn2())
-            for (unsigned int i = 0; i < alphabetized.length() - 1; ++i)
-                if (alphabetized[i] == alphabetized[i + 1])
-                    value += QUACKLE_STRATEGY_PARAMETERS->syn2(alphabetized[i], alphabetized[i]);
-
-        uniqleave += alphabetized[0];
-        for (unsigned int i = 1; i < alphabetized.length(); ++i)
-            if (uniqleave[uniqleave.length() - 1] != alphabetized[i])
-                uniqleave += alphabetized[i];
-
-        if (uniqleave.length() >= 2 && QUACKLE_STRATEGY_PARAMETERS->hasSyn2())
+        for (int index = 0; index < Rack->size(); ++index)
         {
-            for (unsigned int i = 0; i < uniqleave.length() - 1; ++i)
-                for (unsigned int j = i + 1; j < uniqleave.length(); ++j)
-                    synergy += QUACKLE_STRATEGY_PARAMETERS->syn2(uniqleave[i], uniqleave[j]);
+            value += heuristicsValues->tileWorth((*Rack)[index]);
+        }
 
-            // TODO handle the Q
+        for (unsigned int index = 0; index < sortedRack->size() - 1; ++index)
+        {
+            if ((*sortedRack)[index] == (*sortedRack)[index + 1])
+            {
+                value += heuristicsValues->syn2((*sortedRack)[index], (*sortedRack)[index]);
+            }
+        }
+
+        uniqueRack.push_back((*sortedRack)[0]);
+
+        for (unsigned int index = 1; index < sortedRack->size(); ++index)
+        {
+            if (uniqueRack[uniqueRack.size() - 1] != (*sortedRack)[index])
+            {
+                uniqueRack.push_back((*sortedRack)[index]);
+            }
+        }
+
+        if (uniqueRack.size() >= 2)
+        {
+            for (unsigned int indexLetter1 = 0; indexLetter1 < uniqueRack.size() - 1; ++indexLetter1)
+            {
+                for (unsigned int indexLetter2 = indexLetter1 + 1; indexLetter2 < uniqueRack.size(); ++indexLetter2)
+                {
+                    synergy += heuristicsValues->syn2(uniqueRack[indexLetter1], uniqueRack[indexLetter2]);
+                }
+            }
 
             bool holding_bad_tile = false;
-            for (unsigned int i = 0; i < uniqleave.length(); ++i)
+            for (unsigned int index = 0; index < uniqueRack.size(); ++index)
             {
-                if (QUACKLE_STRATEGY_PARAMETERS->tileWorth(uniqleave[i]) < -5.5)
+                if (heuristicsValues->tileWorth(uniqueRack[index]) < -5.5)
                 {
                     holding_bad_tile = true;
                 }

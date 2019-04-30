@@ -205,12 +205,12 @@ bool LoadHeuristics::loadSuperleaves(const string &filename)
         }
 
         intvalue = (unsigned int)(intvalueint)*256 + (unsigned int)(intvaluefrac);
-        vector<char> Rack; //LetterString(leavebytes, leavesize);
+        vector<char> *Rack = Options::readSuperLeave(leavebytes, leavesize);
         //copy into rack ....
 
         double value = (double(intvalue) / 256.0) - 128.0;
         superLeaves.insert(superLeaves.end(),
-                           SuperLeavesMap::value_type(Rack, value));
+                           SuperLeavesMap::value_type(*Rack, value));
     }
 
     superleaveFile.close();

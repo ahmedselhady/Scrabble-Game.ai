@@ -10,6 +10,16 @@ bool Options::isVowel(char *letter)
 {
     return VOWELS[*letter];
 } // Returns Alphabetic Sorted Rack.
+static vector<char> *readSuperLeave(const char *rack, unsigned int rackSize)
+{
+    vector<char> *newRack = new vector<char>();
+
+    for (int index = 0; index < rackSize; ++index)
+    {
+        newRack->push_back(rack[index]);
+    }
+    return newRack;
+} // Returns rack-leave read from superLeaves File.
 
 std::vector<char> *Options::unusedRackTiles(std::vector<char> *Rack, Move *move)
 {

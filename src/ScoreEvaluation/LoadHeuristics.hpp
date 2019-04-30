@@ -5,6 +5,7 @@
 #include <iostream>
 #include <fstream>
 #include "../MoveGeneration/MoveGenerate.h"
+#include "../SharedClasses/Options.hpp"
 
 #define SYNERGY "./Heuristics/Synergy"
 #define VC_PLACE "./Heuristics/VCPlace"

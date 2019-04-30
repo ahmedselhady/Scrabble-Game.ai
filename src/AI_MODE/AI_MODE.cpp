@@ -63,7 +63,7 @@ list<Move> AI_MODE::MovesGeneration(bool isEmpty)
     else
     {
         cout << "Non-Empty board" << endl;
-        Gen->crosssets(); // Gen->Updatecrosssets();
+        Gen->crosssets(); // Gen->Updatecrosssets(); // ! REMEBER NEEDS UPDATE TO MAKE IT FAST ..
         Gen->generateWords();
     }
     return Gen->allMoves();

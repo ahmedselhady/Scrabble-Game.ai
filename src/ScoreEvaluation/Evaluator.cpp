@@ -2,7 +2,7 @@
 
 #include "Evaluator.hpp"
 
-double Evaluator::equity(std::vector<char> *Rack, bool isEmptyBoard, Move *move)
+double Evaluator::equity(std::vector<char> *Rack, bool isEmptyBoard, bool bagSizeGreaterThanZero, Move *move)
 {
     return move->moveScore;
 }

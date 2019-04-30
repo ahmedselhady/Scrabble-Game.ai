@@ -914,6 +914,7 @@ void WordGenerate::generateEmpty(Node *node, string word)
 
 void WordGenerate::duplicateMovesRemoval()
 {
+    // ! FOR THE EVALUATION TO WORK AT ITS BEST.
 
 } // TODO: removes duplicate moves occuring from a one tile play. (vertically + Horizonatally).
 
@@ -990,3 +991,17 @@ void WordGenerate::updateCrossSet(Move *move)
     // 	hcols.push_back(endcol + 1);
     // }
 }
+
+// please provide NULL inCase of a First Move ("PLAY") otherwise Provide the PLAYED or Suggested Move inorder To Update.
+void WordGenerate::crosssetsManager(Move *move)
+{
+    if (boardChanged)
+    {
+        this->crosssets();
+        boardChanged = false;
+    }
+    else
+    {
+        this->updateCrossSet(move); // ! IN PROGRESS ...
+    }
+} // Whether To Update or Generate New Crosssets.
