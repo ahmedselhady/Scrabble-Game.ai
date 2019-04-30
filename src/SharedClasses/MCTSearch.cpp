@@ -1,4 +1,3 @@
-#pragma once
 
 #include "MCTSearch.h"
 #include <string>

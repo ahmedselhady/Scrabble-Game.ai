@@ -22,7 +22,8 @@ static std::string mode = "";
 
 Board* board = nullptr;
 GameBrain* brain = nullptr;
-std::future<Move*>* nMove = nullptr;  // the move we are thinking right now
+bool readyToSend = false;
+std::vector<uint8_t> vecToSend;
 
 // this is used to hold the current state of our communcation
 States state = States::INIT;
@@ -49,7 +50,38 @@ void playTeacherMode() {
   std::cout << std::endl;
 }
 
-Move* playAIMode() { return brain->work_computer_vs_computer(); }
+void playAIMode() {
+  auto theMove = brain->work_computer_vs_computer();
+
+  BinaryEnvelope env;
+  env.insertUInt8(MessageTypes::PLAY);
+  env.insertUInt8(theMove->startPosition.COL + 1);
+  env.insertUInt8(theMove->startPosition.ROW + 1);
+  env.insertUInt8(theMove->horizontal ? 0 : 1);
+
+  for (int i = 0; i < theMove->word.length(); i++) {
+    if (theMove->word[i] >= 0 && theMove->word[i] <= 25) {
+      continue;
+    } else if (theMove->word[i] >= 65 && theMove->word[i] <= 90) {
+      env.insertUInt8((uint8_t)theMove->word[i] + 36);
+    } else {
+      env.insertUInt8((uint8_t)theMove->word[i] - 96);
+    }
+  }
+  int len = theMove->word.length();
+  while (len < 7) {
+    env.insertUInt8(0);
+    len++;
+  }
+
+  env.insert32BitInt(4);
+  auto ser = env.serialize();
+  print_vec(ser);
+  // ws_connection->sendBinary(ser);
+  readyToSend = true;
+  vecToSend = ser;
+  state = States::AWAIT_PLAY_RESPONSE;
+}
 
 void handle_message(const std::vector<uint8_t>& message) {
   // the message type always exist in the first
@@ -115,6 +147,8 @@ void handle_message(const std::vector<uint8_t>& message) {
   } else if (msgType == MessageTypes::PLAY) {
     auto playFromOpponent = deserializePlayMessage(message);
     // TODO: here we can update the gui maybe
+    // TODO(Salem): here u can access play data
+
     state = States::AWAIT_AGENT_CHALLENGE;
   } else if (msgType == MessageTypes::INVALID) {
     if (state == States::AWAIT_PLAY_RESPONSE) {
@@ -197,8 +231,30 @@ void handle_message(const std::vector<uint8_t>& message) {
     // * should investigate doing an async task right here
     env.clear();
 
-    auto x = std::async(playAIMode);
-    nMove = &x;
+    // auto x = std::async(std::launch::async, playAIMode);
+    std::thread t(playAIMode);
+    t.detach();
+    sendMessage = false;
+    /* env.insertUInt8(MessageTypes::PLAY);
+
+    std::cout << std::endl << "Please enter play: " << std::flush;
+
+    int row, col, dir, score;
+    int tiles[7];
+    std::cin >> col >> row >> dir;
+    for (int i = 0; i < 7; i++) {
+      std::cin >> tiles[i];
+      // tiles[i] -= '0';
+    }
+    std::cin >> score;
+
+    env.insertUInt8(col);
+    env.insertUInt8(row);
+    env.insertUInt8(dir);
+    for (int i = 0; i < 7; i++) {
+      env.insertUInt8(tiles[i]);
+    }
+    env.insert32BitInt(score); */
   }
 
   // finished the message, if we need to send then send it
@@ -230,8 +286,6 @@ int main(int argc, char** argv) {
 
   std::cout << "Will try to connect to " << hostname << std::endl;
 
-  std::chrono::milliseconds span(100);
-
   while (true) {
     // * try to connect to the host using the library
     ws_connection = WebSocket::from_url(hostname);
@@ -243,8 +297,16 @@ int main(int argc, char** argv) {
     // if the connection dies, loop back to try to connect again
 
     while (ws_connection->getReadyState() != WebSocket::CLOSED) {
-      if (nMove != nullptr && nMove->valid() &&
-          nMove->wait_for(span) == std::future_status::ready) {
+      if (readyToSend) {
+        std::cout << "Sending the binary";
+        print_vec(vecToSend);
+        ws_connection->sendBinary(vecToSend);
+        vecToSend.clear();
+        readyToSend = false;
+      }
+      /* if (nMove != nullptr && nMove->valid() &&
+          nMove->wait_for(std::chrono::seconds(1)) ==
+              std::future_status::ready) {
         std::cout << "no seg fault until here" << std::endl;
         BinaryEnvelope env;
         Move* theMove = nMove->get();
@@ -253,10 +315,14 @@ int main(int argc, char** argv) {
         env.insertUInt8(theMove->startPosition.COL);
         env.insertUInt8(theMove->startPosition.ROW);
         env.insertUInt8(theMove->horizontal ? 0 : 1);
+
+        // TODO: add
+
         env.insert32BitInt(theMove->evaluatedScore);
 
         ws_connection->sendBinary(env.serialize());
-      }
+        nMove = nullptr;
+      } */
       ws_connection->poll();
       ws_connection->dispatchBinary(handle_message);
 
@@ -273,6 +339,8 @@ int main(int argc, char** argv) {
     std::cerr << "The Connection was weirdly closed for the " << ++retries
               << " time, attempting to reconnect..." << std::endl;
   }
+  // 4, 7, 8, 0, 14, 1, 0, 0, 0, 0, 0, 0, 0, 0, 4,
+  // 4, 7, 8, 0, 14, 1, 0, 0, 0, 0, 0, 0, 0, 0, 4,
 
   return 0;
 }
