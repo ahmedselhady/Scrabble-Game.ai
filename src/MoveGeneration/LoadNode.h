@@ -6,6 +6,7 @@
 #include<string.h>
 using namespace std;
 
+
 class LoadNode {
     /* Contains a letter and pointers to successor letters
      to construct the whole GADDAG Tree.*/
@@ -18,7 +19,7 @@ class LoadNode {
         bool lastChild; // useful for the "NodeClass" explained in "Gaddag.h"
 
     public:
-
+        void setWordLength(int value);
         LoadNode(char letter); //Init.
         int numberOfChilds(); // return number of childern.
         inline void addChild(char letter ,LoadNode &node); // Adding successor.
