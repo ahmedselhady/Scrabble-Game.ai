@@ -24,7 +24,7 @@ class TrainerComm {
   void SetReceivedPlayerMove(Move* ReceivedMove);
   void SendReceivedPlayerMoveToGUI();
 
-  Move* ReceiveMoveFromGUI(string str);//parameter dummy to be able to receive from GUI
+  Move* ReceiveMoveFromGUI(string str);//parameter dummy to be able to receive from GUI //finalized
   int ReceiveScoreFromServer(int Score);
   Move* SendPlayerMove();
 
@@ -34,6 +34,8 @@ class TrainerComm {
   string ReceiveSTRFromGUI(string str);
   void RecCPPServerSendGUI(uint8_t SRow, uint8_t SCol, uint8_t Dir, vector <uint8_t> LettArr);
 
+  void SendRackStrToGui(string col,string row,string dir,string tiles,
+  string MyScore,string OppScore,string MyTime,string OppTime,string AllTime,string Rack,string MsgFromTeacher);
   ~TrainerComm();
 };
 

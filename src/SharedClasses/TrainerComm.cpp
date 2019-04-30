@@ -238,6 +238,14 @@ void TrainerComm:: RecCPPServerSendGUI(uint8_t SRow, uint8_t SCol, uint8_t Dir, 
 	}	
 }
 
+void TrainerComm::SendRackStrToGui(string col,string row,string dir,string tiles,
+  string MyScore,string OppScore,string MyTime,string OppTime,string AllTime,string Rack,string MsgFromTeacher)
+	{
+		string SentStr="play/tm/"+col+"/"+row+"/"+dir+"/"+tiles+"/"+MyScore+"/"+OppScore+"/"+MyTime;
+		SentStr+="/"+OppTime+"/"+AllTime+"/"+Rack+"/"+MsgFromTeacher;
+		SendStringToGUI(SentStr);
+	}
+
 TrainerComm::~TrainerComm() {}
 
 void sendStringToGUI(string str) {
