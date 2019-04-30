@@ -4,7 +4,15 @@
 *.md
 LICENSE
 
-# Prerequisites
+moves.txt
+out.txt
+
+*_builds
+*build
+*_ReleaseVer
+*.project
+
+# Prerequisites 
 *.d
 
 # Compiled Object files

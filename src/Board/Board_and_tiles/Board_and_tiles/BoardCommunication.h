@@ -1,19 +1,19 @@
 #pragma once
 
-#include "../../../SharedClasses/Board.hpp"
+#include "../../../SharedClasses/BoardCommunicator.hpp"
 #include <vector>
 
 class BoardToGrammer: public BoardCommunicator {
 
 public:
 
-    BoardToGrammer();
-    ~BoardToGrammer();
+    BoardToGrammer();//Constructor
+    ~BoardToGrammer();//Destructor
 
     // overrided methods:
-    std::vector<char>& getNextVerticalState();
-    std::vector<char>& getNextHorizontalState();
-    std::vector<char>& getTiles();
+    std::vector<char>& getNextVerticalState();//it will call the function from the AI module to determine the next state given the current board Vertically
+    std::vector<char>& getNextHorizontalState();//it will call the function from the AI module to determine the next state given the current board Horizontally
+    std::vector<char>& getTiles();//it will call the GUI function which will aquire the move played by the player
     /**
      *  function: 
      *      has-a-Tile: checks if a tile exists at a certain position
@@ -26,7 +26,7 @@ public:
      *      bool hasTile; True when there exist a tile in the given position
      *                    False when there does not exist a tile in the given position
     */ 
-    bool hasaTile(int row, int col);
+    bool hasaTile(int row, int col);//check if the given place contains a tile or not
     
     /**
      *  function: 
@@ -40,7 +40,9 @@ public:
      *      tile char; a letter from a-z when there exist a tile in the given position
      *                    astrisc '*' when there does not exist a tile in the given position
     */
-    char getTileAtPosition(int row, int col);
+    	char getTileAtPosition(int row, int col);//gets the tile in a given position
+	void SetChar(char Letter, int Row, int Col);//set the charcter postion
+	void PrintBitBoard();
 protected:
     // add any protected methods or data members
 	int HorizontalIndex;

@@ -1,13 +1,11 @@
-
-#ifndef LOADNODE_H
-#define LOADNODE_H
-
+#pragma once
 //INCLUDES:
 
 #include <vector>
 #include<string>
 #include<string.h>
 using namespace std;
+
 
 class LoadNode {
     /* Contains a letter and pointers to successor letters
@@ -21,7 +19,7 @@ class LoadNode {
         bool lastChild; // useful for the "NodeClass" explained in "Gaddag.h"
 
     public:
-
+        void setWordLength(int value);
         LoadNode(char letter); //Init.
         int numberOfChilds(); // return number of childern.
         inline void addChild(char letter ,LoadNode &node); // Adding successor.
@@ -35,6 +33,6 @@ class LoadNode {
         //bool isTerminal(); // i.e. Node is last character in a valid word.
         bool isEndOfWord(); // i.e. Node contains EOW character (last character).
         inline int getChild(char letter); // Gets successor which holds with given character.
-};
+        bool findWord(string word);
 
-#endif
+};

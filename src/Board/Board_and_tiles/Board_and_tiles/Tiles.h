@@ -1,23 +1,23 @@
 #pragma once
-#ifndef TILES_H
-#define TILES_H
+
 #include <vector>
-#include <algorithm>
-using namespace std;
+
 
 class Tiles
 {
 private:
 
 
-	 vector<char> RackTiles;//Vector Containing character which is tiles
+	 std::vector<char> RackTiles;//Vector Containing character which is tiles
+	 Tiles();//Default Constructor
+	 static Tiles* TilesInst_;
 public:
 
-	Tiles();//Default Constructor
-	vector<char> getTiles();//function to get current rack of tiles
-	bool addTiles(char tile);//function to add a tile to the rack
-	bool exchngTiles(char Current,char New);//function to exchange tiles with server
+	
+	static Tiles* getTiles();//this function to get current rack of tiles
+	std::vector<char> getRackTiles();//This function return rack of tiles
+	bool addTiles(char tile);//this function to add a tile to the rack
+	bool exchngTiles(char Current,char New);//this function to exchange tiles with server
 
 };
 
-#endif

@@ -1,28 +1,50 @@
-#include "Tiles.h"
+#include "./Tiles.h"
+
+#include <algorithm>
 
 Tiles::Tiles()
 {
 }
 
-vector<char> Tiles::getTiles()
+//This Function returns current rack of tiles
+std::vector<char> Tiles::getRackTiles()
 {
 
-	return (RackTiles);//return current rack of tiles
+	return (RackTiles);
 }
+
+Tiles* Tiles::TilesInst_=nullptr;
+
+
+//This Function return tiles
+Tiles* Tiles::getTiles()
+{
+
+	if(TilesInst_==nullptr)
+	{
+		TilesInst_=new Tiles;
+	}
+	
+	return (TilesInst_);
+}
+
+//This Function add tiles to the rack
 bool Tiles::addTiles(char tile)
 {
 
-        if(RackTiles.size()<6)//if rack of tiles less than 7 then you can add other wise operation fail with false return
+        if(RackTiles.size()<7)//if rack of tiles less than 7 then you can add other wise operation fail with false return
         {
           RackTiles.push_back(tile); 
           return true;
         }
 return false;
 }
+
+//This Function exchange tiles
 bool Tiles::exchngTiles(char Current,char New)
 {
   
-vector<char>::iterator itr= find(RackTiles.begin(), RackTiles.end(), Current);
+std::vector<char>::iterator itr= find(RackTiles.begin(), RackTiles.end(), Current);
 //if the current tile is found in the rack of tiles exchange is successful other wise fail with false return
 
 if (  itr!= RackTiles.end() )
