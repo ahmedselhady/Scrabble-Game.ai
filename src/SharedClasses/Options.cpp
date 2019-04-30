@@ -156,7 +156,7 @@ vector<char> *Options::setRackGrounded(std::vector<char> *Rack)
     return offsetTiles;
 } // Returns Offset Chars starting from ZERO.
 
-static int rackScore(std::vector<char> *Rack)
+int Options::rackScore(std::vector<char> *Rack)
 {
     int TileValues[27] = {1, 3, 3, 2, 1, 4, 2, 4, 1, 8, 5, 1, 3, 1, 1, 3, 10, 1, 1, 1, 1, 4, 4, 8, 4, 10, 0}; // Scores
     int score = 0;
@@ -173,3 +173,27 @@ static int rackScore(std::vector<char> *Rack)
     }
     return score;
 } // Returns Rack Leave Score for Individuals Chars.
+
+string *Options::moveChar(Move *move)
+{
+    string *newMove = new string();
+    for (int index = 0; index < move->word.length(); ++index)
+    {
+        if ((move->word[index] >= 0 && move->word[index] <= 25)) // on Board char.
+        {
+            continue;
+        }
+        else
+        {
+            if ((move->word[index] >= 97 && move->word[index] <= 122))
+            {
+                newMove->push_back(move->word[index]);
+            }
+            else
+            {
+                newMove->push_back(move->word[index] + 32);
+            }
+        }
+    }
+    return newMove;
+} // Returns actual new tile of a move that will be played.

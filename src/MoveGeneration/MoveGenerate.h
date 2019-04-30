@@ -12,7 +12,9 @@
 
 #include "Gaddag.h"
 #include "../SharedClasses/Move.hpp"
+#include "../ScoreEvaluation/Evaluator.hpp"
 #include "..\Board\Board_and_tiles\Board_and_tiles\BoardCommunication.h"
+
 using namespace std;
 
 #define MAX_BOARD_ROWS 15
@@ -56,6 +58,9 @@ private:
     char colOffset;
     char rowOffset;
     char currDirection; // i.e. if horizontal move we choose the col else the row.
+    int bagSize;
+    bool isEmptyBoard;
+    bool bagSizeGreaterThanZero;
     bitset<27> Horiz_crossset[15][15];
     bitset<27> Vertical_crossset[15][15];
     bitset<27> (*currCrossSet)[15][15];
@@ -68,13 +73,14 @@ private:
     char anchorRow; // chosen anchor square postion.
     char anchorCol;
     char usedTiles = 0;
+    Evaluator *EvalCalculator;
 
     bool emptyBoard = false;
 
 public:
-    WordGenerate(BoardToGrammer *board, Node *root); // Takes a Reference to the Board.
-    void setBoardState(BoardToGrammer *board);       // Assigns Different Board States For Monte Carlo.
-    void generateWords();                            // iterates on each sqaure in the board and performing the algo. Taking the board 2-Dimensions into Consideration.
+    WordGenerate(BoardToGrammer *board, Node *root, int bagSize, bool isEmptyBoard, bool bagSizeGreaterThanZero, Evaluator *EvalCalculator); // Takes a Reference to the Board.
+    void setBoardState(BoardToGrammer *board);                                                                                               // Assigns Different Board States For Monte Carlo.
+    void generateWords();                                                                                                                    // iterates on each sqaure in the board and performing the algo. Taking the board 2-Dimensions into Consideration.
     int roomLeftCount(int row, int col);
     /*
             this function may seem awkward but it's usefull.
@@ -110,6 +116,8 @@ public:
     //--> TODO: Optimize CrossSet Calculation Each Move Played. Should Be Called After Each Play t.
     void printCrossSet();              // TEST FUNCTION ONLY.
     void crosssetsManager(Move *move); // TODO: Whether To Update or Generate New Crosssets.
+    void setEvaluator(Evaluator *EvalCalculator);
+    vector<char>* Rack;
 };
 
 // NOTES: (Put Critical Questions Here For Furthur Development)

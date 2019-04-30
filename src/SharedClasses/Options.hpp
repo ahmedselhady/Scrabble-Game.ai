@@ -3,8 +3,7 @@
 #include <vector>
 #include "Move.hpp"
 #include "../MoveGeneration/MoveGenerate.h"
-#include "../ScoreEvaluation/LoadHeuristics.hpp"
-
+#define BLANK_OFFSET BLANK - 27 + 1
 // This class acts as utility class functions for anyone who want to use ... add any like the bellow functions.
 class Options
 {
@@ -17,6 +16,7 @@ public:
     static vector<char> *moveTiles(Move *move);                                     // Returns Move Tiles Used only.
     static vector<char> *setRackGrounded(std::vector<char> *Rack);                  // Returns Offset Chars starting from ZERO.
     static int rackScore(std::vector<char> *Rack);                                  // Returns Rack Leave Score for Individuals Chars.
+    static string *moveChar(Move *move);                                            // Returns actual new tile of a move that will be played.
 private:
     Options();
 };

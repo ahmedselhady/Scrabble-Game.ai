@@ -209,7 +209,7 @@ int main()
     // Rack.push_back('r');
     // Rack.push_back('s');
 
-    WordGenerate *Gen = new WordGenerate(Ptr2G, gaddagRoot);
+    WordGenerate *Gen = new WordGenerate(Ptr2G, 0, false, false, gaddagRoot, NULL);
     Gen->countTilesRack(&Rack);
 
 #if TEST == EMPTY_BOARD_TEST

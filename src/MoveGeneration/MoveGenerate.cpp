@@ -8,10 +8,14 @@
 using namespace std;
 
 //This Function it takes a Reference to the Board.
-WordGenerate::WordGenerate(BoardToGrammer *board, Node *root)
+WordGenerate::WordGenerate(BoardToGrammer *board, Node *root, int bagSize, bool isEmptyBoard, bool bagSizeGreaterThanZero, Evaluator *EvalCalculator)
 {
     this->board = board; // catching a boardcomm. verison object.
     this->root = root;
+    this->EvalCalculator = EvalCalculator;
+    this->bagSize = bagSize;
+    this->isEmptyBoard = isEmptyBoard;
+    this->bagSizeGreaterThanZero = bagSizeGreaterThanZero;
 }
 
 /*
@@ -316,7 +320,8 @@ void WordGenerate::goOn(int pos, char boardLetter, string word, Node *gaddagNode
             //--HERE
             //int score = 22;
             newMove->moveUsedTiles = usedTiles;
-            newMove->moveScore = board->calculateScore(newMove->word, newMove->startPosition.ROW, newMove->startPosition.COL, newMove->horizontal) + (char)(bingoMove)*50; // extra 10 points for now only.
+            newMove->moveScore = board->calculateScore(newMove->word, newMove->startPosition.ROW, newMove->startPosition.COL, newMove->horizontal) + (char)(bingoMove)*50; // extra 10 points for now
+            // ! newMove->moveScore = this->EvalCalculator->equity(Rack, bagSize, isEmptyBoard, bagSizeGreaterThanZero, newMove);
             moves.push_back(*newMove);
         }
 
@@ -395,7 +400,9 @@ void WordGenerate::goOn(int pos, char boardLetter, string word, Node *gaddagNode
             //--HERE
             //int score = 22;
             newMove->moveUsedTiles = usedTiles;
+            //
             newMove->moveScore = board->calculateScore(newMove->word, newMove->startPosition.ROW, newMove->startPosition.COL, newMove->horizontal) + (char)(bingoMove)*50; // extra 10 points for now only.
+            //newMove->moveScore = this->EvalCalculator->equity(Rack, bagSize, isEmptyBoard, bagSizeGreaterThanZero, newMove);
             moves.push_back(*newMove);
         }
         // Can I Go Left Furthur ??? : ANS:
@@ -416,6 +423,7 @@ void WordGenerate::countTilesRack(vector<char> *rackTiles)
 
     // TODO: USE rackTiles instead later.
     vector<char> *rack = rackTiles;
+    Rack = rackTiles;
     if (rack == NULL)
     {
         *rack = board->getTiles();
@@ -836,7 +844,7 @@ void WordGenerate::emptyBoardMoves()
                 }
 
                 move.moveScore = board->calculateScore(move.word, move.startPosition.ROW, move.startPosition.COL, move.horizontal) + (char)(bingoMove)*50;
-
+                //newMove->moveScore = this->EvalCalculator->equity(Rack, bagSize, isEmptyBoard, bagSizeGreaterThanZero, newMove);
                 moves.push_back(move);
             }
         }
@@ -878,7 +886,6 @@ void WordGenerate::generateEmpty(Node *node, string word)
 
         tilesCount[childLetter - CHAR_OFFSET]++;
     }
-
     if (tilesCount[BLANK - CHAR_OFFSET] >= 1)
     {
         for (Node *child = node->getFirstChild(); child != NULL; child = child->getNextChild())
@@ -1005,3 +1012,8 @@ void WordGenerate::crosssetsManager(Move *move)
         this->updateCrossSet(move); // ! IN PROGRESS ...
     }
 } // Whether To Update or Generate New Crosssets.
+
+void WordGenerate::setEvaluator(Evaluator *EvalCalculator)
+{
+    this->EvalCalculator = EvalCalculator;
+}
