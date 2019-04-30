@@ -1,9 +1,10 @@
 #include"RackOfTiles.hpp"
 
-RackOfTiles::RackOfTiles(std::unordered_map<char, int> * Bag,int BagSize)
+RackOfTiles::RackOfTiles(std::unordered_map<char, int> * Bag,int BagSize,TrainerComm* Comm)
 {
     bag=Bag;
     bagSize=BagSize;
+    this->Communicator = Comm;
 }
 
 RackOfTiles::~RackOfTiles()
@@ -50,15 +51,20 @@ std::vector<char> RackOfTiles:: RandomizeTiles(int WantedTiles)
         SizeOfTiles=WantedTiles;
     }
     
-    while(count==SizeOfTiles)
+    while(count!=SizeOfTiles)
     {
         int Tile=rand() % 27;
         Tile-=97;
+        string SendRack; 
         if(updateBag((char)Tile))
         {
             count++;
             Rack.push_back((char)Tile);
+            SendRack+=(char)Tile;
+            if(count!=SizeOfTiles-1)
+                SendRack+=',';
         }  
     }
+    //Communicator->ReceiveRackString(SendRack);
     return Rack;
 }
