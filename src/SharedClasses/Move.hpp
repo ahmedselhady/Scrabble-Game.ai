@@ -38,6 +38,7 @@ public:
 
     Move& operator =(const Move& );
 
+    int evaluatedScore;
     Move();
     Move(std::string word, bool horizontal, Position position, int usedTiles); // Init.
     void setScore(int score);                                                  // Setting Move Score.

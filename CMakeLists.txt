@@ -42,6 +42,7 @@ include_directories (src/
                     src/SharedClasses/
                     src/Opponent-Rack-Generator/
                     src/TrainerMode/
+                    src/AI_MODE/
                     )
 
 #

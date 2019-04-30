@@ -3,6 +3,7 @@
 #include "AI_AI.hpp"
 #include "Timer.hpp"
 #include "RackOfTiles.hpp"
+#include<vector>
 #include"../SharedClasses/BoardCommunicator.hpp"
 
 class Trainer {

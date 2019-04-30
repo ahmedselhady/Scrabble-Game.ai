@@ -1,8 +1,10 @@
 
 #pragma once
 #include "AI_AI.hpp"
+
 AI_AI::AI_AI()
-{ this->MyBoard = NULL;
+{
+    this->MyBoard = NULL;
     this->AI_Tiles = NULL;
     this->AI_Agent = NULL;
     this->Bag = NULL;
