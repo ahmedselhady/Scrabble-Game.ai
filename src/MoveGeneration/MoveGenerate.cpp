@@ -8,11 +8,11 @@
 using namespace std;
 
 //This Function it takes a Reference to the Board.
-WordGenerate::WordGenerate(BoardToGrammer *board, Node *root, int bagSize, bool isEmptyBoard, bool bagSizeGreaterThanZero, Evaluator *EvalCalculator)
+WordGenerate::WordGenerate(BoardToGrammer *board, Node *root, int bagSize, bool isEmptyBoard, bool bagSizeGreaterThanZero /*,Evaluator *EvalCalculator*/)
 {
     this->board = board; // catching a boardcomm. verison object.
     this->root = root;
-    this->EvalCalculator = EvalCalculator;
+    //  this->EvalCalculator = EvalCalculator;
     this->bagSize = bagSize;
     this->isEmptyBoard = isEmptyBoard;
     this->bagSizeGreaterThanZero = bagSizeGreaterThanZero;
@@ -24,7 +24,6 @@ and it iterates on each sqaure in the board and performing the algo.
 */
 void WordGenerate::generateWords()
 {
-
     bool isAnchorSquare = false;
     countRoomLeft = 0;
     string word;
@@ -104,7 +103,6 @@ bool WordGenerate::isAnchor(int row, int col)
 //This Function it's important to stop right before a letter found while travesring the board leftward generating possible moves.
 int WordGenerate::roomLeftCount(int row, int col)
 {
-
     // count include the first char (itself).
     int countRoomLeft = 0;
     for (int offsetLeft = 0; offsetLeft <= currDirection; ++offsetLeft)
@@ -170,7 +168,6 @@ int WordGenerate::roomLeftCount(int row, int col)
 //This Gen funtion first function in Move Generation Algo.
 void WordGenerate::gen(int pos, string word, Node *gaddagNode)
 {
-
     char childLetter; // init.
     char boardLetter;
     Node *childNode;
@@ -240,7 +237,6 @@ void WordGenerate::gen(int pos, string word, Node *gaddagNode)
 //This Function it sets the Options needed for transforming from Horiz. to vertical and vice versa.
 void WordGenerate::setDirectionOptions(int row, int col, bool isHorizontal)
 {
-
     if (isHorizontal)
     {
         maxBorder = MAX_BOARD_COLS;
@@ -420,7 +416,6 @@ void WordGenerate::goOn(int pos, char boardLetter, string word, Node *gaddagNode
 */
 void WordGenerate::countTilesRack(vector<char> *rackTiles)
 {
-
     // TODO: USE rackTiles instead later.
     vector<char> *rack = rackTiles;
     Rack = rackTiles;
@@ -791,7 +786,6 @@ list<Move> WordGenerate::allMoves()
 
 void WordGenerate::emptyBoardMoves()
 {
-
     if (!emptyBoard && false)
     { // for now.
 
@@ -948,7 +942,6 @@ Move *WordGenerate::bestScoreMove()
 // TEST FUNCTION ONLY.
 void WordGenerate::printCrossSet()
 {
-
     for (int row = 0; row < MAX_BOARD_ROWS; row++)
     {
         for (int col = 0; col < MAX_BOARD_COLS; col++)
@@ -971,7 +964,6 @@ void WordGenerate::printCrossSet()
 // Updates CrossSets of The Board When a Move is Played. Given This 'Move' The Function Uses Move Specific Information And Updates .
 void WordGenerate::updateCrossSet(Move *move)
 {
-
     vector<Position> boardIndex;
 
     Position boardPos;
@@ -1013,7 +1005,7 @@ void WordGenerate::crosssetsManager(Move *move)
     }
 } // Whether To Update or Generate New Crosssets.
 
-void WordGenerate::setEvaluator(Evaluator *EvalCalculator)
+void WordGenerate::setEvaluator(/*Evaluator *EvalCalculator*/)
 {
-    this->EvalCalculator = EvalCalculator;
+    //this->EvalCalculator = EvalCalculator;
 }

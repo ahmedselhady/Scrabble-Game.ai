@@ -1,11 +1,11 @@
-#include "./Brain.hpp"
-#include "./Definitions.hpp"
+// #include "./Brain.hpp"
+// #include "./Definitions.hpp"
 
-int main()
-{
-	GameBrain *brain = new GameBrain();
-	brain->work_computer_vs_computer();
+// int main()
+// {
+// 	GameBrain *brain = new GameBrain();
+// 	brain->work_computer_vs_computer();
 
-	system("pause");
-	return 0;
-}
+// 	system("pause");
+// 	return 0;
+// }
