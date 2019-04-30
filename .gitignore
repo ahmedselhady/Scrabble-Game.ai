@@ -27,7 +27,7 @@ out.txt
 *.pch
 
 # Compiled Dynamic libraries
-*.so
+[^libzmq].so
 *.dylib
 *.dll
 
