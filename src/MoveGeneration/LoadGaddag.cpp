@@ -12,6 +12,7 @@ using namespace std;
 //Function LoadGaddag is the constructor
 LoadGaddag::LoadGaddag() : Root((char)GADDAG_ROOT)
 {
+    
     // nothing.
 }
 

@@ -111,9 +111,10 @@ public:
     list<Move> allMoves();                                               // Returns all moves.
     void setDirectionOptions(int row, int col, bool isHorizontal);       // Sets the Options needed for transforming from Horiz. to vertical and vice versa.
     void duplicateMovesRemoval();                                        // TODO: removes duplicate moves occuring from a one tile play. (vertically + Horizonatally)
-    void generateEmpty(Node *node, string &word);                        // For Empty Board State Moves.
+    void generateEmpty(Node *node, string word);                         // For Empty Board State Moves.
     void emptyBoardMoves();                                              // Generate all possible moves availabe given certain Rack when the status of the board is empty only.
     void crosssets();                                                    // calculate the crosssets of each square.
+    void Specific_crosssets(int row,int col);                            // calculate the crosssets of specific square.   
     void updateCrossSet(Move *move);                                     /////TODO: Just Updates Changed CrossSet.
     bool checkWordDict(string word);                                     // Given a Word it checks Whether This word in Dict or NOT.
     Move *bestScoreMove();                                               // TODO: Returns Best (Highest Score) Move From The Last Generated Moves RUN.

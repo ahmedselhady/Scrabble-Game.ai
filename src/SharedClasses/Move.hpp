@@ -3,6 +3,7 @@
 
 #include <string.h>
 #include <string>
+#include "CommInfo.hpp"
 // ADD Includes : if Needed ...
 
 /*NOTES:
@@ -40,4 +41,6 @@ public:
     Move();
     Move(std::string word, bool horizontal, Position position, int usedTiles); // Init.
     void setScore(int score);                                                  // Setting Move Score.
+    std::string moveServerFormat();                                            // Format the move for server's use.
+    std::string moveGUIFormat();                                               // For GUI use.
 };
