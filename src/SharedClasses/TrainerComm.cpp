@@ -187,13 +187,13 @@ string TrainerComm::ReceiveSTRFromGUI(string str)
 
 void TrainerComm::ReceiveString(string str) { ReceivedString = str; }
 
-void TrainerComm::SendReceivedStringToGUI() {
+void TrainerComm::SendStringToGUI(string str) {
   zmq::context_t context(1);
   zmq::socket_t socket(context, ZMQ_REQ);
   socket.connect("tcp://192.168.88.208:5555");
   zmq_msg_t Msg;
-  zmq_msg_init_size(&Msg, ReceivedString.length());
-  memcpy(zmq_msg_data(&Msg), ReceivedString.c_str(), ReceivedString.length());
+  zmq_msg_init_size(&Msg, str.length());
+  memcpy(zmq_msg_data(&Msg), str.c_str(), str.length());
   zmq_msg_send(&Msg, socket, !ZMQ_DONTWAIT);
   zmq_msg_recv(&Msg, socket, !ZMQ_DONTWAIT);
 }

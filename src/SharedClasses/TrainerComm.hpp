@@ -20,7 +20,7 @@ class TrainerComm {
 
  public:
   TrainerComm();
-  vector<string> split_string(string input_string);
+  vector<string> split_string(string input_string); 
   void SetReceivedPlayerMove(Move* ReceivedMove);
   void SendReceivedPlayerMoveToGUI();
 
@@ -29,7 +29,7 @@ class TrainerComm {
   Move* SendPlayerMove();
 
   void ReceiveString(string str);
-  void SendReceivedStringToGUI();
+  void SendStringToGUI(string str);
 
   string ReceiveSTRFromGUI(string str)
   ~TrainerComm();
