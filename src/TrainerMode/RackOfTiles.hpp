@@ -12,7 +12,5 @@ public:
     RackOfTiles(std::unordered_map<char, int> * Bag,int BagSize);
     ~RackOfTiles();
     bool updateBag(char tileToReduce);
-    std::vector<char> RandomizeTiles(int WantedTiles);
+    std::vector<uint8_t> RandomizeTiles(int WantedTiles);
 };
-
-
