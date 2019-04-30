@@ -36,37 +36,30 @@ void TrainerComm::SetReceivedPlayerMove(Move* ReceivedMove) {
   ReceivedPlayerMove = ReceivedMove;
 }
 
-void TrainerComm::SendReceivedPlayerMoveToGUI() {
-  vector<string> StrVec;
+void TrainerComm::SendPlayerMoveToGUI(Move* ReceivedPlayerMove)
+ {
+  string StrVec;//0 row, 1 col, 2 word, 3 ishorizontal
   string Row(1, ReceivedPlayerMove->startPosition.ROW);
   string Col(1, ReceivedPlayerMove->startPosition.COL);
-  StrVec.push_back(Row);
-  StrVec.push_back(Col);
-  StrVec.push_back(ReceivedPlayerMove->word);
-  if (ReceivedPlayerMove->horizontal == true) {
-    StrVec.push_back("true");
-  } else {
-    StrVec.push_back("false");
+	StrVec+=ROW;
+	StrVec+="/";
+	StrVec+=Col;
+	StrVec+="/";
+	StrVec+=ReceivedPlayerMove->word;
+	StrVec+="/";
+  //StrVec.push_back(Row);
+  //StrVec.push_back(Col);
+  //StrVec.push_back(ReceivedPlayerMove->word);
+  if (ReceivedPlayerMove->horizontal == true)
+	{
+    StrVec+="true";
+  } 
+	else 
+	{
+    StrVec+="false";
   }
-
-  zmq::context_t context(1);
-  zmq::socket_t socket(context, ZMQ_REQ);
-  socket.connect("tcp://localhost:5550");
-  int Counter = 0;
-  for (auto it = StrVec.begin(); it != StrVec.end();
-       it++)  // sending the vector LettArr
-  {
-    zmq_msg_t Msg;
-    zmq_msg_init_size(&Msg, StrVec[Counter].length());
-    memcpy(zmq_msg_data(&Msg), StrVec[Counter].c_str(),
-           StrVec[Counter].length());
-    if (it == StrVec.end() - 1) {
-      zmq_msg_send(&Msg, socket, 0);
-    } else {
-      zmq_msg_send(&Msg, socket, ZMQ_SNDMORE);
-    }
-    Counter++;
-  }
+	SendStringToGUI(StrVec);
+  
 }
 
 int TrainerComm::ReceiveScoreFromServer(int Score) { return Score; }
@@ -184,9 +177,6 @@ string TrainerComm::ReceiveSTRFromGUI(string str)
 	//	ReceivedStrVec[2], (int)pos.ROW, (int)pos.COL, IsHorizontal));
 	return ReceivedMove;
 }
-
-
-void TrainerComm::ReceiveString(string str) { ReceivedString = str; }
 
 void TrainerComm::SendStringToGUI(string str) {
   zmq::context_t context(1);
