@@ -2,6 +2,7 @@
 #define COMM_SCRABBLE_CLIENT_CPP
 
 #include <assert.h>
+#include <cstdlib>
 #include <future>
 #include <iostream>
 #include <string>
@@ -143,6 +144,7 @@ void handle_message(const std::vector<uint8_t>& message) {
           << state;
     }
   } else if (msgType == MessageTypes::CHALLENGE) {
+    
   } else {
     // ? this is the default if the message is weird
     std::cerr << "Unknown Message Type, ya bashmo7nds zbt acoadk" << std::endl;
@@ -165,7 +167,14 @@ void handle_message(const std::vector<uint8_t>& message) {
     // TODO: playing should modify state, WIP
     // * should investigate doing an async task right here
     env.clear();
-    env.insertUInt8(MessageTypes::PLAY);
+
+    auto vec = getMsgFromGUI("MAKE_PASS");
+    std::cout << "GOT FROM GUI: ";
+    for (auto m : vec) {
+      std::cout << m << " ";
+    }
+    std::cout << std::endl;
+    /* env.insertUInt8(MessageTypes::PLAY);
 
     std::cout << std::endl << "Please enter play: " << std::flush;
 
@@ -184,7 +193,7 @@ void handle_message(const std::vector<uint8_t>& message) {
     for (int i = 0; i < 7; i++) {
       env.insertUInt8(tiles[i]);
     }
-    env.insert32BitInt(score);
+    env.insert32BitInt(score); */
 
     state = States::AWAIT_PLAY_RESPONSE;
   }
@@ -206,6 +215,9 @@ int main(int argc, char** argv) {
     hostname = argv[1];
   }
 
+  // TODO: change the flow of commands between GUI and the Agent
+  string mode = getenv("MODE");
+
   // * amount of connection retries to the server
   int retries = 0;
 
@@ -214,7 +226,6 @@ int main(int argc, char** argv) {
   while (true) {
     // * try to connect to the host using the library
     ws_connection = WebSocket::from_url(hostname);
-    ws_connection->sendPing();
 
     // ! make sure we got the connection, if not fail and exit
     assert(ws_connection);

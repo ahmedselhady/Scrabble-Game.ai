@@ -24,7 +24,7 @@ class TrainerComm {
   void SetReceivedPlayerMove(Move* ReceivedMove);
   void SendReceivedPlayerMoveToGUI();
 
-  vector<string> ReceiveMoveFromGUI(string str)
+  vector<string> ReceiveMoveFromGUI(string str);
   int ReceiveScoreFromServer(int Score);
   Move* SendPlayerMove();
 
@@ -34,3 +34,5 @@ class TrainerComm {
 };
 
 void sendStringToGUI(string str);
+
+vector<string> getMsgFromGUI(string str);

@@ -2,34 +2,34 @@
 
 TrainerComm::TrainerComm() {}
 
-vector<string> TrainerComm:: split_string(string input_string)
-{
-	string::iterator new_end = unique(input_string.begin(), input_string.end(), [](const char &x, const char &y) {
-		return x == y and x == ' ';
-	});
+vector<string> TrainerComm::split_string(string input_string) {
+  string::iterator new_end =
+      unique(input_string.begin(), input_string.end(),
+             [](const char& x, const char& y) { return x == y and x == ' '; });
 
-	input_string.erase(new_end, input_string.end());
+  input_string.erase(new_end, input_string.end());
 
-	while (input_string[input_string.length() - 1] == ' ') {
-		input_string.pop_back();
-	}
+  while (input_string[input_string.length() - 1] == ' ') {
+    input_string.pop_back();
+  }
 
-	vector<string> splits;
-	char delimiter = '/';
+  vector<string> splits;
+  char delimiter = '/';
 
-	size_t i = 0;
-	size_t pos = input_string.find(delimiter);
+  size_t i = 0;
+  size_t pos = input_string.find(delimiter);
 
-	while (pos != string::npos) {
-		splits.push_back(input_string.substr(i, pos - i));
+  while (pos != string::npos) {
+    splits.push_back(input_string.substr(i, pos - i));
 
-		i = pos + 1;
-		pos = input_string.find(delimiter, i);
-	}
+    i = pos + 1;
+    pos = input_string.find(delimiter, i);
+  }
 
-	splits.push_back(input_string.substr(i, min(pos, input_string.length()) - i + 1));
+  splits.push_back(
+      input_string.substr(i, min(pos, input_string.length()) - i + 1));
 
-	return splits;
+  return splits;
 }
 
 void TrainerComm::SetReceivedPlayerMove(Move* ReceivedMove) {
@@ -108,27 +108,28 @@ Move* TrainerComm::SendPlayerMove() { return PlayerMoveFromServer; }
 //       ReceivedMove[2], (int)pos.ROW, (int)pos.COL, IsHorizontal));
 // }
 
-vector<string> TrainerComm::ReceiveMoveFromGUI(string str)
- {
+vector<string> TrainerComm::ReceiveMoveFromGUI(string str) {
   zmq::context_t context(1);
   zmq::socket_t socket(context, ZMQ_REQ);
   socket.connect("tcp://192.168.88.208:5555");
   zmq_msg_t message;
 
   string ReceivedMove;  // 0 row, 1 col,2 word, 3 horizontal,4 is
-                              // bingo,5 calculated score
+                        // bingo,5 calculated score
   zmq_msg_init_size(&message, str.length());
   memcpy(zmq_msg_data(&message), str.c_str(), str.length());
   zmq_msg_send(&message, socket, !ZMQ_DONTWAIT);
   zmq_msg_recv(&message, socket, !ZMQ_DONTWAIT);
-  
-  size_t MsgSize = zmq_msg_size(&message);  // size_t zmq_msg_size (zmq_msg_t *msg);
-  ReceivedMove=std::string(static_cast<char*>(zmq_msg_data(&message)), MsgSize);
+
+  size_t MsgSize =
+      zmq_msg_size(&message);  // size_t zmq_msg_size (zmq_msg_t *msg);
+  ReceivedMove =
+      std::string(static_cast<char*>(zmq_msg_data(&message)), MsgSize);
   //  Process the message frame
   zmq_msg_close(&message);
-  //if (!zmq_msg_more(&message)) break;  //  Last message frame
-  
-  vector<string> ReceivedStrVec=split_string(ReceivedMove);
+  // if (!zmq_msg_more(&message)) break;  //  Last message frame
+
+  vector<string> ReceivedStrVec = split_string(ReceivedMove);
   Position pos;
   pos.ROW = ReceivedStrVec[0][0];
   pos.COL = ReceivedStrVec[1][0];
@@ -144,7 +145,6 @@ vector<string> TrainerComm::ReceiveMoveFromGUI(string str)
       ReceivedStrVec[2], (int)pos.ROW, (int)pos.COL, IsHorizontal));
   return ReceivedStrVec;
 }
-
 
 void TrainerComm::ReceiveString(string str) { ReceivedString = str; }
 
@@ -165,4 +165,10 @@ void sendStringToGUI(string str) {
   TrainerComm tc;
   tc.ReceiveString(str);
   tc.SendReceivedStringToGUI();
+}
+
+vector<string> getMsgFromGUI(string str) {
+  cout << "HERE";
+  TrainerComm tc;
+  return tc.ReceiveMoveFromGUI(str);
 }

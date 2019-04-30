@@ -12,7 +12,7 @@
 
 #include "../Board_and_tiles/Board_and_tiles/BoardCommunication.h"
 #include "../SharedClasses/Move.hpp"
-#include "Gaddag.h"
+#include "..\Board\Board_and_tiles\Board_and_tiles\BoardCommunication.h"
 using namespace std;
 
 #define MAX_BOARD_ROWS 15

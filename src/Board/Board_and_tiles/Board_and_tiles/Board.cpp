@@ -156,11 +156,18 @@ int Board::calculateScore(int offsit, bool horizontal, char intersectionLetter)
 		{
 			char Tile = ' ';
 			char charOffsit = ' ';
+			bool addBonus = false;
+			bool isBlank = false;
 			if (offsit == mStartOffsit)
 			{
+				if (!AllCharBoard.getBit(mStartOffsit))
+				{
+					addBonus = true;
+				}
 				Tile = intersectionLetter;
 				if (intersectionLetter >= 65 && intersectionLetter <= 90) //  blank
 				{
+					isBlank = true;
 					charOffsit = 'A';
 				}
 				else
@@ -173,28 +180,40 @@ int Board::calculateScore(int offsit, bool horizontal, char intersectionLetter)
 				Tile = getCharByOffsit(mStartOffsit); // get the current char
 				charOffsit = 'A';
 			}
-			if (LetterScoreMultiplyBy2.getBit(mStartOffsit))
+			if (addBonus)
 			{
-				WordScore += TileValues[Tile - charOffsit] * 2;
-			}
-			else if (LetterScoreMultiplyBy3.getBit(mStartOffsit))
-			{
-				WordScore += TileValues[Tile - charOffsit] * 3;
+				if (LetterScoreMultiplyBy2.getBit(mStartOffsit) && !isBlank)
+				{
+					WordScore += TileValues[Tile - charOffsit] * 2;
+				}
+				else if (LetterScoreMultiplyBy3.getBit(mStartOffsit) && !isBlank)
+				{
+					WordScore += TileValues[Tile - charOffsit] * 3;
+				}
+				else if (!isBlank)
+				{
+					WordScore += TileValues[Tile - charOffsit];
+				}
+
+				if ((WordScoreMultiplyBy2.getBit(mStartOffsit)) || (mStartOffsit == 7 + 15 * 7)) // the start square
+				{
+					Wsx2 = true;
+					Wsx2M *= 2;
+				}
+				else if (WordScoreMultiplyBy3.getBit(mStartOffsit))
+				{
+					Wsx3 = true;
+					Wsx3M *= 3;
+				}
 			}
 			else
 			{
-				WordScore += TileValues[Tile - charOffsit];
+				if (!isBlank)
+				{
+					WordScore += TileValues[Tile - charOffsit];
+				}
 			}
-			if ((WordScoreMultiplyBy2.getBit(mStartOffsit)) || (mStartOffsit == 7 + 15 * 7)) // the start square
-			{
-				Wsx2 = true;
-				Wsx2M *= 2;
-			}
-			else if (WordScoreMultiplyBy3.getBit(mStartOffsit))
-			{
-				Wsx3 = true;
-				Wsx3M *= 3;
-			}
+
 			mStartOffsit += 15;
 		}
 		if (Wsx2)
@@ -218,12 +237,18 @@ int Board::calculateScore(int offsit, bool horizontal, char intersectionLetter)
 		{
 			char Tile = ' ';
 			char charOffsit = ' ';
-
+			bool addBonus = false;
+			bool isBlank = false;
 			if (offsit == mStartOffsit)
 			{
+				if (!AllCharBoard.getBit(mStartOffsit))
+				{
+					addBonus = true;
+				}
 				Tile = intersectionLetter;
 				if (intersectionLetter >= 65 && intersectionLetter <= 90) //  blank
 				{
+					isBlank = true;
 					charOffsit = 'A';
 				}
 				else
@@ -237,28 +262,41 @@ int Board::calculateScore(int offsit, bool horizontal, char intersectionLetter)
 				charOffsit = 'A';
 			}
 
-			if (LetterScoreMultiplyBy2.getBit(mStartOffsit))
+			if (addBonus)
 			{
-				WordScore += TileValues[Tile - charOffsit] * 2;
-			}
-			else if (LetterScoreMultiplyBy3.getBit(mStartOffsit))
-			{
-				WordScore += TileValues[Tile - charOffsit] * 3;
+
+				if (LetterScoreMultiplyBy2.getBit(mStartOffsit) && !isBlank)
+				{
+					WordScore += TileValues[Tile - charOffsit] * 2;
+				}
+				else if (LetterScoreMultiplyBy3.getBit(mStartOffsit) && !isBlank)
+				{
+					WordScore += TileValues[Tile - charOffsit] * 3;
+				}
+				else if (!isBlank)
+				{
+					WordScore += TileValues[Tile - charOffsit];
+				}
+
+				if ((WordScoreMultiplyBy2.getBit(mStartOffsit)) || (mStartOffsit == 7 + 15 * 7)) // the start square
+				{
+					Wsx2 = true;
+					Wsx2M *= 2;
+				}
+				else if (WordScoreMultiplyBy3.getBit(mStartOffsit))
+				{
+					Wsx3 = true;
+					Wsx3M *= 3;
+				}
 			}
 			else
 			{
-				WordScore += TileValues[Tile - charOffsit];
+				if (!isBlank)
+				{
+					WordScore += TileValues[Tile - charOffsit];
+				}
 			}
-			if ((WordScoreMultiplyBy2.getBit(mStartOffsit)) || (mStartOffsit == 7 + 15 * 7)) // the start square
-			{
-				Wsx2 = true;
-				Wsx2M *= 2;
-			}
-			else if (WordScoreMultiplyBy3.getBit(mStartOffsit))
-			{
-				Wsx3 = true;
-				Wsx3M *= 3;
-			}
+
 			mStartOffsit += 1;
 		}
 		if (Wsx2)
