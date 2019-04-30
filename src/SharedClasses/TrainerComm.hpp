@@ -1,31 +1,38 @@
 #pragma once
 
-#include <iostream>
-#include <string>
-#include "Move.hpp"
-#include <zmq.hpp>
+#include <string.h>
 #include <zmq.h>
 #include <cstdint>
+#include <future>
+#include <iostream>
+#include <string>
 #include <vector>
+#include <zmq.hpp>
+#include "BoardCommunicator.hpp"
+#include "Move.hpp"
 
 using namespace std;
 
-class TrainerComm
-{
-	Move* ReceivedPlayerMove;
-	Move* PlayerMoveFromServer;
-	string ReceivedString;
-public:
-	TrainerComm();
-	void SetReceivedPlayerMove(Move* ReceivedMove);
-	void SendReceivedPlayerMoveToGUI();
+class TrainerComm {
+  Move* ReceivedPlayerMove;
+  Move* PlayerMoveFromServer;
+  string ReceivedString;
 
-	void ReceiveMoveFromGUI();
-	int ReceiveScoreFromServer(int Score);
-	Move* SendPlayerMove();
+ public:
+  TrainerComm();
+  vector<string> split_string(string input_string);
+  void SetReceivedPlayerMove(Move* ReceivedMove);
+  void SendReceivedPlayerMoveToGUI();
 
-	void ReceiveString(string str);
-	void SendReceivedStringToGUI();
-	~TrainerComm();
+  vector<string> ReceiveMoveFromGUI(string str)
+  int ReceiveScoreFromServer(int Score);
+  Move* SendPlayerMove();
+
+  void ReceiveString(string str);
+  void SendReceivedStringToGUI();
+
+  string ReceiveSTRFromGUI(string str)
+  ~TrainerComm();
 };
 
+void sendStringToGUI(string str);
