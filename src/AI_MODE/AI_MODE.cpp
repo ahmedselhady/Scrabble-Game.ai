@@ -12,8 +12,7 @@ Move *AI_MODE::doWork() {
   // ! this is for debug purposes only:
   std::cout << "creating gaddag completed....\n";
 
-  // TODO: check for this isEmpty for board:
-  bool isEmpty = false;
+  bool isEmpty = b2g->isEmpty();
 
   std::future<list<Move>> generate_moves_thread =
       std::async(&AI_MODE::MovesGeneration, this, isEmpty);
@@ -51,7 +50,6 @@ Move *AI_MODE::doWork() {
 }
 
 list<Move> AI_MODE::MovesGeneration(bool isEmpty) {
-  
   WordGenerate *Gen = new WordGenerate(this->b2g, this->gaddag_instance);
 
   Gen->countTilesRack(tiles);
@@ -64,6 +62,7 @@ list<Move> AI_MODE::MovesGeneration(bool isEmpty) {
     Gen->crosssets();  // Gen->Updatecrosssets();
     Gen->generateWords();
   }
+  cout << "Fuckkkkkkkkkkkkkkkkkkkkkkkkkkk :" << endl;
   list<Move> temp = Gen->allMoves();
   cout << "Fuck : " << temp.front().word << endl;
   return temp;

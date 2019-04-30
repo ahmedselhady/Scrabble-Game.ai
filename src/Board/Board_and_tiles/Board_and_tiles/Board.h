@@ -16,6 +16,7 @@ class Board {
   BoardMask AllCharBoard;
 
  public:
+  bool isEmpty();
   void setBoard(uint8_t board[15][15]);
   static Board *getBoard();  // it gets instance of the board
 

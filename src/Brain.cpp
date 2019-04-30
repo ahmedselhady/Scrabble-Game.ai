@@ -62,11 +62,20 @@ GameBrain::GameBrain() {
   bag[' '] = 2;
 }
 
+void print_vect(const std::vector<char> &msg) {
+  std::cout << std::endl;
+  for (auto m : msg) {
+    std::cout << m << ", ";
+  }
+  std::cout << std::endl;
+}
+
 Move *GameBrain::work_computer_vs_computer() {
   // trial:
   std::cout << "BRAIN 1: ";
   AI_MODE *aimode = new AI_MODE();
   aimode->setTiles(this->tiles);
+  print_vect(this->tiles);
   aimode->setBoardToGrammar(*Ptr2G);
   aimode->setBagPointer(&this->bag);
   std::cout << "Debug 1" << std::endl;

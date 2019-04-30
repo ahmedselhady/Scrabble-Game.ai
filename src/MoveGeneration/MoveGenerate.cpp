@@ -443,7 +443,7 @@ void WordGenerate::crosssets() {
     for (int col = 0; col < MAX_BOARD_COLS; col++) {
       Horiz_crossset[row][col].reset();
       Vertical_crossset[row][col].reset();
-      cout << row << ":" << col << endl;
+      // cout << row << ":" << col << endl;
       if (!board->hasaTile(row, col) && (col != 14) &&
           (board->hasaTile(row, col + 1)) &&
           (col == 0 || !board->hasaTile(row, col - 1))) {
@@ -706,9 +706,7 @@ void WordGenerate::crosssets() {
 void WordGenerate::setBoardState(BoardToGrammer *board) { this->board = board; }
 // TODO: Assigns Different Board States For Monte Carlo.
 
-list<Move> WordGenerate::allMoves() {
-  return moves;
-}  // TODO:Returns all moves.
+list<Move> WordGenerate::allMoves() { return moves; }  // TODO:Returns all moves
 
 void WordGenerate::emptyBoardMoves() {
   if (!emptyBoard && false) {  // for now.
