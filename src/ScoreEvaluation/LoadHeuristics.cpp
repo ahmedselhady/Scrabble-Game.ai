@@ -1,3 +1,4 @@
+
 #include "LoadHeuristics.hpp"
 
 LoadHeuristics::LoadHeuristics()
@@ -5,7 +6,7 @@ LoadHeuristics::LoadHeuristics()
     //Nothing
 }
 
-bool LoadHeuristics::loadSyn2(const string &filename)
+bool LoadHeuristics::loadSyn2(const std::string &filename)
 {
     for (int indexRow = 0; indexRow <= NUM_LETTERS; ++indexRow)
     {
@@ -76,7 +77,7 @@ bool LoadHeuristics::loadSyn2(const string &filename)
 //     file.close();
 //     return true;
 // }
-bool LoadHeuristics::loadWorths(const string &filename)
+bool LoadHeuristics::loadWorths(const std::string &filename)
 {
     for (int index = 0; index <= NUM_LETTERS; ++index)
     {
@@ -114,7 +115,7 @@ bool LoadHeuristics::loadWorths(const string &filename)
     return true;
 }
 
-bool LoadHeuristics::loadVcPlace(const string &filename)
+bool LoadHeuristics::loadVcPlace(const std::string &filename)
 {
     for (int indexRow = 0; indexRow <= MAX_VC_EMPTY_BOARD_MOVE; ++indexRow)
     {
@@ -175,7 +176,7 @@ bool LoadHeuristics::loadVcPlace(const string &filename)
     return true;
 }
 
-bool LoadHeuristics::loadSuperleaves(const string &filename)
+bool LoadHeuristics::loadSuperleaves(const std::string &filename)
 {
     superLeaves.clear();
 
@@ -269,4 +270,9 @@ double LoadHeuristics::superleave(std::vector<char> *Rack)
         return 0.0;
     }
     return superLeaves[*Rack];
+}
+int LoadHeuristics::mapLetter(char letter)
+{
+    // no mapping needed
+    return letter;
 }

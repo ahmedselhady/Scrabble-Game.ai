@@ -10,7 +10,7 @@ bool Options::isVowel(char *letter)
 {
     return VOWELS[*letter];
 } // Returns Alphabetic Sorted Rack.
-static vector<char> *readSuperLeave(const char *rack, unsigned int rackSize)
+vector<char> *readSuperLeave(const char *rack, unsigned int rackSize)
 {
     vector<char> *newRack = new vector<char>();
 
@@ -111,7 +111,7 @@ std::vector<char> *Options::sortRack(std::vector<char> *Rack)
     return sortedTiles;
 } // Returns Alphabetic Sorted Rack.
 
-string Options::regularWordString(Move *move)
+std::string Options::regularWordString(Move *move)
 {
     string newWord = "";
     for (int index = 0; index < move->word.length(); ++index)
@@ -164,7 +164,7 @@ int Options::rackScore(std::vector<char> *Rack)
     {
         if ((*Rack)[index] == BLANK)
         {
-            score += TileValues[BLANK - BLANK_OFFSET];
+            score += TileValues[26];
         }
         else
         {
@@ -174,7 +174,7 @@ int Options::rackScore(std::vector<char> *Rack)
     return score;
 } // Returns Rack Leave Score for Individuals Chars.
 
-string *Options::moveChar(Move *move)
+std::string *Options::moveChar(Move *move)
 {
     string *newMove = new string();
     for (int index = 0; index < move->word.length(); ++index)

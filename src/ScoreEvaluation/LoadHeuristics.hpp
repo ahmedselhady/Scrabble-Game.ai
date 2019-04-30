@@ -26,13 +26,11 @@ public:
     double vcPlace(int start, int length, int consbits);
     //double bogowin(int lead, int unseen, int blanks);
     double superleave(std::vector<char> *Rack);
-
-protected:
-    bool loadSyn2(const std::string &filename = SYNERGY);
-    bool loadWorths(const std::string &filename = WORTHS);
-    bool loadVcPlace(const std::string &filename = VC_PLACE);
+    bool loadSyn2(const std::string &filename);
+    bool loadWorths(const std::string &filename);
+    bool loadVcPlace(const std::string &filename);
     //bool loadBogowin(const std::string &filename = WORTHS);
-    bool loadSuperleaves(const std::string &filename = SUPER_LEAVES);
+    bool loadSuperleaves(const std::string &filename);
 
     int mapLetter(char letter);
 
@@ -40,8 +38,8 @@ protected:
     double m_tileWorths[27];
     double m_vcPlace[15][15][128];
 
-    static const int m_bogowinArrayWidth = 601;
-    static const int m_bogowinArrayHeight = 94;
+    //static const int m_bogowinArrayWidth = 601;
+    //static const int m_bogowinArrayHeight = 94;
     //double m_bogowin[m_bogowinArrayWidth][m_bogowinArrayHeight];
     typedef map<std::vector<char>, double> SuperLeavesMap; // preCalculated Rack leaves.
     SuperLeavesMap superLeaves;
