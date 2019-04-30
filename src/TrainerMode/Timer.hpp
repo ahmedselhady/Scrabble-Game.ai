@@ -17,6 +17,4 @@ public:
     void SendCurrentTime();
 };
 
- Timer:: Timer(/* args */)
-{
-}
+
