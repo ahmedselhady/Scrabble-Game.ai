@@ -1,11 +1,12 @@
 #include "VCValueEvaluator.hpp"
 
-VCValueEvaluator::VCValueEvaluator(LoadHeuristics *heuristicsValues)
+VCValueEvaluator::VCValueEvaluator(LoadHeuristics *heuristicsValues, std::vector<char> *opponentRack) : RackLeaveEvaluator(heuristicsValues)
 {
     this->heuristicsValues = heuristicsValues;
+    this->opponentRack = opponentRack;
 }
 
-double VCValueEvaluator::equity(std::vector<char> *Rack, bool isEmptyBoard, bool bagSizeGreaterThanZero, Move *move)
+double VCValueEvaluator::equity(std::vector<char> *Rack, int bagSize, bool isEmptyBoard, bool bagSizeGreaterThanZero, Move *move)
 {
     if (isEmptyBoard)
     {
@@ -17,66 +18,61 @@ double VCValueEvaluator::equity(std::vector<char> *Rack, bool isEmptyBoard, bool
         {
             start = move->startPosition.ROW;
         }
+        string wordString = Options::regularWordString(move);
 
-        LetterString wordTiles = move.tiles();
-
-        int length = wordTiles.length();
+        vector<char> *wordTiles = Options::moveTiles(move);
+        int length = wordTiles->size();
 
         int consbits = 0;
-        for (signed int i = wordTiles.length() - 1; i >= 0; i--)
+        for (signed int index = wordTiles->size() - 1; index >= 0; --index)
         {
             consbits <<= 1;
-            if (QUACKLE_ALPHABET_PARAMETERS->isVowel(QUACKLE_ALPHABET_PARAMETERS->clearBlankness(wordTiles[i])))
+            if (Options::isVowel(&(*wordTiles)[index]))
+            {
                 consbits |= 1;
+            }
         }
 
-        adjustment = QUACKLE_STRATEGY_PARAMETERS->vcPlace(start, length, consbits);
+        adjustment = heuristicsValues->vcPlace(start, length, consbits);
+        // else
+        // {
+        //     adjustment = 3.5;
+        // }
+
+        return RackLeaveEvaluator::equity(Rack, bagSize, isEmptyBoard, bagSizeGreaterThanZero, move) + adjustment;
+    }
+
+    else if (bagSizeGreaterThanZero)
+    {
+        int leftInBagPlusSeven = bagSize - move->moveUsedTiles + 7;
+        double heuristicArray[13] =
+            {
+                0.0, -8.0, 0.0, -0.5, -2.0, -3.5, -2.0,
+                2.0, 10.0, 7.0, 4.0, -1.0, -2.0};
+        double timingHeuristic = 0.0;
+        if (leftInBagPlusSeven < 13)
+        {
+            timingHeuristic = heuristicArray[leftInBagPlusSeven];
+        }
+        return RackLeaveEvaluator::equity(Rack, bagSize, isEmptyBoard, bagSizeGreaterThanZero, move) + timingHeuristic;
     }
     else
     {
-        adjustment = 3.5;
+        return endgameResult(Rack, move) + move->moveScore;
     }
-
-    // UVcout << "placement adjustment for " << move << " is " << adjustment << endl;
-    return ScorePlusLeaveEvaluator::equity(Rack, move) + adjustment;
 }
 
-else if (position.bag().size() > 0)
+double VCValueEvaluator::endgameResult(std::vector<char> *Rack, Move *move)
 {
-    int leftInBagPlusSeven = position.bag().size() - move.usedTiles().length() + 7;
-    double heuristicArray[13] =
-        {
-            0.0, -8.0, 0.0, -0.5, -2.0, -3.5, -2.0,
-            2.0, 10.0, 7.0, 4.0, -1.0, -2.0};
-    double timingHeuristic = 0.0;
-    if (leftInBagPlusSeven < 13)
-        timingHeuristic = heuristicArray[leftInBagPlusSeven];
-    return ScorePlusLeaveEvaluator::equity(position, move) + timingHeuristic;
-}
-else
-{
-    return endgameResult(position, move) + move.score;
-}
-}
+    std::vector<char> *remainingRack = Options::unusedRackTiles(Rack, move);
 
-double CatchallEvaluator::endgameResult(const GamePosition &position, const Move &move) const
-{
-    Rack leave = position.currentPlayer().rack() - move;
-
-    if (leave.empty())
+    if (remainingRack->empty())
     {
         double deadwood = 0;
-        for (PlayerList::const_iterator it = position.players().begin();
-             it != position.players().end(); ++it)
-        {
-            if (!(*it == position.currentPlayer()))
-            {
-                deadwood += it->rack().score();
-            }
-        }
+        deadwood += Options::rackScore(opponentRack);
 
         return deadwood * 2;
     }
 
-    return -8.00 - 2.61 * leave.score();
+    return -8.00 - 2.61 * Options::rackScore(remainingRack);
 }

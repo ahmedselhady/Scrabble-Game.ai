@@ -6,7 +6,7 @@ RackLeaveEvaluator::RackLeaveEvaluator(LoadHeuristics *heuristicsValues)
     this->heuristicsValues = heuristicsValues;
 }
 
-double RackLeaveEvaluator::equity(std::vector<char> *Rack, bool isEmptyBoard, bool bagSizeGreaterThanZero, Move *move)
+double RackLeaveEvaluator::equity(std::vector<char> *Rack, int bagSize, bool isEmptyBoard, bool bagSizeGreaterThanZero, Move *move)
 {
     return CalculateRackLeave(Rack, move);
 }
@@ -23,7 +23,8 @@ double RackLeaveEvaluator::leaveValue(std::vector<char> *Rack)
 
     // if (QUACKLE_STRATEGY_PARAMETERS->hasSuperleaves() && QUACKLE_STRATEGY_PARAMETERS->superleave(alphabetized))
     //     return QUACKLE_STRATEGY_PARAMETERS->superleave(alphabetized);
-    return heuristicsValues->superleave(sortedRack);
+    vector<char> *offsetRack = Options::setRackGrounded(sortedRack);
+    return heuristicsValues->superleave(offsetRack);
 
     double value = 0;
 
@@ -34,14 +35,14 @@ double RackLeaveEvaluator::leaveValue(std::vector<char> *Rack)
 
         for (int index = 0; index < Rack->size(); ++index)
         {
-            value += heuristicsValues->tileWorth((*Rack)[index]);
+            value += heuristicsValues->tileWorth((*Rack)[index] - 'a');
         }
 
         for (unsigned int index = 0; index < sortedRack->size() - 1; ++index)
         {
             if ((*sortedRack)[index] == (*sortedRack)[index + 1])
             {
-                value += heuristicsValues->syn2((*sortedRack)[index], (*sortedRack)[index]);
+                value += heuristicsValues->syn2((*sortedRack)[index] - 'a', (*sortedRack)[index] - 'a');
             }
         }
 
@@ -61,14 +62,14 @@ double RackLeaveEvaluator::leaveValue(std::vector<char> *Rack)
             {
                 for (unsigned int indexLetter2 = indexLetter1 + 1; indexLetter2 < uniqueRack.size(); ++indexLetter2)
                 {
-                    synergy += heuristicsValues->syn2(uniqueRack[indexLetter1], uniqueRack[indexLetter2]);
+                    synergy += heuristicsValues->syn2(uniqueRack[indexLetter1] - 'a', uniqueRack[indexLetter2] - 'a');
                 }
             }
 
             bool holding_bad_tile = false;
             for (unsigned int index = 0; index < uniqueRack.size(); ++index)
             {
-                if (heuristicsValues->tileWorth(uniqueRack[index]) < -5.5)
+                if (heuristicsValues->tileWorth(uniqueRack[index]) - 'a' < -5.5)
                 {
                     holding_bad_tile = true;
                 }

@@ -110,3 +110,66 @@ std::vector<char> *Options::sortRack(std::vector<char> *Rack)
 
     return sortedTiles;
 } // Returns Alphabetic Sorted Rack.
+
+string Options::regularWordString(Move *move)
+{
+    string newWord = "";
+    for (int index = 0; index < move->word.length(); ++index)
+    {
+        if (move->word[index] >= 0 && move->word[index] <= 25) // on Board char.
+        {
+            newWord.push_back(move->word[index] + 97);
+        }
+        else if ((move->word[index] >= 65 && move->word[index] <= 90))
+        {
+            newWord.push_back(move->word[index]);
+        }
+    }
+
+} // Returns a regular and readable format of the Move string without wierd chars.
+
+vector<char> *Options::moveTiles(Move *move)
+{
+    std::vector<char> *tiles = new std::vector<char>();
+    for (int index = 0; index < move->word.length(); ++index)
+    {
+        if (move->word[index] >= 0 && move->word[index] <= 25) // on Board char.
+        {
+            tiles->push_back(move->word[index] + 97);
+        }
+        else if ((move->word[index] >= 65 && move->word[index] <= 90))
+        {
+            tiles->push_back(move->word[index] + 32);
+        }
+    }
+    return tiles;
+} // Returns Move Tiles Used only.
+
+vector<char> *Options::setRackGrounded(std::vector<char> *Rack)
+{
+    std::vector<char> *offsetTiles = new std::vector<char>();
+    for (int index = 0; index < Rack->size(); ++index)
+    {
+        offsetTiles->push_back((*Rack)[index] - 'a');
+    }
+
+    return offsetTiles;
+} // Returns Offset Chars starting from ZERO.
+
+static int rackScore(std::vector<char> *Rack)
+{
+    int TileValues[27] = {1, 3, 3, 2, 1, 4, 2, 4, 1, 8, 5, 1, 3, 1, 1, 3, 10, 1, 1, 1, 1, 4, 4, 8, 4, 10, 0}; // Scores
+    int score = 0;
+    for (int index = 0; index < Rack->size(); ++index)
+    {
+        if ((*Rack)[index] == BLANK)
+        {
+            score += TileValues[BLANK - BLANK_OFFSET];
+        }
+        else
+        {
+            score += TileValues[(*Rack)[index] - 'a'];
+        }
+    }
+    return score;
+} // Returns Rack Leave Score for Individuals Chars.

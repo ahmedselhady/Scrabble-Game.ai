@@ -14,7 +14,7 @@ public:
     RackLeaveEvaluator(LoadHeuristics *heuristicsValues);
     virtual ~RackLeaveEvaluator(){};
 
-    virtual double equity(std::vector<char> *Rack, bool isEmptyBoard, bool bagSizeGreaterThanZero, Move *move);
+    virtual double equity(std::vector<char> *Rack, int bagSize, bool isEmptyBoard, bool bagSizeGreaterThanZero, Move *move);
     virtual double leaveValue(std::vector<char> *Rack);
     virtual double CalculateRackLeave(std::vector<char> *Rack, Move *move);
 };

@@ -42,7 +42,7 @@ protected:
 
     static const int m_bogowinArrayWidth = 601;
     static const int m_bogowinArrayHeight = 94;
-    double m_bogowin[m_bogowinArrayWidth][m_bogowinArrayHeight];
+    //double m_bogowin[m_bogowinArrayWidth][m_bogowinArrayHeight];
     typedef map<std::vector<char>, double> SuperLeavesMap; // preCalculated Rack leaves.
     SuperLeavesMap superLeaves;
 };
