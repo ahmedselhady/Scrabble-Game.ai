@@ -108,15 +108,15 @@ Move* TrainerComm::SendPlayerMove() { return PlayerMoveFromServer; }
 //       ReceivedMove[2], (int)pos.ROW, (int)pos.COL, IsHorizontal));
 // }
 
-vector<string> TrainerComm::ReceiveMoveFromGUI(string str)//not complete
+Move* TrainerComm::ReceiveMoveFromGUI(string str)//ok
  {
   zmq::context_t context(1);
   zmq::socket_t socket(context, ZMQ_REQ);
   socket.connect("tcp://192.168.88.208:5555");
   zmq_msg_t message;
 
-  string ReceivedMove;  // 0 row, 1 col,2 word, 3 horizontal,4 is
-                              // bingo,5 calculated score
+  string ReceivedMove;  // 0 row, 1 col,2 word, 3 horizontal
+
   zmq_msg_init_size(&message, str.length());
   memcpy(zmq_msg_data(&message), str.c_str(), str.length());
   zmq_msg_send(&message, socket, !ZMQ_DONTWAIT);
@@ -137,12 +137,13 @@ vector<string> TrainerComm::ReceiveMoveFromGUI(string str)//not complete
     IsHorizontal = true;
   else
     IsHorizontal = false;
-  PlayerMoveFromServer =
+
+  Move* PlayerMoveFromServer =
       new Move(ReceivedStrVec[2], IsHorizontal, pos, 0);  // 0 is dummy
   //BoardCommunicator* BoardComm;
   //PlayerMoveFromServer->setScore(BoardComm->calculateScore(
       //ReceivedStrVec[2], (int)pos.ROW, (int)pos.COL, IsHorizontal));
-  return ReceivedStrVec;
+  return PlayerMoveFromServer;
 }
 
 

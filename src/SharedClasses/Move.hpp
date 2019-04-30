@@ -28,7 +28,7 @@ class Move
 
 public:
     std::string word; // Extra Notes : The Returned word will be lowered Case and a Capitalized Letter in case of a BLANK USED.
-    int moveScore;    // type maybe changed...
+    double moveScore;    // type maybe changed...
     Position startPosition;
     bool horizontal;    // true -> horiz false -> vertical.
     char moveUsedTiles; // Number of Tiles used in a Move Excluding Already on-Board Tiles.

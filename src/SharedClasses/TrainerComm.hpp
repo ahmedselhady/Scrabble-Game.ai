@@ -16,7 +16,6 @@ using namespace std;
 
 class TrainerComm {
   Move* ReceivedPlayerMove;
-  Move* PlayerMoveFromServer;
   string ReceivedString;
 
  public:
@@ -25,7 +24,7 @@ class TrainerComm {
   void SetReceivedPlayerMove(Move* ReceivedMove);
   void SendReceivedPlayerMoveToGUI();
 
-  vector<string> ReceiveMoveFromGUI(string str)
+  Move* ReceiveMoveFromGUI(string str);//parameter dummy to be able to receive from GUI
   int ReceiveScoreFromServer(int Score);
   Move* SendPlayerMove();
 
