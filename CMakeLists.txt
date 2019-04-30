@@ -41,6 +41,7 @@ include_directories (src/
                     src/MoveGeneration/
                     src/SharedClasses/
                     src/AI_MODE/
+                    src/TrainerMode/
                     )
 
 #
