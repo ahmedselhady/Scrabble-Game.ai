@@ -62,7 +62,7 @@ public:
 	 * returns:
 	 * 		score: integer; The score calculated for the suggested move
 	*/
-	int calculateScore(string suggestedMove, int row, int col, bool horizontal);
+	int calculateScore(std::string suggestedMove, int row, int col, bool horizontal);
 
 protected:
 	// TODO: add the Board Class as a data member:

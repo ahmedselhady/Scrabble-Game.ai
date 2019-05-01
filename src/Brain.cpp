@@ -64,6 +64,7 @@ GameBrain::GameBrain()
     bag['x'] = 1;
     bag['y'] = 2;
     bag['z'] = 1;
+    bag[' '] = 2;
 }
 
 void GameBrain::work_computer_vs_computer()
