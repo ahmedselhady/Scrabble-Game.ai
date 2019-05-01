@@ -15,6 +15,9 @@ class GameBrain
 private:
     int bagSize;
     Trainer trainer;
+    Timer *T1;
+    Timer *T2;
+    Timer *T3;
     vector<char> AI_Tiles,HumanTiles;
     TrainerComm *comm;
     Board* MyBoard;

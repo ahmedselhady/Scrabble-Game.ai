@@ -1,20 +1,31 @@
 #pragma once
 
-#include <chrono>
+
+
 #include <iostream>
-#include <thread>
+#include <conio.h>
+#include <time.h>
 #include <string>
 #include"../SharedClasses/TrainerComm.hpp"
+using namespace std;
 
-
-class  Timer
-{
+class Timer {
 private:
-    TrainerComm* Communicator;
+    TrainerComm*   Communicator;
+	bool           resetted;
+	bool           running;
+	unsigned long  beg;
+	unsigned long  end;
+    unsigned long  finalendtime;
+
 public:
-    Timer(TrainerComm*);
-
-    void SendCurrentTime();
+	Timer(TrainerComm*,unsigned long);
+	void           start();
+	void           stop();
+	void           reset();
+	bool           isRunning();
+	unsigned long  getTime();
+	bool           isOver(unsigned long seconds);
+    void           SendTime();
 };
-
 

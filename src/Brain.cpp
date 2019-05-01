@@ -35,6 +35,9 @@ Node *GameBrain::__get_gaddag()
 
 GameBrain::GameBrain() 
 {
+    T1=new Timer(comm,1200);
+    T2=new Timer(comm,600);
+    T3=new Timer(comm,600);
     rackoftiles = new RackOfTiles(&bag,bagSize,comm);
     MyBoard=Board::getBoard();
     this->bagSize = 100;
@@ -120,17 +123,31 @@ void GameBrain::work_human_vs_computer()
     trainer.Human.SetAgent();
 
     bool turn=true;
+    T1->start();
+    T2->start();
+    T3->start();
+    
     while(!IsFinished())
     {
-        if(turn==true)
+        if(turn==true) //Player turn
         {
+            T3->stop();
             Move* move=trainer.Human.DoWork();
             turn=false;
+            T3->start();
+            T1->SendTime();
+            T2->SendTime();
+            T3->SendTime();
         }
         else
         {
+            T2->stop();
             Move* move=trainer.AI.DoWork();
             turn=true;
+            T2->start();
+            T1->SendTime();
+            T2->SendTime();
+            T3->SendTime();
         }
     }
     
