@@ -25,6 +25,21 @@ bool AI_Human::SetBag(unordered_map<char,int>* Bag)
     return false;
 }
 
+bool AI_Human::SetCommunicator(TrainerComm* Communicator)
+{
+    try
+    {
+        this->Communicator=Communicator;
+        return true;
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+    }
+        
+    return false;
+}
+
 bool AI_Human::IsEmptyBoard()
 {
     

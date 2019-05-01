@@ -17,6 +17,7 @@ class AI_Human{
     bool IsEmptyBoard();
     bool SetBag(unordered_map<char,int>* Bag);
     bool SetTiles(vector<char>* HumanTiles);
+    bool SetCommunicator(TrainerComm* Communicator);
     bool SetBoard(Board* MyBoard);
     bool SetAgent();
     Move* DoWork();

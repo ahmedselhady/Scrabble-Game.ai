@@ -26,7 +26,21 @@ bool AI_AI::SetBag(unordered_map<char,int>* Bag)
         
     return false;
 }
-    
+
+bool AI_AI::SetCommunicator(TrainerComm* Communicator)
+{
+    try
+    {
+        this->Communicator=Communicator;
+        return true;
+    }
+    catch(const std::exception& e)
+    {
+        std::cerr << e.what() << '\n';
+    }
+        
+    return false;
+}
 
     bool AI_AI::SetTiles(vector<char> *AI_Tiles)
     {
@@ -74,7 +88,7 @@ Move* AI_AI::DoWork()
 
 bool AI_AI::SetAgent()
 {
-    if( this->Bag==NULL || this->BoardStatus==NULL || this->Communicator==NULL || this->HumanTiles == NULL || this->MyBoard==NULL){
+    if( this->Bag==NULL || this->BoardStatus==NULL || this->Communicator==NULL || this->AI_Tiles == NULL || this->MyBoard==NULL){
         return false;
     }
     AI_Agent= new AI_MODE(*this->Bag, *AI_Tiles,this->IsEmptyBoard());

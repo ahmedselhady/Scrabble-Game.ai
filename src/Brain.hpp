@@ -18,6 +18,7 @@ private:
     Timer *T1;
     Timer *T2;
     Timer *T3;
+    bool turn_TrainerMode;
     vector<char> AI_Tiles,HumanTiles;
     TrainerComm *comm;
     Board* MyBoard;
@@ -37,6 +38,7 @@ public:
     GamePhase game_phase;
 
     GameBrain();
+    void setTurnOfTrainerMode(bool turn);
     void updateBag(std::vector<char> &);
     void work_computer_vs_computer();
     void work_human_vs_computer();

@@ -17,6 +17,7 @@ class AI_AI{
     bool SetBag(unordered_map<char,int>* Bag);
     bool SetTiles(vector<char> *AI_Tiles);
     bool SetBoard(Board* MyBoard);
+    bool SetCommunicator(TrainerComm* Communicator);
     bool SetAgent();
     //bool SetisEmtyBoard(bool isEmty);
     Move* DoWork();

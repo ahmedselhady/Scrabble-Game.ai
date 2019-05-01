@@ -104,6 +104,10 @@ void GameBrain::work_computer_vs_computer()
     std::cout << "Move Score: " << move->evaluatedScore << std::endl;
 }
 
+void GameBrain::setTurnOfTrainerMode(bool turn)
+{
+    turn_TrainerMode=turn;
+}
 
 void GameBrain::work_human_vs_computer()
 {
@@ -119,10 +123,12 @@ void GameBrain::work_human_vs_computer()
     trainer.AI.SetBag(&bag);
     trainer.Human.SetBag(&bag);
 
+    trainer.AI.SetCommunicator(comm);
+    trainer.Human.SetCommunicator(comm);
+
     trainer.AI.SetAgent();
     trainer.Human.SetAgent();
 
-    bool turn=true;
     T1->start();
     T2->start();
     T3->start();
@@ -132,7 +138,7 @@ void GameBrain::work_human_vs_computer()
 
     while(!IsFinished())
     {
-        if(turn==true) //Player turn
+        if(turn_TrainerMode==true) //Player turn
         {
             T3->stop();
             Move* move=trainer.Human.DoWork();
@@ -149,7 +155,7 @@ void GameBrain::work_human_vs_computer()
             }
             trainer.Human.SetTiles(&HumanTiles);
 
-            turn=false;
+            turn_TrainerMode=false;
             T3->start();
             T1->SendTime();
             T2->SendTime();
@@ -159,6 +165,9 @@ void GameBrain::work_human_vs_computer()
         {
             T2->stop();
             Move* move=trainer.AI.DoWork();
+            
+            //TODO: we have the mode now but we have to send it to the GUI
+            
             int lenghtOfMove=move->word.size();
             temp=rackoftiles->RandomizeTiles(lenghtOfMove);
             index=0;
@@ -172,7 +181,7 @@ void GameBrain::work_human_vs_computer()
             }
             trainer.AI.SetTiles(&AI_Tiles);
 
-            turn=true;
+            turn_TrainerMode=true;
             T2->start();
             T1->SendTime();
             T2->SendTime();
