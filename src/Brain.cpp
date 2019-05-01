@@ -170,7 +170,7 @@ void GameBrain::work_human_vs_computer()
                         AI_Tiles[i]=temp[index++];
                 }
             }
-            trainer.Human.SetTiles(&AI_Tiles);
+            trainer.AI.SetTiles(&AI_Tiles);
 
             turn=true;
             T2->start();
