@@ -127,12 +127,28 @@ void GameBrain::work_human_vs_computer()
     T2->start();
     T3->start();
     
+    int lenghtOfMove,index;
+    vector<char> temp;
+
     while(!IsFinished())
     {
         if(turn==true) //Player turn
         {
             T3->stop();
             Move* move=trainer.Human.DoWork();
+            int lenghtOfMove=move->word.size();
+            temp=rackoftiles->RandomizeTiles(lenghtOfMove);
+            index=0;
+            for(int i=0;i<HumanTiles.size();i++)
+            {
+                if(move->word.find(HumanTiles[i]))
+                {
+                    if(temp.size()>index)
+                        HumanTiles[i]=temp[index++];
+                }
+            }
+            trainer.Human.SetTiles(&HumanTiles);
+
             turn=false;
             T3->start();
             T1->SendTime();
@@ -143,6 +159,19 @@ void GameBrain::work_human_vs_computer()
         {
             T2->stop();
             Move* move=trainer.AI.DoWork();
+            int lenghtOfMove=move->word.size();
+            temp=rackoftiles->RandomizeTiles(lenghtOfMove);
+            index=0;
+            for(int i=0;i<AI_Tiles.size();i++)
+            {
+                if(move->word.find(AI_Tiles[i]))
+                {
+                    if(temp.size()>index)
+                        AI_Tiles[i]=temp[index++];
+                }
+            }
+            trainer.Human.SetTiles(&AI_Tiles);
+
             turn=true;
             T2->start();
             T1->SendTime();
