@@ -4,14 +4,9 @@
 #include <string.h>
 #include <iostream>
 #include <fstream>
-#include "../MoveGeneration/MoveGenerate.h"
 #include "../SharedClasses/Options.hpp"
 
-#define SYNERGY "./Heuristics/Synergy"
-#define VC_PLACE "./Heuristics/VCPlace"
-#define WORTHS "./Heuristics/Worths"
-#define SUPER_LEAVES "./Heuristics/superleaves"
-#define BLANK_OFFSET BLANK - 27 + 1 // remove 5 from 32 which is the ' ' (BLANK) CHANG it if you changed the blank char
+#define BLANK_OFFSET ' ' // remove 5 from 32 which is the ' ' (BLANK) CHANG it if you changed the blank char
 // BLANK is 26 char  starting from 0
 #define NUM_LETTERS 26            // English Letters + include BLANK
 #define MAX_VC_EMPTY_BOARD_MOVE 7 // beacuse I have 7 tiles + empty board max length = 7.
@@ -26,21 +21,22 @@ public:
     double vcPlace(int start, int length, int consbits);
     //double bogowin(int lead, int unseen, int blanks);
     double superleave(std::vector<char> *Rack);
-    bool loadSyn2(const std::string &filename);
-    bool loadWorths(const std::string &filename);
-    bool loadVcPlace(const std::string &filename);
+    bool loadSyn2(const char *filename);
+    bool loadWorths(const char *filename);
+    bool loadVcPlace(const char *filename);
     //bool loadBogowin(const std::string &filename = WORTHS);
-    bool loadSuperleaves(const std::string &filename);
+    bool loadSuperleaves(const char *filename);
+    void loadALL();
 
     int mapLetter(char letter);
 
     double m_syn2[27][27];
     double m_tileWorths[27];
-    double m_vcPlace[15][15][128];
+    double m_vcPlace[8][8][128];
 
     //static const int m_bogowinArrayWidth = 601;
     //static const int m_bogowinArrayHeight = 94;
     //double m_bogowin[m_bogowinArrayWidth][m_bogowinArrayHeight];
-    typedef map<std::vector<char>, double> SuperLeavesMap; // preCalculated Rack leaves.
+    typedef std::map<std::vector<char>, double> SuperLeavesMap; // preCalculated Rack leaves.
     SuperLeavesMap superLeaves;
 };

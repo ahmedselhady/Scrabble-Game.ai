@@ -2,20 +2,15 @@
 //TODO: Completion of Move Generation Algorithm.
 #include "MoveGenerate.h"
 #include "LoadGaddag.h"
-#include "Gaddag.h"
-#include <iostream>
-
-using namespace std;
 
 //This Function it takes a Reference to the Board.
-WordGenerate::WordGenerate(BoardToGrammer *board, Node *root, int bagSize, bool isEmptyBoard, bool bagSizeGreaterThanZero /*,Evaluator *EvalCalculator*/)
+WordGenerate::WordGenerate(BoardToGrammer *board, Node *root, Evaluator *EvalCalculator)
 {
     this->board = board; // catching a boardcomm. verison object.
     this->root = root;
-    //  this->EvalCalculator = EvalCalculator;
+    this->EvalCalculator = EvalCalculator;
     this->bagSize = bagSize;
     this->isEmptyBoard = isEmptyBoard;
-    this->bagSizeGreaterThanZero = bagSizeGreaterThanZero;
 }
 
 /*
@@ -317,7 +312,7 @@ void WordGenerate::goOn(int pos, char boardLetter, string word, Node *gaddagNode
             //int score = 22;
             newMove->moveUsedTiles = usedTiles;
             newMove->moveScore = board->calculateScore(newMove->word, newMove->startPosition.ROW, newMove->startPosition.COL, newMove->horizontal) + (char)(bingoMove)*50; // extra 10 points for now
-            // ! newMove->moveScore = this->EvalCalculator->equity(Rack, bagSize, isEmptyBoard, bagSizeGreaterThanZero, newMove);
+            newMove->evaluatedScore = this->EvalCalculator->equity(Rack, newMove);
             moves.push_back(*newMove);
         }
 
@@ -398,7 +393,7 @@ void WordGenerate::goOn(int pos, char boardLetter, string word, Node *gaddagNode
             newMove->moveUsedTiles = usedTiles;
             //
             newMove->moveScore = board->calculateScore(newMove->word, newMove->startPosition.ROW, newMove->startPosition.COL, newMove->horizontal) + (char)(bingoMove)*50; // extra 10 points for now only.
-            //newMove->moveScore = this->EvalCalculator->equity(Rack, bagSize, isEmptyBoard, bagSizeGreaterThanZero, newMove);
+            newMove->evaluatedScore = this->EvalCalculator->equity(Rack, newMove);
             moves.push_back(*newMove);
         }
         // Can I Go Left Furthur ??? : ANS:
@@ -838,7 +833,7 @@ void WordGenerate::emptyBoardMoves()
                 }
 
                 move.moveScore = board->calculateScore(move.word, move.startPosition.ROW, move.startPosition.COL, move.horizontal) + (char)(bingoMove)*50;
-                //newMove->moveScore = this->EvalCalculator->equity(Rack, bagSize, isEmptyBoard, bagSizeGreaterThanZero, newMove);
+                move.evaluatedScore = this->EvalCalculator->equity(Rack, &move);
                 moves.push_back(move);
             }
         }
@@ -992,20 +987,33 @@ void WordGenerate::updateCrossSet(Move *move)
 }
 
 // please provide NULL inCase of a First Move ("PLAY") otherwise Provide the PLAYED or Suggested Move inorder To Update.
-void WordGenerate::crosssetsManager(Move *move)
+void WordGenerate::movesManager(Move *move)
 {
-    if (boardChanged)
+    if (EvalCalculator->isEmptyBoard)
     {
         this->crosssets();
-        boardChanged = false;
+        this->emptyBoardMoves();
     }
     else
     {
         this->updateCrossSet(move); // ! IN PROGRESS ...
+        this->generateWords();
     }
 } // Whether To Update or Generate New Crosssets.
 
-void WordGenerate::setEvaluator(/*Evaluator *EvalCalculator*/)
+void WordGenerate::setEvaluator(Evaluator *EvalCalculator)
 {
-    //this->EvalCalculator = EvalCalculator;
+    this->EvalCalculator = EvalCalculator;
 }
+void WordGenerate::setBoardBagParamters(int bagSize, bool isEmptyBoard)
+{
+    this->bagSize = bagSize;
+    this->isEmptyBoard = isEmptyBoard;
+}
+
+list<Move> sortMoves(int numberMoves)
+{
+    list<Move> sortedMoves;
+    // TODO: SORT BASED ON HEURISTCS.
+    return sortedMoves;
+} // Returns specific numberMoves sorted based on Heuristcs.

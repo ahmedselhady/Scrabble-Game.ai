@@ -4,6 +4,7 @@
 //INCLUDES:
 
 #include <iostream>
+#include "LoadGaddag.h"
 #include <vector>
 #include <unordered_map>
 #include <list>
@@ -11,8 +12,8 @@
 #include <string>
 
 #include "Gaddag.h"
-#include "../SharedClasses/Move.hpp"
-// #include "../ScoreEvaluation/Evaluator.hpp"
+//#include "../SharedClasses/Move.hpp"
+#include "../ScoreEvaluation/Evaluator.hpp"
 #include "..\Board\Board_and_tiles\Board_and_tiles\BoardCommunication.h"
 
 using namespace std;
@@ -73,14 +74,14 @@ private:
     char anchorRow; // chosen anchor square postion.
     char anchorCol;
     char usedTiles = 0;
-    // Evaluator *EvalCalculator;
-
+    Evaluator *EvalCalculator;
     bool emptyBoard = false;
+    vector<char> *Rack;
 
 public:
-    WordGenerate(BoardToGrammer *board, Node *root, int bagSize, bool isEmptyBoard, bool bagSizeGreaterThanZero /*, Evaluator *EvalCalculator*/); // Takes a Reference to the Board.
-    void setBoardState(BoardToGrammer *board);                                                                                                    // Assigns Different Board States For Monte Carlo.
-    void generateWords();                                                                                                                         // iterates on each sqaure in the board and performing the algo. Taking the board 2-Dimensions into Consideration.
+    WordGenerate(BoardToGrammer *board, Node *root, Evaluator *EvalCalculator); // Takes a Reference to the Board.
+    void setBoardState(BoardToGrammer *board);                                  // Assigns Different Board States For Monte Carlo.
+    void generateWords();                                                       // iterates on each sqaure in the board and performing the algo. Taking the board 2-Dimensions into Consideration.
     int roomLeftCount(int row, int col);
     /*
             this function may seem awkward but it's usefull.
@@ -112,12 +113,13 @@ public:
     bool checkWordDict(string word);                                     // Given a Word it checks Whether This word in Dict or NOT.
     Move *bestScoreMove();                                               // TODO: Returns Best (Highest Score) Move From The Last Generated Moves RUN.
     void moveCalcHeuristic();                                            // TODO: Calculates 'RackLeave' Heuristic of a Move with Accumalation with its score.
-    void sortMoves(MoveRank rank, int numberMoves);                      // TODO: Sorts Moves Based on a Given Criteria and Returns The 'K' Highest Moves Controlled By numberMoves.
+    list<Move> sortMoves(int numberMoves);                               ///// TODO: Sorts Moves Based on a Given Criteria and Returns The 'K' Highest Moves Controlled By numberMoves.
     //--> TODO: Optimize CrossSet Calculation Each Move Played. Should Be Called After Each Play t.
-    void printCrossSet();              // TEST FUNCTION ONLY.
-    void crosssetsManager(Move *move); // TODO: Whether To Update or Generate New Crosssets.
-    void setEvaluator(/*Evaluator *EvalCalculator*/);
-    vector<char> *Rack;
+    void printCrossSet();                                      // TEST FUNCTION ONLY.
+    void movesManager(Move *move);                             // TODO: Whether To Update or Generate New Crosssets.
+    void setEvaluator(Evaluator *EvalCalculator);              // Set An Evalutor Object Type.
+    void setBoardBagParamters(int bagSize, bool isEmptyBoard); // Setting Board & Bag Needed Parameters.
+                                                               // void genAllMoves(Move *move);                              // GENERATE ALL WORDS --> Given Past Move For Faster Update
 };
 
 // NOTES: (Put Critical Questions Here For Furthur Development)

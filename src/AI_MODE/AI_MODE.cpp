@@ -52,7 +52,7 @@ Move *AI_MODE::doWork()
 list<Move> AI_MODE::MovesGeneration(bool isEmpty)
 {
     // TODO: EDIT THE VALUES PASSED TO CONSTRUCTOR OF WORDGENERATE (BAG SIZE,BAGSIZE ...).
-    WordGenerate *Gen = new WordGenerate(this->b2g, 0, isEmpty, false, this->gaddag_instance);
+    WordGenerate *Gen = new WordGenerate(this->b2g, this->gaddag_instance, NULL);
 
     Gen->countTilesRack(tiles);
 

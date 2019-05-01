@@ -1,37 +1,42 @@
 #pragma once
 #include "RackLeaveEvaluator.hpp"
 
-RackLeaveEvaluator::RackLeaveEvaluator(LoadHeuristics *heuristicsValues)
+RackLeaveEvaluator::RackLeaveEvaluator(int bagSize, bool isEmptyBoard) : Evaluator(bagSize, isEmptyBoard)
+{
+}
+
+RackLeaveEvaluator::RackLeaveEvaluator(LoadHeuristics *heuristicsValues, int bagSize, bool isEmptyBoard) : Evaluator(bagSize, isEmptyBoard)
 {
     this->heuristicsValues = heuristicsValues;
 }
 
-double RackLeaveEvaluator::equity(std::vector<char> *Rack, int bagSize, bool isEmptyBoard, bool bagSizeGreaterThanZero, Move *move)
+double RackLeaveEvaluator::equity(std::vector<char> *Rack, Move *move)
 {
     return CalculateRackLeave(Rack, move);
 }
 
 double RackLeaveEvaluator::CalculateRackLeave(std::vector<char> *Rack, Move *move)
 {
-    vector<char> *remainedTiles = Options::unusedRackTiles(Rack, move);
+    std::vector<char> *remainedTiles = Options::unusedRackTiles(Rack, move);
     return leaveValue(remainedTiles); // remaining tiles only.
 }
 
 double RackLeaveEvaluator::leaveValue(std::vector<char> *Rack)
 {
-    vector<char> *sortedRack = Options::sortRack(Rack);
+    std::vector<char> *sortedRack = Options::sortRack(Rack);
 
     // if (QUACKLE_STRATEGY_PARAMETERS->hasSuperleaves() && QUACKLE_STRATEGY_PARAMETERS->superleave(alphabetized))
     //     return QUACKLE_STRATEGY_PARAMETERS->superleave(alphabetized);
-    vector<char> *offsetRack = Options::setRackGrounded(sortedRack);
-    return heuristicsValues->superleave(offsetRack);
+    //vector<char> *offsetRack = Options::setRackGrounded(sortedRack);
+
+    // ! return heuristicsValues->superleave(sortedRack);
 
     double value = 0;
 
     if (!(Rack->empty()))
     {
         double synergy = 0;
-        vector<char> uniqueRack;
+        std::vector<char> uniqueRack;
 
         for (int index = 0; index < Rack->size(); ++index)
         {
@@ -69,7 +74,7 @@ double RackLeaveEvaluator::leaveValue(std::vector<char> *Rack)
             bool holding_bad_tile = false;
             for (unsigned int index = 0; index < uniqueRack.size(); ++index)
             {
-                if (heuristicsValues->tileWorth(uniqueRack[index]) - 'a' < -5.5)
+                if (heuristicsValues->tileWorth(uniqueRack[index] - 'a') < -5.5)
                 {
                     holding_bad_tile = true;
                 }
@@ -99,7 +104,7 @@ double RackLeaveEvaluator::leaveValue(std::vector<char> *Rack)
 
     for (int index = 0; index < Rack->size(); ++index)
     {
-        if ((*Rack)[index] != BLANK)
+        if ((*Rack)[index] != BLANK_OFFSET)
         {
             if (Options::isVowel(&(*Rack)[index]))
             {

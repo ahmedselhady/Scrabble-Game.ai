@@ -1,14 +1,17 @@
 #include "VCValueEvaluator.hpp"
 
-VCValueEvaluator::VCValueEvaluator(LoadHeuristics *heuristicsValues, std::vector<char> *opponentRack) : RackLeaveEvaluator(heuristicsValues)
+VCValueEvaluator::VCValueEvaluator(int bagSize, bool isEmptyBoard) : RackLeaveEvaluator(bagSize, isEmptyBoard)
+{
+}
+VCValueEvaluator::VCValueEvaluator(LoadHeuristics *heuristicsValues, std::vector<char> *opponentRack, int bagSize, bool isEmptyBoard) : RackLeaveEvaluator(heuristicsValues, bagSize, isEmptyBoard)
 {
     this->heuristicsValues = heuristicsValues;
     this->opponentRack = opponentRack;
 }
 
-double VCValueEvaluator::equity(std::vector<char> *Rack, int bagSize, bool isEmptyBoard, bool bagSizeGreaterThanZero, Move *move)
+double VCValueEvaluator::equity(std::vector<char> *Rack, Move *move)
 {
-    if (isEmptyBoard)
+    if (this->isEmptyBoard)
     {
         double adjustment = 0; //if (move.action == Move::Place) //
                                //{
@@ -18,9 +21,9 @@ double VCValueEvaluator::equity(std::vector<char> *Rack, int bagSize, bool isEmp
         {
             start = move->startPosition.ROW;
         }
-        string wordString = Options::regularWordString(move);
+        std::string wordString = Options::regularWordString(move);
 
-        vector<char> *wordTiles = Options::moveTiles(move);
+        std::vector<char> *wordTiles = Options::moveTiles(move);
         int length = wordTiles->size();
 
         int consbits = 0;
@@ -38,11 +41,11 @@ double VCValueEvaluator::equity(std::vector<char> *Rack, int bagSize, bool isEmp
         // {
         //     adjustment = 3.5;
         // }
-
-        return RackLeaveEvaluator::equity(Rack, bagSize, isEmptyBoard, bagSizeGreaterThanZero, move) + adjustment;
+        move->testHScore = RackLeaveEvaluator::equity(Rack, move);
+        return move->testHScore + adjustment;
     }
 
-    else if (bagSizeGreaterThanZero)
+    else if (this->bagSize > 0)
     {
         int leftInBagPlusSeven = bagSize - move->moveUsedTiles + 7;
         double heuristicArray[13] =
@@ -54,7 +57,7 @@ double VCValueEvaluator::equity(std::vector<char> *Rack, int bagSize, bool isEmp
         {
             timingHeuristic = heuristicArray[leftInBagPlusSeven];
         }
-        return RackLeaveEvaluator::equity(Rack, bagSize, isEmptyBoard, bagSizeGreaterThanZero, move) + timingHeuristic;
+        return RackLeaveEvaluator::equity(Rack, move) + timingHeuristic;
     }
     else
     {

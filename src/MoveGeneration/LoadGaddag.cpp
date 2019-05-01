@@ -3,8 +3,10 @@
 #include "LoadNode.h"
 #include <sys/stat.h>
 #include <algorithm>
+
 #define DICT_FILE_NAME "./src/MoveGeneration/Dict.txt"
-#define GADDAG_FILE_NAME "D:/Faculty Stuff/CCE-C semester 6/Machine intellegence/Wehrmacht/Scrabble-Game.ai/src/MoveGeneration/GADDAG.txt"
+#define GADDAG_FILE_NAME "./src/MoveGeneration/GADDAG.txt"
+#define ARA "./"
 #define TOTAL_GADDAG_NODES 6419512
 
 using namespace std;
@@ -12,7 +14,7 @@ using namespace std;
 //Function LoadGaddag is the constructor
 LoadGaddag::LoadGaddag() : Root((char)GADDAG_ROOT)
 {
-    
+
     // nothing.
 }
 
@@ -108,7 +110,6 @@ Node *LoadGaddag::constructGaddag()
     }
 
     //bool check = Root.findWord("legovsaa");
-
     gaddagNodes.push_back(&Root);
     cout << "HERE 2" << endl;
 

@@ -1,12 +1,23 @@
 
 #include "LoadHeuristics.hpp"
+#define SYNERGY "./src/ScoreEvaluation/Heuristics/Synergy.txt"
+#define VC_PLACE "./src/ScoreEvaluation/Heuristics/VCPlace.txt"
+#define WORTHS "./src/ScoreEvaluation/Heuristics/Worths.txt"
+#define SUPER_LEAVES "./src/ScoreEvaluation/Heuristics/superleaves"
 
 LoadHeuristics::LoadHeuristics()
 {
     //Nothing
 }
+void LoadHeuristics::loadALL()
+{
+    bool yes = loadSyn2(SYNERGY);
+    yes = loadWorths(WORTHS);
+    yes = loadVcPlace(VC_PLACE);
+    yes = loadSuperleaves(SUPER_LEAVES);
+}
 
-bool LoadHeuristics::loadSyn2(const std::string &filename)
+bool LoadHeuristics::loadSyn2(const char *filename)
 {
     for (int indexRow = 0; indexRow <= NUM_LETTERS; ++indexRow)
     {
@@ -20,10 +31,12 @@ bool LoadHeuristics::loadSyn2(const std::string &filename)
 
     if (!syn2File.is_open())
     {
-        cout << "Could not open " << filename << " to load syn2" << endl;
+        std::cout << "Could not open " << filename << " to load syn2" << std::endl;
         return false;
     }
 
+    char Offset1 = 'A';
+    char Offset2 = 'A';
     std::string twoLetters = " ";
     while (!syn2File.eof())
     {
@@ -40,8 +53,21 @@ bool LoadHeuristics::loadSyn2(const std::string &filename)
         double value;
         syn2File >> value;
 
-        m_syn2[twoLetters[0] - 'A'][twoLetters[1] - 'A'] = value;
-        m_syn2[twoLetters[1] - 'A'][twoLetters[0] - 'A'] = value;
+        Offset1 = 'A';
+        Offset2 = 'A';
+        if (twoLetters[0] == '?')
+        {
+            Offset1 = 0;
+            twoLetters[0] = 26;
+        }
+        if (twoLetters[1] == '?')
+        {
+            Offset2 = 0;
+            twoLetters[1] = 26;
+        }
+
+        m_syn2[twoLetters[0] - Offset1][twoLetters[1] - Offset2] = value;
+        m_syn2[twoLetters[1] - Offset2][twoLetters[0] - Offset1] = value;
     }
 
     syn2File.close();
@@ -77,7 +103,7 @@ bool LoadHeuristics::loadSyn2(const std::string &filename)
 //     file.close();
 //     return true;
 // }
-bool LoadHeuristics::loadWorths(const std::string &filename)
+bool LoadHeuristics::loadWorths(const char *filename)
 {
     for (int index = 0; index <= NUM_LETTERS; ++index)
     {
@@ -88,14 +114,21 @@ bool LoadHeuristics::loadWorths(const std::string &filename)
 
     if (!worthsFile.is_open())
     {
-        cerr << "Could not open " << filename << " to load worths" << endl;
+        std::cout << "Could not open " << filename << " to load worths" << std::endl;
         return false;
     }
 
     char letter = ' ';
+    char Offset = 'A';
     while (!worthsFile.eof())
     {
+        Offset = 'A';
         worthsFile >> letter;
+        if (letter == '?')
+        {
+            letter = 26;
+            Offset = 0;
+        }
         // if (letter.empty())
         // {
         //     continue;
@@ -108,14 +141,14 @@ bool LoadHeuristics::loadWorths(const std::string &filename)
         double value;
         worthsFile >> value;
 
-        m_tileWorths[letter - 'A'] = value;
+        m_tileWorths[letter - Offset] = value;
     }
 
     worthsFile.close();
     return true;
 }
 
-bool LoadHeuristics::loadVcPlace(const std::string &filename)
+bool LoadHeuristics::loadVcPlace(const char *filename)
 {
     for (int indexRow = 0; indexRow <= MAX_VC_EMPTY_BOARD_MOVE; ++indexRow)
     {
@@ -132,7 +165,7 @@ bool LoadHeuristics::loadVcPlace(const std::string &filename)
 
     if (!vcFile.is_open())
     {
-        cout << "Could not open " << filename << " to load vcPlace heuristic" << endl;
+        std::cout << "Could not open " << filename << " to load vcPlace heuristic" << std::endl;
         return false;
     }
 
@@ -176,45 +209,45 @@ bool LoadHeuristics::loadVcPlace(const std::string &filename)
     return true;
 }
 
-bool LoadHeuristics::loadSuperleaves(const std::string &filename)
+bool LoadHeuristics::loadSuperleaves(const char *filename)
 {
-    superLeaves.clear();
+    // superLeaves.clear();
 
-    ifstream superleaveFile(filename.c_str(), ios::in | ios::binary);
+    // std::ifstream superleaveFile(filename, std::ios::in | std::ios::binary);
 
-    if (!superleaveFile.is_open())
-    {
-        cout << "Could not open " << filename << " to load superleave heuristic" << endl;
-        return false;
-    }
+    // if (!superleaveFile.is_open())
+    // {
+    //     std::cout << "Could not open " << filename << " to load superleave heuristic" << std::endl;
+    //     return false;
+    // }
 
-    unsigned char leavesize;
-    char leavebytes[16];
-    unsigned char intvalueint;
-    unsigned char intvaluefrac;
-    unsigned int intvalue;
+    // unsigned char leavesize;
+    // char leavebytes[16];
+    // unsigned char intvalueint;
+    // unsigned char intvaluefrac;
+    // unsigned int intvalue;
 
-    while (!superleaveFile.eof())
-    {
-        superleaveFile.read((char *)(&leavesize), 1);
-        superleaveFile.read(leavebytes, leavesize);
-        superleaveFile.read((char *)(&intvaluefrac), 1);
-        superleaveFile.read((char *)(&intvalueint), 1);
-        if (superleaveFile.eof())
-        {
-            break;
-        }
+    // while (!superleaveFile.eof())
+    // {
+    //     superleaveFile.read((char *)(&leavesize), 1);
+    //     superleaveFile.read(leavebytes, leavesize);
+    //     superleaveFile.read((char *)(&intvaluefrac), 1);
+    //     superleaveFile.read((char *)(&intvalueint), 1);
+    //     if (superleaveFile.eof())
+    //     {
+    //         break;
+    //     }
 
-        intvalue = (unsigned int)(intvalueint)*256 + (unsigned int)(intvaluefrac);
-        vector<char> *Rack = Options::readSuperLeave(leavebytes, leavesize);
-        //copy into rack ....
+    //     intvalue = (unsigned int)(intvalueint)*256 + (unsigned int)(intvaluefrac);
+    //     std::vector<char> *Rack = Options::readSuperLeave(leavebytes, leavesize);
+    //     //copy into rack ....
 
-        double value = (double(intvalue) / 256.0) - 128.0;
-        superLeaves.insert(superLeaves.end(),
-                           SuperLeavesMap::value_type(*Rack, value));
-    }
+    //     double value = ((double)(intvalue) / 256.0) - 128.0;
+    //     superLeaves.insert(superLeaves.end(),
+    //                        SuperLeavesMap::value_type(*Rack, value));
+    // }
 
-    superleaveFile.close();
+    // superleaveFile.close();
     return true;
 }
 

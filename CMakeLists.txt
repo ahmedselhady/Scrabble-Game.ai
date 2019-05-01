@@ -42,6 +42,7 @@ include_directories (src/
                     src/SharedClasses/
                     src/AI_MODE/
                     src/ScoreEvaluation/
+                    src/ScoreEvaluation/Heuristics/
                     src/Opponent-Rack-Generator/
                     src/TrainerMode/
                     )
