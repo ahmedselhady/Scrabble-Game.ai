@@ -88,7 +88,7 @@ void GameBrain::work_computer_vs_computer()
     Ptr2G.SetChar('R', 9, 9);
     Ptr2G.SetChar('S', 9, 10);
 
-    AI_MODE *aimode = new AI_MODE();
+    AiMode *aimode = new AiMode();
     aimode->setTiles(Rack);
     aimode->setBoardToGrammar(Ptr2G);
     aimode->setBagPointer(&this->bag);

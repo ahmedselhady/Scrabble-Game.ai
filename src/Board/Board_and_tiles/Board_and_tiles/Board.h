@@ -23,6 +23,7 @@ public:
 	std::vector<char> &getNextVertical(int VerticalIndex);					  //it will call the function from the AI module to determine the next state given the current board Vertically
 	void SetCharPos(char Letter, int Row, int Col);							  // This Func is to Set the bit for this char in board
 	int calculateScore(int offsit, bool horizontal, char intersectionLetter); // it calculates the word and letter score
+	bool isEmpty();
 	void print();
 	~Board(); //Destructor
 };

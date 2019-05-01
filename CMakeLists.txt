@@ -40,7 +40,7 @@ include_directories (src/
                     src/GuiInterface/
                     src/MoveGeneration/
                     src/SharedClasses/
-                    src/AI_MODE/
+                    src/AiMode/
                     src/TrainerMode/
                     )
 

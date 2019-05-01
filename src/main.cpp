@@ -1,6 +1,6 @@
 #include "./Brain.hpp"
 #include "./Definitions.hpp"
-#include "./TrainerMode/Timer.hpp"
+// #include "./TrainerMode/Timer.hpp"
 
 int main()
 {
