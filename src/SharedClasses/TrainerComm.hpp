@@ -24,11 +24,13 @@ enum PossibleMoves
 };
 
 class TrainerComm
-{
-    //initializations
-    zmq::context_t context(1);
-    zmq::socket_t socket(context, ZMQ_REQ);
-    socket.connect("tcp://192.168.88.208:5555"); //edit it
+{ //init
+    //zmq::context_t context(1);
+    //zmq::socket_t socket(context, ZMQ_REQ);
+    //socket.connect("tcp://192.168.88.208:5555"); //edit it
+    // zmq::context_t *context;
+    //zmq::socket_t *socket;
+    // zmq::socket_t socket;
     Move *MovePtr;
 
 public:

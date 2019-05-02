@@ -85,23 +85,23 @@ Move *AI_Human::DoWork()
     Move *PlayerMove = nullptr;
     while (PlayerMove == nullptr)
     {
-        PlayerMove = Communicator->SendPlayerMove();
+        //PlayerMove = Communicator->SendPlayerMove();
     }
 
     if (BestMove->moveScore > PlayerMove->moveScore)
     {
-        Communicator->ReceiveString("Bravo! But You Could Do Better..");
-        Communicator->SetReceivedPlayerMove(BestMove);
+        //Communicator->ReceiveString("Bravo! But You Could Do Better..");
+        //Communicator->SetReceivedPlayerMove(BestMove);
     }
 
     if (BestMove->moveScore < PlayerMove->moveScore)
     {
-        Communicator->ReceiveString("Marvellous! your move is better than what I thought");
+        //Communicator->ReceiveString("Marvellous! your move is better than what I thought");
     }
 
     if (BestMove->moveScore == PlayerMove->moveScore)
     {
-        Communicator->ReceiveString("Excellent! I Couldn't do better");
+        //Communicator->ReceiveString("Excellent! I Couldn't do better");
     }
     return PlayerMove;
 }
