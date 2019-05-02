@@ -105,8 +105,6 @@ void GameBrain::updateBoard(Move *move)
 
 void GameBrain::work_computer_vs_computer()
 {
-    // trial:
-
     vector<char> Rack;
     Rack.push_back('f');
     Rack.push_back('g');
@@ -216,9 +214,9 @@ void GameBrain::work_human_vs_computer()
 
     int humanScore = 0, computerScore = 0;
     // Todo : start timers on separate thread;
-    // T1->start();
-    // T2->start();
-    // T3->start();
+    T1->start();
+    T2->start();
+    T3->start();
 
     // *local parameters
     int lenghtOfMove, index;
@@ -238,7 +236,7 @@ void GameBrain::work_human_vs_computer()
 
         if (turn_TrainerMode == true) // *Human Player turn
         {
-            //T3->stop();
+            T3->stop();
             // *let the thinker do the magic
             Move *move = trainer.Human.DoWork(this->isFuckinBitchEmpty);
 
@@ -250,14 +248,19 @@ void GameBrain::work_human_vs_computer()
 
             // *updating human score
             humanScore += move->moveScore;
-            // T3->start();
-            // T1->SendTime();
-            // T2->SendTime();
-            // T3->SendTime();
+            T3->start();
+            // !testing:
+
+            std::cout << "game total time: ";
+            T1->SendTime();
+            std::cout << "Player 1 Time time: ";
+            T2->SendTime();
+            std::cout << "Player 2 Time time: ";
+            T3->SendTime();
         }
         else // *Computer Player turn
         {
-            //T2->stop();
+            T2->stop();
             // ! in testing only: print the board and human tiles to allow human to think
             std::cout << "computer tiles are:\n";
             for (int i = 0; i < 7; ++i)
@@ -279,10 +282,14 @@ void GameBrain::work_human_vs_computer()
 
             // *updating computer score
             computerScore += move->moveScore;
-            // T2->start();
-            // T1->SendTime();
-            // T2->SendTime();
-            // T3->SendTime();
+            T2->start();
+            // !testing:
+            std::cout << "game total time: ";
+            T1->SendTime();
+            std::cout << "Player 1 Time time: ";
+            T2->SendTime();
+            std::cout << "Player 2 Time time: ";
+            T3->SendTime();
         }
         // *reverse the turn
         turn_TrainerMode = !turn_TrainerMode;

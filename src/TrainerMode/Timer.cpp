@@ -69,5 +69,6 @@ void TimerGUI::SendTime()
 	Min_Sec = std::to_string(SendTime / 60);
 	Min_Sec += "/";
 	Min_Sec += std::to_string(SendTime % 60);
+	std::cout << Min_Sec << std::endl;
 	//Communicator->ReceiveTimerString(Min_Sec);
 }
