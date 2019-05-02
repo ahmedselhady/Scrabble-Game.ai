@@ -2,8 +2,8 @@
 
 #include <string>
 #include "Move.hpp"
-//#include <zmq.hpp>
-//#include <zmq.h>
+#include <zmq.hpp>
+#include <zmq.h>
 #include <cstdint>
 #include <vector>
 #include "BoardCommunicator.hpp"

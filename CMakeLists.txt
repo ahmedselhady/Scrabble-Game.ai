@@ -82,10 +82,11 @@ add_definitions (-DGLFW_INCLUDE_NONE
 add_executable (${PROJECT_NAME} ${PROJECT_SOURCES} ${PROJECT_HEADERS}
                                 ${COMMON_SOURCES} ${COMMON_HEADERS}
                                 ${PROJECT_CONFIGS} ${VENDORS_SOURCES})
+                                
+target_link_libraries(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/vendor/libzmq.so ${CMAKE_THREAD_LIBS_INIT})
 #target_link_libraries (${PROJECT_NAME})
 set_target_properties (${PROJECT_NAME} PROPERTIES
-    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${PROJECT_NAME})
-
+RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${PROJECT_NAME})
 
 
 

@@ -1,4 +1,5 @@
-#pragma once
+#ifndef HEADER_BRAIN
+#define HEADER_BRAIN
 
 #include <unordered_map>
 #include <vector>
@@ -35,7 +36,7 @@ private:
         return gaddagRoot;
     }
 
-    bool GameBrain::IsFinished();
+    // bool GameBrain::IsFinished();
 
 public:
     static Node *__get_gaddag();
@@ -46,3 +47,5 @@ public:
     void work_computer_vs_computer();
     void work_human_vs_computer();
 };
+
+#endif

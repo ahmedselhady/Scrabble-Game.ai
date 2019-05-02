@@ -11,7 +11,6 @@
 #include "../src/Board/Board_and_tiles/Board_and_tiles/Tiles.h"
 #include "../src/Board/Board_and_tiles/Board_and_tiles/BoardCommunication.h"
 #include "./SharedClasses/Game_Evaluator.hpp"
-#include "./Brain.hpp"
 
 class AiMode
 {
