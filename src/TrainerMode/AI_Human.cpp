@@ -1,5 +1,24 @@
 #include "AI_Human.hpp"
 
+Move *getMoveConsole()
+{
+    std::cout << "enter your move:\n";
+    int startCol, endCol, isHorizontal;
+    std::cin >> startCol >> endCol >> isHorizontal;
+
+    // read el move nafsaha: el tiles elly msh mab3otaly
+    std::string move;
+    std::cin >> move; // law#alboard -- 0:26,  small: notblank, capital: blank
+    Move *m = new Move();
+    m->horizontal = (isHorizontal == 1) ? true : false;
+    m->startPosition.COL = endCol;
+    m->startPosition.ROW = startCol;
+    BoardToGrammer *b2g = new BoardToGrammer();
+    m->setScore(b2g->calculateScore(move, startCol, endCol, m->horizontal));
+    m->word = move;
+    return m;
+}
+
 AI_Human::AI_Human()
 {
     this->MyBoard = NULL;
@@ -45,6 +64,7 @@ bool AI_Human::SetTiles(vector<char> *tiles)
     try
     {
         this->HumanTiles = tiles;
+        this->AI_Agent->setTiles(*tiles);
         return true;
     }
     catch (const std::exception &e)
@@ -55,12 +75,12 @@ bool AI_Human::SetTiles(vector<char> *tiles)
     return false;
 }
 
-bool AI_Human::SetAgent()
+bool AI_Human::SetAgent(AiMode *AI_Agent)
 {
-    if (this->Bag == NULL || this->BoardStatus == NULL || this->Communicator == NULL || this->HumanTiles == NULL || this->MyBoard == NULL)
-    {
-        return false;
-    }
+    AI_Agent->setBagPointer(this->Bag);
+    AI_Agent->setBoardToGrammar(b2g);
+    this->AI_Agent = AI_Agent;
+    return true;
 }
 
 bool AI_Human::SetBoard(Board *board)
@@ -78,30 +98,36 @@ bool AI_Human::SetBoard(Board *board)
     return false;
 }
 
-Move *AI_Human::DoWork()
+Move *AI_Human::DoWork(bool isFuckinBitchEmpty)
 {
-    //Move BestMove = AI_Agent->getBestMove();
     Move *BestMove = nullptr;
     Move *PlayerMove = nullptr;
+
     while (PlayerMove == nullptr)
     {
-        PlayerMove = Communicator->SendPlayerMove();
+        // todo: replace with communicator:
+        PlayerMove = getMoveConsole();
+        //PlayerMove = Communicator->SendPlayerMove();
     }
+    BestMove = this->AI_Agent->doWork(isFuckinBitchEmpty);
 
     if (BestMove->moveScore > PlayerMove->moveScore)
     {
-        Communicator->ReceiveString("Bravo! But You Could Do Better..");
-        Communicator->SetReceivedPlayerMove(BestMove);
+        std::cout << "\nBravo! But You Could Do Better..\n";
+        // Communicator->ReceiveString("Bravo! But You Could Do Better..");
+        // Communicator->SetReceivedPlayerMove(BestMove);
     }
 
     if (BestMove->moveScore < PlayerMove->moveScore)
     {
-        Communicator->ReceiveString("Marvellous! your move is better than what I thought");
+        std::cout << "\nMarvellous! your move is better than what I thought\n";
+        // Communicator->ReceiveString("Marvellous! your move is better than what I thought");
     }
 
     if (BestMove->moveScore == PlayerMove->moveScore)
     {
-        Communicator->ReceiveString("Excellent! I Couldn't do better");
+        std::cout << "\nExcellent !I Couldn't do better\n";
+        // Communicator->ReceiveString("Excellent! I Couldn't do better");
     }
     return PlayerMove;
 }

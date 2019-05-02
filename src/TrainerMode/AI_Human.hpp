@@ -10,6 +10,8 @@ private:
     vector<char> *HumanTiles;
     unordered_map<char, int> *Bag;
     BoardMask *BoardStatus;
+    BoardToGrammer b2g;
+
     AiMode *AI_Agent;
     TrainerComm *Communicator;
 
@@ -19,6 +21,6 @@ public:
     bool SetTiles(vector<char> *HumanTiles);
     bool SetCommunicator(TrainerComm *Communicator);
     bool SetBoard(Board *MyBoard);
-    bool SetAgent();
-    Move *DoWork();
+    bool SetAgent(AiMode *AI_Agent);
+    Move *DoWork(bool);
 };

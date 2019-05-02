@@ -1,5 +1,4 @@
 
-#pragma once
 #include "AI_AI.hpp"
 
 AI_AI::AI_AI()
@@ -11,6 +10,7 @@ AI_AI::AI_AI()
     this->BoardStatus = NULL;
     this->Communicator = NULL;
 }
+
 bool AI_AI::SetBag(unordered_map<char, int> *bag)
 {
     try
@@ -46,6 +46,7 @@ bool AI_AI::SetTiles(vector<char> *tiles)
     try
     {
         this->AI_Tiles = tiles;
+        this->AI_Agent->setTiles(*tiles);
         return true;
     }
     catch (const std::exception &e)
@@ -71,16 +72,18 @@ bool AI_AI::SetBoard(Board *board)
     return false;
 }
 
-Move *AI_AI::DoWork()
+Move *AI_AI::DoWork(bool isFuckinBitchEmpty)
 {
-    Move BestMove;
-    return &BestMove;
+    Move *BestMove = nullptr;
+    BestMove = this->AI_Agent->doWork(isFuckinBitchEmpty);
+    return BestMove;
 }
 
-bool AI_AI::SetAgent()
+bool AI_AI::SetAgent(AiMode *AI_Agent)
 {
-    if (this->Bag == NULL || this->BoardStatus == NULL || this->Communicator == NULL || this->AI_Tiles == NULL || this->MyBoard == NULL)
-    {
-        return false;
-    }
+
+    AI_Agent->setBagPointer(this->Bag);
+    AI_Agent->setBoardToGrammar(b2g);
+    this->AI_Agent = AI_Agent;
+    return true;
 }

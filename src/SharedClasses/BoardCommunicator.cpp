@@ -12,6 +12,7 @@ int BoardCommunicator::calculateScore(string suggestedMove, int row, int col, bo
 	int intersectionScore = 0;
 	int TileValues[26] = {1, 3, 3, 2, 1, 4, 2, 4, 1, 8, 5, 1, 3, 1, 1, 3, 10, 1, 1, 1, 1, 4, 4, 8, 4, 10}; //need to add the blank
 	int offsit = row + col * 15;
+	char charOffsit = ' ';
 	bool Wsx3 = false;
 	bool Wsx2 = false;
 	int Wsx3M = 1; // multiplyer
@@ -20,34 +21,37 @@ int BoardCommunicator::calculateScore(string suggestedMove, int row, int col, bo
 	BoardMask CurrentBoard = BoardPtr->getBoardStatus();
 	int preOffsit = (horizontal) ? offsit - 1 : offsit - 15;
 	int posOffsit = (horizontal) ? offsit + 1 : offsit + 15;
+	int boarderCheck = (horizontal) ? row : col; // above or bellow and vice versa.
+
 	bool blank = false;
 	int x;
-	if (suggestedMove == "Adaw" && col == 4 && row == 6)
-	{
-		x = 9;
+	// if (suggestedMove == "Adaw" && col == 4 && row == 6)
+	// {
+	// 	x = 9;
 
-		if (true)
-		{
-		}
-	}
+	// 	if (true)
+	// 	{
+	// 	}
+	// }
 	for (std::size_t i = 0; i < suggestedMove.length(); ++i)
 	{
 		blank = (suggestedMove[i] >= 65 && suggestedMove[i] <= 90) ? true : false;
-		if ((suggestedMove[i] >= 'a' && suggestedMove[i] <= 'z') || blank) // editt this coditio in case of blank
+		charOffsit = (suggestedMove[i] >= 0 && suggestedMove[i] <= 25) ? 0 : 97;
+		if ((suggestedMove[i] >= charOffsit && suggestedMove[i] <= (charOffsit + 26 - 1)) || blank) // editt this coditio in case of blank
 		{
 			if (!blank)
 			{
 				if (LetterScoreMultiplyBy2.getBit(offsit) && !CurrentBoard.getBit(offsit))
 				{
-					WordScore += TileValues[suggestedMove[i] - 'a'] * 2;
+					WordScore += TileValues[suggestedMove[i] - charOffsit] * 2;
 				}
 				else if (LetterScoreMultiplyBy3.getBit(offsit) && !CurrentBoard.getBit(offsit))
 				{
-					WordScore += TileValues[suggestedMove[i] - 'a'] * 3;
+					WordScore += TileValues[suggestedMove[i] - charOffsit] * 3;
 				}
 				else
 				{
-					WordScore += TileValues[suggestedMove[i] - 'a'];
+					WordScore += TileValues[suggestedMove[i] - charOffsit];
 				}
 			}
 			if ((WordScoreMultiplyBy2.getBit(offsit)) && !CurrentBoard.getBit(offsit)) // the start square
@@ -71,11 +75,16 @@ int BoardCommunicator::calculateScore(string suggestedMove, int row, int col, bo
 				Wsx3 = true;
 				Wsx3M *= 3;
 			}
-			if ((CurrentBoard.getBit(preOffsit) && preOffsit >= 0 && preOffsit <= 224) || (CurrentBoard.getBit(posOffsit) && posOffsit >= 0 && preOffsit <= 224)) // there is an intersecition with other word
+			if (((boarderCheck > 0 && boarderCheck <= 14) && CurrentBoard.getBit(preOffsit) && preOffsit >= 0 && preOffsit <= 224) || ((boarderCheck >= 0 && boarderCheck < 14) && CurrentBoard.getBit(posOffsit) && posOffsit >= 0 && preOffsit <= 224)) // there is an intersecition with other word
 			{
 				if (!CurrentBoard.getBit(offsit))
 				{
-					intersectionScore += BoardPtr->calculateScore(offsit, horizontal, suggestedMove[i]);
+					char offset = 0;
+					if ((suggestedMove[i] >= 0 && suggestedMove[i] <= 25))
+					{
+						offset = 97;
+					}
+					intersectionScore += BoardPtr->calculateScore(offsit, horizontal, suggestedMove[i] + offset);
 				}
 			}
 			blank = false;

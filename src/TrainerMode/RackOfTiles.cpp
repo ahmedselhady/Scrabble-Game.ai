@@ -17,7 +17,6 @@ bool RackOfTiles::updateBag(char tileToReduce)
     {
         try
         {
-
             (*bag)[tileToReduce] -= 1;
             --bagSize;
             return true;
@@ -37,6 +36,8 @@ bool RackOfTiles::updateBag(char tileToReduce)
 
 std::vector<char> RackOfTiles::RandomizeTiles(int WantedTiles)
 {
+
+    srand(time(NULL));
     std::vector<char> Rack;
     int count = 0;
     int SizeOfTiles;
@@ -52,7 +53,7 @@ std::vector<char> RackOfTiles::RandomizeTiles(int WantedTiles)
     while (count != SizeOfTiles)
     {
         int Tile = rand() % 27;
-        Tile -= 97;
+        Tile += 'a';
         string SendRack;
         if (updateBag((char)Tile))
         {

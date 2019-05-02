@@ -15,6 +15,8 @@ private:
 	Board(); //Constructor
 	static Board *BoardInst_;
 	BoardMask AllCharBoard;
+	int blankCounter;
+	int *blank_;
 
 public:
 	static Board *getBoard();												  //it gets instance of the board

@@ -2,6 +2,10 @@
 //Constructor
 Board::Board()
 {
+	blankCounter = 0;
+	blank_ = new int[2];
+	blank_[0] = -1;
+	blank_[1] = -1;
 	for (int i = 0; i < 26; i++) // i want to create them at insertion of the letter as i dont need the whole 26 char along the game
 	{
 		BoardMap[(char)('A' + i)] = BoardMask(0b0000000000000000000000000000000000000000000000000000000000000000, 0b0000000000000000000000000000000000000000000000000000000000000000, 0b0000000000000000000000000000000000000000000000000000000000000000, 0b0000000000000000000000000000000000000000000000000000000000000000);
@@ -209,7 +213,11 @@ int Board::calculateScore(int offsit, bool horizontal, char intersectionLetter)
 			{
 				if (!isBlank)
 				{
-					WordScore += TileValues[Tile - charOffsit];
+					bool boardblank = ((blank_[0] == mStartOffsit) || (blank_[1] == mStartOffsit)) ? true : false;
+					if (!boardblank)
+					{
+						WordScore += TileValues[Tile - charOffsit];
+					}
 				}
 			}
 
@@ -292,7 +300,11 @@ int Board::calculateScore(int offsit, bool horizontal, char intersectionLetter)
 			{
 				if (!isBlank)
 				{
-					WordScore += TileValues[Tile - charOffsit];
+					bool boardblank = ((blank_[0] == mStartOffsit) || (blank_[1] == mStartOffsit)) ? true : false;
+					if (!boardblank)
+					{
+						WordScore += TileValues[Tile - charOffsit];
+					}
 				}
 			}
 

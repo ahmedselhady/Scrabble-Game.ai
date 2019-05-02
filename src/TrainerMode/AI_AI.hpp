@@ -1,5 +1,6 @@
+
 #pragma once
-#include "../SharedClasses/BoardCommunicator.hpp"
+
 #include "../AI_MODE/AI_MODE.hpp"
 #include "../SharedClasses/TrainerComm.hpp"
 
@@ -13,13 +14,14 @@ private:
     BoardMask *BoardStatus;
     AiMode *AI_Agent;
     TrainerComm *Communicator;
+    BoardToGrammer b2g;
 
 public:
     AI_AI();
-    bool SetBag(unordered_map<char, int> *Bag);
-    bool SetTiles(vector<char> *AI_Tiles);
-    bool SetBoard(Board *MyBoard);
-    bool SetCommunicator(TrainerComm *Communicator);
-    bool SetAgent();
-    Move *DoWork();
+    bool SetTiles(vector<char> *);
+    bool SetBag(unordered_map<char, int> *);
+    bool SetBoard(Board *);
+    bool SetCommunicator(TrainerComm *);
+    bool SetAgent(AiMode *);
+    Move *DoWork(bool);
 };
