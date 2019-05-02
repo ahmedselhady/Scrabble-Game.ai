@@ -1,6 +1,7 @@
 #pragma once
 #include "../SharedClasses/BoardCommunicator.hpp"
 #include "../AI_MODE/AI_MODE.hpp"
+#include "../SharedClasses/TrainerComm.hpp"
 
 using namespace std;
 class AI_AI
@@ -10,16 +11,15 @@ private:
     vector<char> *AI_Tiles;
     unordered_map<char, int> *Bag;
     BoardMask *BoardStatus;
-    AI_MODE *AI_Agent;
-    //TrainerComm *Communicator;
+    AiMode *AI_Agent;
+    TrainerComm *Communicator;
 
 public:
     AI_AI();
     bool SetBag(unordered_map<char, int> *Bag);
     bool SetTiles(vector<char> *AI_Tiles);
     bool SetBoard(Board *MyBoard);
-    bool SetAgent(AI_MODE *);
-    //bool SetisEmtyBoard(bool isEmty);
+    bool SetCommunicator(TrainerComm *Communicator);
+    bool SetAgent();
     Move *DoWork();
-    bool IsEmptyBoard();
 };

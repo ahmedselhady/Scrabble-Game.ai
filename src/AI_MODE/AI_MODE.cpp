@@ -3,12 +3,12 @@
 #include <future>
 #include <list>
 
-AI_MODE::AI_MODE()
+AiMode::AiMode()
 {
     this->gaddag_instance = GameBrain::__get_gaddag();
 }
 
-Move *AI_MODE::doWork()
+Move *AiMode::doWork()
 {
     // first: generate all possible moves given the tiles and board:
     std::cout << "creating gaddag started....\n";
@@ -19,7 +19,7 @@ Move *AI_MODE::doWork()
     // TODO: check for this isEmpty for board:
     bool isEmpty = false;
 
-    std::future<list<Move>> generate_moves_thread = std::async(&AI_MODE::MovesGeneration, this, isEmpty);
+    std::future<list<Move>> generate_moves_thread = std::async(&AiMode::MovesGeneration, this, isEmpty);
 
     // meanwhile: generate the opponunts most probable rack:
     std::cout << "creating opponent's rack started....\n";
@@ -49,7 +49,7 @@ Move *AI_MODE::doWork()
     return new Move(*listOfMoves.begin());
 }
 
-list<Move> AI_MODE::MovesGeneration(bool isEmpty)
+list<Move> AiMode::MovesGeneration(bool isEmpty)
 {
     // TODO: EDIT THE VALUES PASSED TO CONSTRUCTOR OF WORDGENERATE (BAG SIZE,BAGSIZE ...).
     WordGenerate *Gen = new WordGenerate(this->b2g, this->gaddag_instance, NULL);

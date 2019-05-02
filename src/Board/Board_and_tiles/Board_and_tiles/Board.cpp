@@ -1,5 +1,4 @@
 #include "./Board.h"
-
 //Constructor
 Board::Board()
 {
@@ -92,8 +91,8 @@ std::vector<char> &Board::getNextHorizontal(int HorizontalIndex)
 std::vector<char> &Board::getNextVertical(int VerticalIndex)
 {
 	VerticalIndex = VerticalIndex % 15;
-	vector<char> CharVect;
-	vector<char> *VerticalVector = new std::vector<char>(15, '*');
+	std::vector<char> CharVect;
+	std::vector<char> *VerticalVector = new std::vector<char>(15, '*');
 	int ResIndex = 0;
 	BoardMask CheckBoard;
 	for (int i = (15 * VerticalIndex); i < (15 * VerticalIndex) + 15; ++i)
@@ -350,17 +349,17 @@ void Board::print()
 				for (auto Instance : BoardMap) // an instance of a letter
 				{
 					if (Instance.second.getBit(mOffsit))
-						cout << Instance.first << " ";
+						std::cout << Instance.first << " ";
 				}
 			}
 			else
 			{
-				cout << "0"
-					 << " ";
+				std::cout << "0"
+						  << " ";
 			}
 			mOffsit += 15;
 		}
-		cout << "\n";
+		std::cout << "\n";
 	}
 }
 

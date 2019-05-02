@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Board/Board_and_tiles/Board_and_tiles/Board.h"
-#include "Board/Board_and_tiles/Board_and_tiles/BoardCommunication.h"
-#include "Board/Board_and_tiles/Board_and_tiles/Tiles.h"
+#include "./Board/Board_and_tiles/Board_and_tiles/Board.h"
+#include "./Board/Board_and_tiles/Board_and_tiles/BoardCommunication.h"
+#include "./Board/Board_and_tiles/Board_and_tiles/Tiles.h"
 #include "Opponent-Rack-Generator/Opponent.h"
 #include "SharedClasses/MCTSearch.h"
 #include "../src/MoveGeneration/LoadGaddag.h"
@@ -13,7 +13,7 @@
 #include "./SharedClasses/Game_Evaluator.hpp"
 #include "./Brain.hpp"
 
-class AI_MODE
+class AiMode
 {
 public:
     //
@@ -33,7 +33,7 @@ public:
 
     Move *doWork();
 
-    AI_MODE();
+    AiMode();
 
 private:
     Node *gaddag_instance;

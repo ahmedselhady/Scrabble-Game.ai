@@ -4,7 +4,7 @@ enum GameMode
 {
 	/**
 	 * TEACHER-MODE: if a human player is playing against the AI
-	 * AI_MODE: if an AI plays against another AI
+	 * AiMode: if an AI plays against another AI
 	*/
 	TEACHER_MODE,
 	COMPUTER_MODE

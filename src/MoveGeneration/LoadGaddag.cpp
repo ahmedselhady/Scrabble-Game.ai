@@ -6,7 +6,6 @@
 
 #define DICT_FILE_NAME "./src/MoveGeneration/Dict.txt"
 #define GADDAG_FILE_NAME "./src/MoveGeneration/GADDAG.txt"
-#define ARA "./"
 #define TOTAL_GADDAG_NODES 6419512
 
 using namespace std;
