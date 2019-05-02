@@ -309,3 +309,8 @@ int LoadHeuristics::mapLetter(char letter)
     // no mapping needed
     return letter;
 }
+
+void calculateAllLeaves()
+{
+    //! Complete ..
+} // precalculates Rack Leaves.

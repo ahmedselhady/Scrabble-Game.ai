@@ -15,7 +15,10 @@ double VCValueEvaluator::equity(std::vector<char> *Rack, Move *move)
     {
         double adjustment = 0; //if (move.action == Move::Place) //
                                //{
-
+        if (move->word == "pawed")
+        {
+            std::cout << "HERE:" << std::endl;
+        }
         int start = move->startPosition.COL;
         if (move->startPosition.ROW < start)
         {
@@ -61,7 +64,7 @@ double VCValueEvaluator::equity(std::vector<char> *Rack, Move *move)
     }
     else
     {
-        return endgameResult(Rack, move) + move->moveScore;
+        return endgameResult(Rack, move); // + move->moveScore;
     }
 }
 

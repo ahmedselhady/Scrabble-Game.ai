@@ -59,10 +59,10 @@ int main()
     rem = Options::unusedRackTiles(&TestRack, move);
     int y = 0;
 
-    double d = -0.2;
-    uint16_t u;
-    memcpy(&u, &d, sizeof(d));
-    std::cout << std::hex << u;
+    // double d = -0.2;
+    // uint16_t u;
+    // memcpy(&u, &d, sizeof(d));
+    // std::cout << std::hex << u;
 
     LoadHeuristics *LoadH = new LoadHeuristics();
     LoadH->loadALL();
@@ -77,7 +77,7 @@ int main()
     OppRack.push_back('m');
     OppRack.push_back('n');
 
-    Evaluator *Eval = new VCValueEvaluator(LoadH, &OppRack, 10, true); // bagSize + Empty Board.
+    Evaluator *Eval = new VCValueEvaluator(LoadH, &OppRack, 0, false); // bagSize + Empty Board.
 
     // string move;
     // string move2;
@@ -186,13 +186,21 @@ int main()
     // Rack.push_back('r');
     // Rack.push_back('s');
 
+    // Rack.push_back('i');
+    // Rack.push_back('t'); ///////////////////////////////////////////////////////////////////
+    // Rack.push_back('s');
+    // Rack.push_back('o');
+    // Rack.push_back('y');
+    // Rack.push_back('o');
+    // Rack.push_back('k');
+
     Rack.push_back('a');
     Rack.push_back('d'); ///////////////////////////////////////////////////////////////////
     Rack.push_back('p');
     Rack.push_back('c');
-    Rack.push_back(BLANK);
-    Rack.push_back('e');
     Rack.push_back('w');
+    Rack.push_back('s');
+    Rack.push_back('e');
 
     // Rack.push_back(BLANK);
     // Rack.push_back('a');
@@ -424,21 +432,39 @@ int main()
     cout << " DONE " << endl;
     ofstream MovesFile;
     MovesFile.open("moves.txt");
+    string Best;
+    string bestScore;
+    int row;
+    int col;
+    int horiz;
+    double best = -100.0;
+    int bestS = -1000;
 
     for (std::list<Move>::iterator it = moves.begin(); it != moves.end(); it++)
     {
         MovesFile << it->word << " " << it->horizontal << " " << (int)it->startPosition.ROW << " " << (int)it->startPosition.COL << " "
                   << it->moveScore << " " << it->evaluatedScore << " " << it->testHScore << "\n";
-        if (it->word == "azo")
-
+        double total = (it->evaluatedScore + it->moveScore);
+        if (total > best)
         {
-            cout << endl
-                 << it->word << endl
-                 << it->horizontal << it->startPosition.ROW << it->startPosition.COL << it->moveScore << it->evaluatedScore;
+            best = total;
+            Best = it->word;
+            row = (int)it->startPosition.ROW;
+            col = (int)it->startPosition.COL;
+            horiz = it->horizontal;
         }
+        if (it->moveScore > bestS)
+        {
+            bestScore = it->word;
+            bestS = it->moveScore;
+                }
     }
-    MovesFile.close();
     int movesCount = moves.size();
+    cout << "TOTAL NUMBER OF MOVES:" << movesCount << endl;
+    cout << "BEST MOVE:" << Best << horiz << row << col << endl;
+    cout << "BEST MOVE (SCORE):" << bestScore << endl;
+    MovesFile.close();
+
     //  simple test case i have a vertical word apple and 1 intersecition and 1 x3 score and x2 letter score
 
     // for(int index = word.size()-1 ;index>=0;--index){

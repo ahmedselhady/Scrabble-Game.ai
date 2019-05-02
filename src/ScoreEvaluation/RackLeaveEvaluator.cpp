@@ -40,14 +40,26 @@ double RackLeaveEvaluator::leaveValue(std::vector<char> *Rack)
 
         for (int index = 0; index < Rack->size(); ++index)
         {
-            value += heuristicsValues->tileWorth((*Rack)[index] - 'a');
+            if ((*Rack)[index] == ' ')
+            {
+                value += heuristicsValues->tileWorth(26);
+            }
+            else
+            {
+                value += heuristicsValues->tileWorth((*Rack)[index] - 'a');
+            }
         }
 
         for (unsigned int index = 0; index < sortedRack->size() - 1; ++index)
         {
             if ((*sortedRack)[index] == (*sortedRack)[index + 1])
             {
-                value += heuristicsValues->syn2((*sortedRack)[index] - 'a', (*sortedRack)[index] - 'a');
+                char letter = (*sortedRack)[index] - 'a';
+                if (letter == ' ')
+                {
+                    letter = 26;
+                }
+                value += heuristicsValues->syn2(letter, letter);
             }
         }
 
@@ -65,16 +77,32 @@ double RackLeaveEvaluator::leaveValue(std::vector<char> *Rack)
         {
             for (unsigned int indexLetter1 = 0; indexLetter1 < uniqueRack.size() - 1; ++indexLetter1)
             {
+                char letter1 = uniqueRack[indexLetter1] - 'a';
+                if (uniqueRack[indexLetter1] == ' ')
+                {
+                    letter1 = 26;
+                }
                 for (unsigned int indexLetter2 = indexLetter1 + 1; indexLetter2 < uniqueRack.size(); ++indexLetter2)
                 {
-                    synergy += heuristicsValues->syn2(uniqueRack[indexLetter1] - 'a', uniqueRack[indexLetter2] - 'a');
+
+                    char letter2 = uniqueRack[indexLetter2] - 'a';
+                    if (uniqueRack[indexLetter2] == ' ')
+                    {
+                        letter2 = 26;
+                    }
+                    synergy += heuristicsValues->syn2(letter1, letter2);
                 }
             }
 
             bool holding_bad_tile = false;
             for (unsigned int index = 0; index < uniqueRack.size(); ++index)
             {
-                if (heuristicsValues->tileWorth(uniqueRack[index] - 'a') < -5.5)
+                char letter = uniqueRack[index] - 'a';
+                if (letter == ' ')
+                {
+                    letter = 26;
+                }
+                if (heuristicsValues->tileWorth(letter) < -5.5)
                 {
                     holding_bad_tile = true;
                 }
