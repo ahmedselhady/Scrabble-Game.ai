@@ -29,22 +29,21 @@ This code takes as input:
 
 //Class To Generate the possible racks of the opponent:
 
-class OpponentRack {
+class OpponentRack
+{
 
 public:
-
 	OpponentRack();
 	vector<char> RackGenerator(unordered_map<char, int>); //Function to create the Opponent rack to be used.
-	vector<char> GetRack(); //Getter for the rack.
+	vector<char> GetRack();								  //Getter for the rack.
 
 	//-----------------------------------------------------------//
-	int LeftLetters(std::vector<std::pair<char,int>>); //Function to get Number letters left: (Not in my hand and not on the board)
-	vector<double> GetProbabilities(std::vector<std::pair<char,int>>, int); //Function to get probabilities of each letter.
-	void RemoveZeroProbabilities(std::vector<std::pair<char,int>>&); // Remove all elements that have a probability of zero from the map.
-	///////////////////////////////////////////////////////////////
-	
-private:
+	int LeftLetters(std::vector<std::pair<char, int>>);						 //Function to get Number letters left: (Not in my hand and not on the board)
+	vector<double> GetProbabilities(std::vector<std::pair<char, int>>, int); //Function to get probabilities of each letter.
+	void RemoveZeroProbabilities(std::vector<std::pair<char, int>> &);		 // Remove all elements that have a probability of zero from the map.
+																			 ///////////////////////////////////////////////////////////////
 
+private:
 	vector<char> Rack;
 
 	///////////////////////////////////////////////////////////////
