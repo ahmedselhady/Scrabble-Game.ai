@@ -30,15 +30,16 @@ PlayerMoveValue getMoveConsole(Move *retrunableMove)
     std::cin >> endCol >> isHorizontal;
 
     // read el move nafsaha: el tiles elly msh mab3otaly
+    std::cin.ignore();
     std::string move;
     std::cin >> move; // law#alboard -- 0:26,  small: notblank, capital: blank
-    Move *m = new Move();
-    m->horizontal = (isHorizontal == 1) ? true : false;
-    m->startPosition.COL = endCol;
-    m->startPosition.ROW = startCol;
+
+    retrunableMove->horizontal = (isHorizontal == 1) ? true : false;
+    retrunableMove->startPosition.COL = endCol;
+    retrunableMove->startPosition.ROW = startCol;
     BoardToGrammer *b2g = new BoardToGrammer();
-    m->setScore(b2g->calculateScore(move, startCol, endCol, m->horizontal));
-    m->word = move;
+    retrunableMove->setScore(b2g->calculateScore(move, startCol, endCol, retrunableMove->horizontal));
+    retrunableMove->word = move;
     return PLAY;
 }
 
