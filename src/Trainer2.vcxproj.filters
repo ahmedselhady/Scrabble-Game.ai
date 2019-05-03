@@ -87,6 +87,18 @@
     <ClCompile Include="trainermode\Timer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ScoreEvaluation\Evaluator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ScoreEvaluation\LoadHeuristics.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ScoreEvaluation\RackLeaveEvaluator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ScoreEvaluation\VCValueEvaluator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Brain.hpp">
@@ -166,6 +178,18 @@
     </ClInclude>
     <ClInclude Include="trainermode\Trainer.hpp">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ScoreEvaluation\Evaluator.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ScoreEvaluation\LoadHeuristics.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ScoreEvaluation\RackLeaveEvaluator.hpp">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ScoreEvaluation\VCValueEvaluator.hpp">
+      <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

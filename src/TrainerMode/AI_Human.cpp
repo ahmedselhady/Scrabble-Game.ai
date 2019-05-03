@@ -180,7 +180,7 @@ void AI_Human::exchangeTiles(std::vector<char> *tiles, char tileToExchange)
     }
 }
 
-Move *AI_Human::DoWork(bool isFuckinBitchEmpty)
+Move *AI_Human::DoWork(bool isFuckinBitchEmpty,int bagSize,LoadHeuristics* loader)
 {
     Move *BestMove = nullptr;
     Move *PlayerMove = new Move();
@@ -193,7 +193,7 @@ Move *AI_Human::DoWork(bool isFuckinBitchEmpty)
     }
     if (ret == PLAY)
     {
-        BestMove = this->AI_Agent->doWork(isFuckinBitchEmpty);
+        BestMove = this->AI_Agent->doWork(isFuckinBitchEmpty,bagSize-PlayerMove->moveUsedTiles,loader);
         if (BestMove == NULL)
         {
 			this->messageToHuman = "Excellent !I Couldn't do better";
@@ -221,7 +221,7 @@ Move *AI_Human::DoWork(bool isFuckinBitchEmpty)
     }
     else if (ret == PASS)
     {
-        BestMove = this->AI_Agent->doWork(isFuckinBitchEmpty);
+        BestMove = this->AI_Agent->doWork(isFuckinBitchEmpty, bagSize , loader);
         if (BestMove == NULL)
         {
 			this->messageToHuman = "Excellent !I Couldn't do better";

@@ -72,10 +72,10 @@ bool AI_AI::SetBoard(Board *board)
     return false;
 }
 
-Move *AI_AI::DoWork(bool isFuckinBitchEmpty)
+Move *AI_AI::DoWork(bool isFuckinBitchEmpty, int bagSize, LoadHeuristics* loader)
 {
     Move *BestMove = nullptr;
-    BestMove = this->AI_Agent->doWork(isFuckinBitchEmpty);
+    BestMove = this->AI_Agent->doWork(isFuckinBitchEmpty,bagSize,loader);
     return BestMove;
 }
 
