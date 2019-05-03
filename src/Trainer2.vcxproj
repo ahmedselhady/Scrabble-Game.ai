@@ -128,7 +128,6 @@
     <ClCompile Include="ScoreEvaluation\Evaluator.cpp" />
     <ClCompile Include="ScoreEvaluation\LoadHeuristics.cpp" />
     <ClCompile Include="ScoreEvaluation\RackLeaveEvaluator.cpp" />
-    <ClCompile Include="ScoreEvaluation\VCValueEvaluator.cpp" />
     <ClCompile Include="sharedclasses\BoardCommunicator.cpp" />
     <ClCompile Include="sharedclasses\Game_Evaluator.cpp" />
     <ClCompile Include="sharedclasses\Logger.cpp" />
@@ -159,7 +158,6 @@
     <ClInclude Include="ScoreEvaluation\Evaluator.hpp" />
     <ClInclude Include="ScoreEvaluation\LoadHeuristics.hpp" />
     <ClInclude Include="ScoreEvaluation\RackLeaveEvaluator.hpp" />
-    <ClInclude Include="ScoreEvaluation\VCValueEvaluator.hpp" />
     <ClInclude Include="sharedclasses\BoardCommunicator.hpp" />
     <ClInclude Include="sharedclasses\Game_Evaluator.hpp" />
     <ClInclude Include="sharedclasses\Logger.hpp" />

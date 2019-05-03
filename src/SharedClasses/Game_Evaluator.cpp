@@ -29,10 +29,10 @@ int gameEvaluator::moveUtility(Move &move, GamePhase currentPhase)
 
 void gameEvaluator::evaluateMovesHuristic(std::list<Move> &moves, GamePhase currentPhase)
 {
-    for (std::list<Move>::iterator itr = moves.begin(); itr != moves.end(); ++itr)
-    {
-        itr->evaluatedScore = this->moveUtility(*itr, currentPhase);
-    }
+    // for (std::list<Move>::iterator itr = moves.begin(); itr != moves.end(); ++itr)
+    // {
+    //     itr->evaluatedScore = this->moveUtility(*itr, currentPhase);
+    // }
 
     moves.sort([](const Move &a, const Move &b) { return a.evaluatedScore > b.evaluatedScore; });
 }
