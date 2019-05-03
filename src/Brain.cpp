@@ -1,5 +1,6 @@
 
 #include "Brain.hpp"
+#include "./Board/Board_and_tiles/Board_and_tiles/Board.h"
 
 Node *GameBrain::_gaddagInstance = nullptr;
 
@@ -237,17 +238,26 @@ void GameBrain::work_human_vs_computer()
         if (turn_TrainerMode == true) // *Human Player turn
         {
             T3->stop();
+
+            trainer.Human.SetTiles(&HumanTiles);
             // *let the thinker do the magic
             Move *move = trainer.Human.DoWork(this->isFuckinBitchEmpty);
 
-            // *refill the tiles of the human player's rack
-            this->refillTiles(HumanTiles, move);
+            if (move != nullptr)
+            {
+                // *refill the tiles of the human player's rack
+                this->refillTiles(HumanTiles, move);
 
-            // *update the board with the human's move
-            this->updateBoard(move);
+                // *update the board with the human's move
+                this->updateBoard(move);
 
-            // *updating human score
-            humanScore += move->moveScore;
+                // *updating human score
+                humanScore += move->moveScore;
+
+                // final board update
+                this->isFuckinBitchEmpty = (this->isFuckinBitchEmpty) ? false : false;
+            }
+
             T3->start();
             // !testing:
 
@@ -273,15 +283,19 @@ void GameBrain::work_human_vs_computer()
             Move *move = trainer.AI.DoWork(this->isFuckinBitchEmpty);
 
             //TODO: we have the move now but we have to send it to the GUI
+            if (move != nullptr)
+            {
+                // *update the board with the human's move
+                this->updateBoard(move);
 
-            // *update the board with the human's move
-            this->updateBoard(move);
+                // *refill the tiles of the computer player's rack
+                this->refillTiles(AI_Tiles, move);
 
-            // *refill the tiles of the computer player's rack
-            this->refillTiles(AI_Tiles, move);
+                // *updating computer score
+                computerScore += move->moveScore;
 
-            // *updating computer score
-            computerScore += move->moveScore;
+                this->isFuckinBitchEmpty = (this->isFuckinBitchEmpty) ? false : false;
+            }
             T2->start();
             // !testing:
             std::cout << "game total time: ";
@@ -293,7 +307,7 @@ void GameBrain::work_human_vs_computer()
         }
         // *reverse the turn
         turn_TrainerMode = !turn_TrainerMode;
-        this->isFuckinBitchEmpty = (this->isFuckinBitchEmpty) ? false : false;
+        // ! if the human played a pass!
     }
 }
 

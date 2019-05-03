@@ -48,6 +48,9 @@ Move *AiMode::doWork(bool isFuckinEmpty)
     // TODO: simulate with monte carlo
 
     // return best move
+    if (listOfMoves.size() == 0)
+        return nullptr;
+
     return new Move(*listOfMoves.begin());
 }
 

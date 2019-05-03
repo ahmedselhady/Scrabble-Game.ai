@@ -52,6 +52,7 @@ std::vector<char> RackOfTiles::RandomizeTiles(int WantedTiles)
 
     while (count != SizeOfTiles)
     {
+        // TODO: check ya seif for BLANK tile:
         int Tile = rand() % 27;
         Tile += 'a';
         string SendRack;

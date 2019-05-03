@@ -1,10 +1,33 @@
 #include "AI_Human.hpp"
+#include <time.h>
+enum PlayerMoveValue
+{
+    PASS,
+    PLAY,
+    XCHNG,
+    DUMMY
+};
 
-Move *getMoveConsole()
+PlayerMoveValue getMoveConsole(Move *retrunableMove)
 {
     std::cout << "enter your move:\n";
     int startCol, endCol, isHorizontal;
-    std::cin >> startCol >> endCol >> isHorizontal;
+    std::cin >> startCol;
+    if (startCol == -1)
+    {
+        retrunableMove->moveScore = -999999;
+        return PASS;
+    }
+    else if (startCol == -2)
+    {
+        char x;
+        std::cin >> x;
+        retrunableMove->word = " ";
+        retrunableMove->word[0] = x;
+        return XCHNG;
+    }
+
+    std::cin >> endCol >> isHorizontal;
 
     // read el move nafsaha: el tiles elly msh mab3otaly
     std::string move;
@@ -16,7 +39,7 @@ Move *getMoveConsole()
     BoardToGrammer *b2g = new BoardToGrammer();
     m->setScore(b2g->calculateScore(move, startCol, endCol, m->horizontal));
     m->word = move;
-    return m;
+    return PLAY;
 }
 
 AI_Human::AI_Human()
@@ -98,36 +121,151 @@ bool AI_Human::SetBoard(Board *board)
     return false;
 }
 
+void AI_Human::exchange(std::vector<char> *tiles, char tileToExchange, char newTile)
+{
+    for (int i = 0; i < tiles->size(); ++i)
+    {
+        if ((*tiles)[i] == tileToExchange)
+        {
+            (*tiles)[i] = newTile;
+        }
+    }
+}
+
+void AI_Human::exchangeTiles(std::vector<char> *tiles, char tileToExchange)
+{
+    // check if bag is empty:
+    bool allZeroes = true;
+    for (int c = 'a'; c <= 'z'; ++c)
+    {
+        if ((*this->Bag)[(char)c] > 0)
+        {
+            allZeroes = false;
+            break;
+        }
+    }
+    if (allZeroes == true)
+    { // * check for space:
+        if ((*this->Bag)[' '] > 0)
+            allZeroes = false;
+    }
+
+    // *now check on flag:
+    if (allZeroes == false)
+    { //* i can exchaneg
+
+        do
+        {
+            srand(time(NULL));
+            int randChar = rand() % 27;
+            if (randChar > 25)
+            {
+                if ((*this->Bag)[' '] > 0)
+                {
+                    --(*this->Bag)[' '];
+                    ++(*this->Bag)[tileToExchange];
+                    this->exchange(tiles, tileToExchange, ' ');
+                    break;
+                }
+            }
+            else
+            {
+                if ((*this->Bag)[randChar + 'a'] > 0)
+                {
+                    --(*this->Bag)[randChar];
+                    ++(*this->Bag)[tileToExchange];
+                    this->exchange(tiles, tileToExchange, randChar);
+                }
+            }
+        } while (true);
+    }
+    else
+    {
+        return; //* can NEVER exhcange
+    }
+}
+
 Move *AI_Human::DoWork(bool isFuckinBitchEmpty)
 {
     Move *BestMove = nullptr;
-    Move *PlayerMove = nullptr;
+    Move *PlayerMove = new Move();
+    PlayerMoveValue ret = DUMMY;
 
-    while (PlayerMove == nullptr)
+    while (ret == DUMMY) // busy wait until a play is played
     {
         // todo: replace with communicator:
-        PlayerMove = getMoveConsole();
+        ret = getMoveConsole(PlayerMove);
         //PlayerMove = Communicator->SendPlayerMove();
     }
-    BestMove = this->AI_Agent->doWork(isFuckinBitchEmpty);
-
-    if (BestMove->moveScore > PlayerMove->moveScore)
+    if (ret == PLAY)
     {
-        std::cout << "\nBravo! But You Could Do Better..\n";
-        // Communicator->ReceiveString("Bravo! But You Could Do Better..");
-        // Communicator->SetReceivedPlayerMove(BestMove);
+        BestMove = this->AI_Agent->doWork(isFuckinBitchEmpty);
+        if (BestMove == NULL)
+        {
+            std::cout << "\nExcellent !I Couldn't do better\n";
+        }
+        else
+        {
+
+            if (BestMove->moveScore > PlayerMove->moveScore)
+            {
+                std::cout << "\nBravo! But You Could Do Better..\n";
+                // Communicator->ReceiveString("Bravo! But You Could Do Better..");
+                // Communicator->SetReceivedPlayerMove(BestMove);
+            }
+
+            if (BestMove->moveScore < PlayerMove->moveScore)
+            {
+                std::cout << "\nMarvellous! your move is better than what I thought\n";
+                // Communicator->ReceiveString("Marvellous! your move is better than what I thought");
+            }
+
+            if (BestMove->moveScore == PlayerMove->moveScore)
+            {
+                std::cout << "\nExcellent !I Couldn't do better\n";
+                // Communicator->ReceiveString("Excellent! I Couldn't do better");
+            }
+        }
+
+        return PlayerMove;
+    }
+    else if (ret == PASS)
+    {
+        BestMove = this->AI_Agent->doWork(isFuckinBitchEmpty);
+        if (BestMove == NULL)
+        {
+            std::cout << "\nExcellent !I Couldn't do better\n";
+        }
+        else
+        {
+
+            if (BestMove->moveScore > PlayerMove->moveScore)
+            {
+                std::cout << "\nBravo! But You Could Do Better..\n";
+                // Communicator->ReceiveString("Bravo! But You Could Do Better..");
+                // Communicator->SetReceivedPlayerMove(BestMove);
+            }
+
+            if (BestMove->moveScore < PlayerMove->moveScore)
+            {
+                std::cout << "\nMarvellous! your move is better than what I thought\n";
+                // Communicator->ReceiveString("Marvellous! your move is better than what I thought");
+            }
+
+            if (BestMove->moveScore == PlayerMove->moveScore)
+            {
+                std::cout << "\nExcellent !I Couldn't do better\n";
+                // Communicator->ReceiveString("Excellent! I Couldn't do better");
+            }
+        }
+        return NULL;
+    }
+    else
+    { // *then exchange:
+
+        this->exchangeTiles(this->HumanTiles, PlayerMove->word[0]);
+        return NULL;
     }
 
-    if (BestMove->moveScore < PlayerMove->moveScore)
-    {
-        std::cout << "\nMarvellous! your move is better than what I thought\n";
-        // Communicator->ReceiveString("Marvellous! your move is better than what I thought");
-    }
-
-    if (BestMove->moveScore == PlayerMove->moveScore)
-    {
-        std::cout << "\nExcellent !I Couldn't do better\n";
-        // Communicator->ReceiveString("Excellent! I Couldn't do better");
-    }
     return PlayerMove;
 }
