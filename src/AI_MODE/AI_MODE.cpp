@@ -27,19 +27,18 @@ Move *AiMode::doWork(bool isFuckinEmpty, int bagSize, LoadHeuristics *loader)
     //   std::future<std::vector<char>> rack_generation_thread = std::async(&OpponentRack::RackGenerator, &opponentRackGenerator, *this->bagReference);
     std::cout << "creating opponent's rack completed....\n";
 
+    // TODO: change the game phase to the global one by main class
+
+    this->evaluator = new VCValueEvaluator(loader, NULL, bagSize, isFuckinEmpty);
+
     // Join Threads:
     //! std::list<Move> listOfMoves = generate_moves_thread.get();
     std::list<Move> listOfMoves = this->MovesGeneration(isFuckinEmpty);
     //std::vector<char> opponentRack = rack_generation_thread.get();
 
-    std::cout
-        << "threads data retrieved...\n";
+    std::cout << "threads data retrieved...\n";
 
     // sort the moves based on their huristic value!
-    // TODO: change the game phase to the global one by main class
-
-    this->evaluator = new VCValueEvaluator(loader, NULL, bagSize, isFuckinEmpty);
-
     gameEvaluator::__get_Instance()->evaluateMovesHuristic(listOfMoves, END_GAME_MODE);
 
     // when done with those: use game evaluator to limit the moves to 23 moves only:
@@ -61,7 +60,7 @@ Move *AiMode::doWork(bool isFuckinEmpty, int bagSize, LoadHeuristics *loader)
 
 list<Move> AiMode::MovesGeneration(bool isEmpty)
 {
-    
+
     // TODO: EDIT THE VALUES PASSED TO CONSTRUCTOR OF WORDGENERATE (BAG SIZE,BAGSIZE ...).
     WordGenerate *Gen = new WordGenerate(this->b2g, this->gaddag_instance, this->evaluator);
 

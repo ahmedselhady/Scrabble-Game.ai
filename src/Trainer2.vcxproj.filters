@@ -96,9 +96,6 @@
     <ClCompile Include="ScoreEvaluation\RackLeaveEvaluator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ScoreEvaluation\VCValueEvaluator.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Brain.hpp">
@@ -186,9 +183,6 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="ScoreEvaluation\RackLeaveEvaluator.hpp">
-      <Filter>Source Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ScoreEvaluation\VCValueEvaluator.hpp">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

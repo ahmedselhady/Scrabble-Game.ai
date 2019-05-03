@@ -87,22 +87,22 @@ GameBrain::GameBrain(TrainerComm *comm, Board *MyBoard, bool whoseTurn)
 
 void GameBrain::updateBoard(Move *move)
 {
+    move->word = *Options::moveChar(move);
     BoardToGrammer b2g;
-
-    for (int i = 0; i < move->word.length(); ++i)
+    for (int i = 0, index = 0; i < move->word.length(); ++i)
     {
         if (move->horizontal)
         {
             if (!b2g.hasaTile(move->startPosition.ROW, move->startPosition.COL + i))
             {
-                b2g.SetChar(move->word[i] - 32, move->startPosition.ROW, move->startPosition.COL + i);
+                b2g.SetChar(move->word[index++] - 32, move->startPosition.ROW, move->startPosition.COL + i);
             }
         }
         else
         {
             if (!b2g.hasaTile(move->startPosition.ROW, move->startPosition.COL))
             {
-                b2g.SetChar(move->word[i] - 32, move->startPosition.ROW + i, move->startPosition.COL);
+                b2g.SetChar(move->word[index++] - 32, move->startPosition.ROW + i, move->startPosition.COL);
             }
         }
     }
