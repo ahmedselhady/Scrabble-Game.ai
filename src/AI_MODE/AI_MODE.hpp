@@ -2,14 +2,14 @@
 
 #include "../Board/Board_and_tiles/Board_and_tiles/Board.h"
 
-#include "Opponent-Rack-Generator/Opponent.h"
-#include "SharedClasses/MCTSearch.h"
+#include "../src/Opponent-Rack-Generator/Opponent.h"
+#include "../SharedClasses/MCTSearch.h"
 #include "../src/MoveGeneration/LoadGaddag.h"
 #include "../src/MoveGeneration/MoveGenerate.h"
 #include "../src/MoveGeneration/Gaddag.h"
 #include "../src/Board/Board_and_tiles/Board_and_tiles/Tiles.h"
 #include "../src/Board/Board_and_tiles/Board_and_tiles/BoardCommunication.h"
-#include "./SharedClasses/Game_Evaluator.hpp"
+#include "../SharedClasses/Game_Evaluator.hpp"
 
 class AiMode
 {
@@ -29,7 +29,7 @@ public:
         this->bagReference = bag;
     }
 
-    Move *doWork();
+    Move *doWork(bool);
 
     AiMode();
 

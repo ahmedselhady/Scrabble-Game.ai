@@ -1,5 +1,6 @@
 #include "AI_MODE.hpp"
 #include "../Brain.hpp"
+#include "../Board/Board_and_tiles/Board_and_tiles/Board.h"
 #include <future>
 #include <list>
 
@@ -8,7 +9,7 @@ AiMode::AiMode()
     this->gaddag_instance = GameBrain::__get_gaddag();
 }
 
-Move *AiMode::doWork()
+Move *AiMode::doWork(bool isFuckinEmpty)
 {
     // first: generate all possible moves given the tiles and board:
     std::cout << "creating gaddag started....\n";
@@ -17,21 +18,22 @@ Move *AiMode::doWork()
     std::cout << "creating gaddag completed....\n";
 
     // TODO: check for this isEmpty for board:
-    bool isEmpty = false;
 
-    std::future<list<Move>> generate_moves_thread = std::async(&AiMode::MovesGeneration, this, isEmpty);
+    // !std::future<list<Move>> generate_moves_thread = std::async(&AiMode::MovesGeneration, this, isFuckinEmpty);
 
     // meanwhile: generate the opponunts most probable rack:
     std::cout << "creating opponent's rack started....\n";
     // std::unordered_map<char, int> localBag(GameBrain::bag);
-    std::future<std::vector<char>> rack_generation_thread = std::async(&OpponentRack::RackGenerator, &opponentRackGenerator, *this->bagReference);
+    //   std::future<std::vector<char>> rack_generation_thread = std::async(&OpponentRack::RackGenerator, &opponentRackGenerator, *this->bagReference);
     std::cout << "creating opponent's rack completed....\n";
 
     // Join Threads:
-    std::list<Move> listOfMoves = generate_moves_thread.get();
-    std::vector<char> opponentRack = rack_generation_thread.get();
+    //! std::list<Move> listOfMoves = generate_moves_thread.get();
+    std::list<Move> listOfMoves = this->MovesGeneration(isFuckinEmpty);
+    //std::vector<char> opponentRack = rack_generation_thread.get();
 
-    std::cout << "threads data retrieved...\n";
+    std::cout
+        << "threads data retrieved...\n";
 
     // sort the moves based on their huristic value!
     // TODO: change the game phase to the global one by main class
@@ -46,13 +48,16 @@ Move *AiMode::doWork()
     // TODO: simulate with monte carlo
 
     // return best move
+    if (listOfMoves.size() == 0)
+        return nullptr;
+
     return new Move(*listOfMoves.begin());
 }
 
 list<Move> AiMode::MovesGeneration(bool isEmpty)
 {
-    // TODO: EDIT THE VALUES PASSED TO CONSTRUCTOR OF WORDGENERATE (BAG SIZE,BAGSIZE ...).
-    WordGenerate *Gen = new WordGenerate(this->b2g, this->gaddag_instance, NULL);
+    std::cout << "waslnaaaaaaa....\n";
+    WordGenerate *Gen = new WordGenerate(this->b2g, this->gaddag_instance);
 
     Gen->countTilesRack(tiles);
 

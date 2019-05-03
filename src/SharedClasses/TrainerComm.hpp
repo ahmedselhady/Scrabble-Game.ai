@@ -9,14 +9,14 @@
 #include <vector>
 #include <zmq.hpp>
 #include <cstdint>
-#include "BoardCommunicator.hpp"
+//#include "BoardCommunicator.hpp"
 #include "Move.hpp"
 
 using namespace std;
 
 enum PossibleMoves
 {
-    PASS = 0,
+    PASS,
     PLAY,
     EXCHANGE,
     CHALLENGE,
@@ -24,13 +24,8 @@ enum PossibleMoves
 };
 
 class TrainerComm
-{ //init
-    //zmq::context_t context(1);
-    //zmq::socket_t socket(context, ZMQ_REQ);
-    //socket.connect("tcp://192.168.88.208:5555"); //edit it
-    // zmq::context_t *context;
-    //zmq::socket_t *socket;
-    // zmq::socket_t socket;
+{
+
     Move *MovePtr;
 
 public:
@@ -60,10 +55,10 @@ public:
     //                       string OppTime, string AllTime, string Rack, string MsgFromTeacher); //finalized
     //may not be used after renewing the protocol
 
-    PossibleMoves SendAndReceiveGUI(string str, bool ToSend, bool ToReceive);       //finalized
-    Move *TrainerComm::ConstructMoveFromReceivedStr(vector<string> ReceivedStrVec); //finalized
-    string RecSTRFromGUI();                                                         //updated protocol                                       //finalized                                                        //finalized
-    Move *GetMoveOfGUI();                                                           //finalized
+    PossibleMoves SendAndReceiveGUI(string str, bool ToSend, bool ToReceive); //finalized
+    Move *ConstructMoveFromReceivedStr(vector<string> ReceivedStrVec);        //finalized
+    string RecSTRFromGUI();                                                   //updated protocol                                       //finalized                                                        //finalized
+    Move *GetMoveOfGUI();                                                     //finalized
 
     ~TrainerComm();
 };

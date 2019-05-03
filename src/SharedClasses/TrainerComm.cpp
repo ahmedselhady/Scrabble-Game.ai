@@ -1,11 +1,6 @@
 #include "TrainerComm.hpp"
 
-TrainerComm::TrainerComm()
-{
-	// context = new zmq::context_t(1);
-	// socket = new zmq::socket_t(context, ZMQ_REQ);
-	// socket->connect("tcp://192.168.88.208:5555"); //edit it
-}
+TrainerComm::TrainerComm() {}
 
 vector<string> TrainerComm::split_string(string input_string)
 {
@@ -43,28 +38,28 @@ vector<string> TrainerComm::split_string(string input_string)
 //   ReceivedPlayerMove = ReceivedMove;
 // }
 
-// void TrainerComm::SendPlayerMoveToGUI(Move *ReceivedPlayerMove)
-// {
-// 	string StrVec; //0 row, 1 col, 2 word, 3 ishorizontal
-// 	string Row(1, ReceivedPlayerMove->startPosition.ROW);
-// 	string Col(1, ReceivedPlayerMove->startPosition.COL);
-// 	StrVec += ROW;
-// 	StrVec += "/";
-// 	StrVec += Col;
-// 	StrVec += "/";
-// 	StrVec += ReceivedPlayerMove->word;
-// 	StrVec += "/";
-// 	//StrVec.push_back(Row);
-// 	//StrVec.push_back(Col);
-// 	//StrVec.push_back(ReceivedPlayerMove->word);
-// 	if (ReceivedPlayerMove->horizontal == true)
+// void TrainerComm::SendPlayerMoveToGUI(Move* ReceivedPlayerMove)
+//  {
+//   string StrVec;//0 row, 1 col, 2 word, 3 ishorizontal
+//   string Row(1, ReceivedPlayerMove->startPosition.ROW);
+//   string Col(1, ReceivedPlayerMove->startPosition.COL);
+// 	StrVec+=ROW;
+// 	StrVec+="/";
+// 	StrVec+=Col;
+// 	StrVec+="/";
+// 	StrVec+=ReceivedPlayerMove->word;
+// 	StrVec+="/";
+//   //StrVec.push_back(Row);
+//   //StrVec.push_back(Col);
+//   //StrVec.push_back(ReceivedPlayerMove->word);
+//   if (ReceivedPlayerMove->horizontal == true)
 // 	{
-// 		StrVec += "true";
-// 	}
+//     StrVec+="true";
+//   }
 // 	else
 // 	{
-// 		StrVec += "false";
-// 	}
+//     StrVec+="false";
+//   }
 // 	SendStringToGUI(StrVec);
 // }
 
@@ -107,43 +102,43 @@ int TrainerComm::ReceiveScoreFromServer(int Score) { return Score; }
 //       ReceivedMove[2], (int)pos.ROW, (int)pos.COL, IsHorizontal));
 // }
 
-// Move *TrainerComm::ReceiveMoveFromGUI(string str) //may not be used after renewing the protocol
-// {
-// 	zmq::context_t context(1);
-// 	zmq::socket_t socket(context, ZMQ_REQ);
-// 	socket.connect("tcp://192.168.88.208:5555");
-// 	zmq_msg_t message;
+Move *TrainerComm::ReceiveMoveFromGUI(string str) //ok
+{
+	zmq::context_t context(1);
+	zmq::socket_t socket(context, ZMQ_REQ);
+	socket.connect("tcp://192.168.88.208:5555");
+	zmq_msg_t message;
 
-// 	string ReceivedMove; // 0 row, 1 col,2 word, 3 horizontal
+	string ReceivedMove; // 0 row, 1 col,2 word, 3 horizontal
 
-// 	zmq_msg_init_size(&message, str.length());
-// 	memcpy(zmq_msg_data(&message), str.c_str(), str.length());
-// 	zmq_msg_send(&message, socket, !ZMQ_DONTWAIT);
-// 	zmq_msg_recv(&message, socket, !ZMQ_DONTWAIT);
+	zmq_msg_init_size(&message, str.length());
+	memcpy(zmq_msg_data(&message), str.c_str(), str.length());
+	zmq_msg_send(&message, socket, !ZMQ_DONTWAIT);
+	zmq_msg_recv(&message, socket, !ZMQ_DONTWAIT);
 
-// 	size_t MsgSize = zmq_msg_size(&message); // size_t zmq_msg_size (zmq_msg_t *msg);
-// 	ReceivedMove = std::string(static_cast<char *>(zmq_msg_data(&message)), MsgSize);
-// 	//  Process the message frame
-// 	zmq_msg_close(&message);
-// 	//if (!zmq_msg_more(&message)) break;  //  Last message frame
+	size_t MsgSize = zmq_msg_size(&message); // size_t zmq_msg_size (zmq_msg_t *msg);
+	ReceivedMove = std::string(static_cast<char *>(zmq_msg_data(&message)), MsgSize);
+	//  Process the message frame
+	zmq_msg_close(&message);
+	//if (!zmq_msg_more(&message)) break;  //  Last message frame
 
-// 	vector<string> ReceivedStrVec = split_string(ReceivedMove);
-// 	Position pos;
-// 	pos.ROW = ReceivedStrVec[0][0];
-// 	pos.COL = ReceivedStrVec[1][0];
-// 	bool IsHorizontal;
-// 	if (ReceivedStrVec[3] == "true")
-// 		IsHorizontal = true;
-// 	else
-// 		IsHorizontal = false;
+	vector<string> ReceivedStrVec = split_string(ReceivedMove);
+	Position pos;
+	pos.ROW = ReceivedStrVec[0][0];
+	pos.COL = ReceivedStrVec[1][0];
+	bool IsHorizontal;
+	if (ReceivedStrVec[3] == "true")
+		IsHorizontal = true;
+	else
+		IsHorizontal = false;
 
-// 	Move *PlayerMoveFromServer =
-// 		new Move(ReceivedStrVec[2], IsHorizontal, pos, 0); // 0 is dummy
-// 	//BoardCommunicator* BoardComm;
-// 	//PlayerMoveFromServer->setScore(BoardComm->calculateScore(
-// 	//ReceivedStrVec[2], (int)pos.ROW, (int)pos.COL, IsHorizontal));
-// 	return PlayerMoveFromServer;
-// }
+	Move *PlayerMoveFromServer =
+		new Move(ReceivedStrVec[2], IsHorizontal, pos, 0); // 0 is dummy
+	//BoardCommunicator* BoardComm;
+	//PlayerMoveFromServer->setScore(BoardComm->calculateScore(
+	//ReceivedStrVec[2], (int)pos.ROW, (int)pos.COL, IsHorizontal));
+	return PlayerMoveFromServer;
+}
 
 Move *TrainerComm::ConstructMoveFromReceivedStr(vector<string> ReceivedStrVec)
 {
@@ -162,24 +157,12 @@ Move *TrainerComm::ConstructMoveFromReceivedStr(vector<string> ReceivedStrVec)
 	return PlayerMoveFromServer;
 }
 
-void TrainerComm::SendStringToGUI(string str)
+string TrainerComm::ReceiveSTRFromGUI(string str)
 {
 	zmq::context_t context(1);
 	zmq::socket_t socket(context, ZMQ_REQ);
-	socket.connect("tcp://192.168.88.208:5555");
-	zmq_msg_t Msg;
-	zmq_msg_init_size(&Msg, str.length());
-	memcpy(zmq_msg_data(&Msg), str.c_str(), str.length());
-	zmq_msg_send(&Msg, socket, !ZMQ_DONTWAIT);
-	//zmq_msg_recv(&Msg, socket, !ZMQ_DONTWAIT);
-}
-
-string TrainerComm::ReceiveSTRFromGUI(string str) //may not be used after renewing the protocol
-{
-	zmq::context_t context(1);
-	zmq::socket_t socket(context, ZMQ_REQ);
-	socket.connect("tcp://192.168.88.208:5555");
-	//socket.connect("tcp://192.168.43.169:5555"); //edit it
+	//socket.connect("tcp://192.168.88.208:5555");
+	socket.connect("tcp://192.168.43.169:5555"); //edit it
 	zmq_msg_t message;
 
 	string ReceivedMove; // 0 row, 1 col,2 word, 3 horizontal,4 is
@@ -196,84 +179,16 @@ string TrainerComm::ReceiveSTRFromGUI(string str) //may not be used after renewi
 	return ReceivedMove;
 }
 
-string TrainerComm::RecSTRFromGUI()
+void TrainerComm::SendStringToGUI(string str)
 {
 	zmq::context_t context(1);
 	zmq::socket_t socket(context, ZMQ_REQ);
 	socket.connect("tcp://192.168.88.208:5555");
-	//socket.connect("tcp://192.168.43.169:5555"); //edit it
-	zmq_msg_t message;
-
-	//zmq_msg_init_size(&message, str.length());
-	//memcpy(zmq_msg_data(&message), str.c_str(), str.length());
-	//zmq_msg_send(&message, socket, !ZMQ_DONTWAIT);
-	zmq_msg_recv(&message, socket, !ZMQ_DONTWAIT);
-	size_t MsgSize = zmq_msg_size(&message); // size_t zmq_msg_size (zmq_msg_t *msg);
-	string ReceivedMove = std::string(static_cast<char *>(zmq_msg_data(&message)), MsgSize);
-	//  Process the message frame
-	zmq_msg_close(&message); //will check this
-	return ReceivedMove;
-}
-
-PossibleMoves TrainerComm::SendAndReceiveGUI(string str, bool ToSend, bool ToReceive)
-{
-	//socket.connect("tcp://192.168.88.208:5555"); //edit it
-	zmq::context_t context(1);
-	zmq::socket_t socket(context, ZMQ_REQ);
-	socket.connect("tcp://192.168.88.208:5555");
-
-	string ToSendString;
-	if (ToSend)
-	{
-		ToSendString = str;
-	}
-	else
-	{
-		ToSendString = "0"; //any dummy
-	}
-	//sendStringToGUI(ToSendString);
 	zmq_msg_t Msg;
-	zmq_msg_init_size(&Msg, ToSendString.length());
-	memcpy(zmq_msg_data(&Msg), ToSendString.c_str(), ToSendString.length());
+	zmq_msg_init_size(&Msg, str.length());
+	memcpy(zmq_msg_data(&Msg), str.c_str(), str.length());
 	zmq_msg_send(&Msg, socket, !ZMQ_DONTWAIT);
-
-	//string Received = RecSTRFromGUI();
-
-	//zmq_msg_init_size(&message, str.length());
-	//memcpy(zmq_msg_data(&message), str.c_str(), str.length());
-	//zmq_msg_send(&message, socket, !ZMQ_DONTWAIT);
 	zmq_msg_recv(&Msg, socket, !ZMQ_DONTWAIT);
-	size_t MsgSize = zmq_msg_size(&Msg); // size_t zmq_msg_size (zmq_msg_t *msg);
-	string Received = std::string(static_cast<char *>(zmq_msg_data(&Msg)), MsgSize);
-	//  Process the message frame
-	zmq_msg_close(&Msg);
-
-	if (ToReceive)
-	{
-		vector<string> StrVec = split_string(Received); //0 move, 1 row, 2 col, 3 ishorizontal, 4 word
-		if (StrVec[0] == "####")
-			return PASS;
-		else if (StrVec[0] == "****")
-			return EXCHANGE;
-		else if (StrVec[0] == "challenge")
-			return CHALLENGE;
-		else if (StrVec[0] == "play")
-		{
-			MovePtr = ConstructMoveFromReceivedStr(StrVec);
-			return PLAY;
-		}
-		else
-			return DUMMY;
-	}
-	else
-	{
-		return DUMMY;
-	}
-}
-
-Move *TrainerComm::GetMoveOfGUI()
-{
-	return MovePtr;
 }
 
 void TrainerComm::RecCPPServerSendGUI(uint8_t SRow, uint8_t SCol, uint8_t Dir, vector<uint8_t> LettArr)
@@ -315,19 +230,70 @@ void TrainerComm::RecCPPServerSendGUI(uint8_t SRow, uint8_t SCol, uint8_t Dir, v
 	}
 }
 
-// void TrainerComm::SendRackStrToGui(string col, string row, string dir, string tiles,
-// 																	 string MyScore, string OppScore, string MyTime, string OppTime, string AllTime, string Rack, string MsgFromTeacher)
-// {
-// 	string SentStr = "play/tm/" + col + "/" + row + "/" + dir + "/" + tiles + "/" + MyScore + "/" + OppScore + "/" + MyTime;
-// 	SentStr += "/" + OppTime + "/" + AllTime + "/" + Rack + "/" + MsgFromTeacher;
-// 	SendStringToGUI(SentStr);
-// }
+PossibleMoves TrainerComm::SendAndReceiveGUI(string str, bool ToSend, bool ToReceive)
+{
+	//socket.connect("tcp://192.168.88.208:5555"); //edit it
+	//initializations
+	zmq::context_t context(1);
+	zmq::socket_t socket(context, ZMQ_REQ);
+	socket.connect("tcp://localhost:5555"); //edit it
+	string ToSendString;
+	if (ToSend)
+	{
+		ToSendString = str;
+	}
+	else
+	{
+		ToSendString = "0"; //any dummy
+	}
+
+	//sendStringToGUI(ToSendString);
+	zmq_msg_t Msg;
+	zmq_msg_init_size(&Msg, ToSendString.length());
+	memcpy(zmq_msg_data(&Msg), ToSendString.c_str(), ToSendString.length());
+	zmq_msg_send(&Msg, socket, !ZMQ_DONTWAIT);
+	zmq_msg_recv(&Msg, socket, !ZMQ_DONTWAIT);
+
+	//string Received = RecSTRFromGUI();
+	size_t MsgSize = zmq_msg_size(&Msg); // size_t zmq_msg_size (zmq_msg_t *msg);
+	string ReceivedMove = std::string(static_cast<char *>(zmq_msg_data(&Msg)), MsgSize);
+	//  Process the message frame
+	zmq_msg_close(&Msg);
+
+	if (ToReceive)
+	{
+		vector<string> StrVec = split_string(ReceivedMove); //0 move, 1 row, 2 col, 3 ishorizontal, 4 word
+		if (StrVec[0] == "####")
+			return PASS;
+		else if (StrVec[0] == "****")
+			return EXCHANGE;
+		else if (StrVec[0] == "challenge")
+			return CHALLENGE;
+		else if (StrVec[0] == "play")
+		{
+			MovePtr = ConstructMoveFromReceivedStr(StrVec);
+			return PLAY;
+		}
+		else
+			return DUMMY;
+	}
+	else
+	{
+		return DUMMY;
+	}
+}
+// void TrainerComm::SendRackStrToGui(string col,string row,string dir,string tiles,
+//   string MyScore,string OppScore,string MyTime,string OppTime,string AllTime,string Rack,string MsgFromTeacher)
+// 	{
+// 		string SentStr="play/tm/"+col+"/"+row+"/"+dir+"/"+tiles+"/"+MyScore+"/"+OppScore+"/"+MyTime;
+// 		SentStr+="/"+OppTime+"/"+AllTime+"/"+Rack+"/"+MsgFromTeacher;
+// 		SendStringToGUI(SentStr);
+// 	}
 
 TrainerComm::~TrainerComm() {}
 
-// void sendStringToGUI(string str)
-// {
-// 	TrainerComm tc;
-// 	tc.ReceiveString(str);
-// 	tc.SendReceivedStringToGUI();
-// }
+//void sendStringToGUI(string str) {
+//	TrainerComm tc;
+//	tc.ReceiveString(str);
+//	tc.SendReceivedStringToGUI();
+//}

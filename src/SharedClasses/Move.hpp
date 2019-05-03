@@ -1,7 +1,6 @@
 #pragma once
 //INCLUDES:
 
-#include <string.h>
 #include <string>
 #include "CommInfo.hpp"
 // ADD Includes : if Needed ...
