@@ -1,4 +1,4 @@
-#pragma once
+
 
 #include <string>
 #include <vector>
@@ -21,7 +21,7 @@ MCTreeNode *MCTSearch::SelectBestMove(MCTreeNode *Parent)
 		if (Parent->Children[i]->getNumberOfVisits() == 0)
 		{
 			cout << "Parent never visited" << endl;
-			CurrentScore = Parent->Children[i]->getMoveScore();
+			CurrentScore =(float) (Parent->Children[i]->getMoveScore());
 		}
 		else
 		{
