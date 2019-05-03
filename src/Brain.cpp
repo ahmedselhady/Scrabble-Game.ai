@@ -88,8 +88,9 @@ GameBrain::GameBrain(TrainerComm *comm, Board *MyBoard, bool whoseTurn)
 void GameBrain::updateBoard(Move *move)
 {
     move->word = *Options::moveChar(move);
+
     BoardToGrammer b2g;
-    for (int i = 0, index = 0; i < move->word.length(); ++i)
+    for (int i = 0, index = 0; index < move->word.length(); ++i)
     {
         if (move->horizontal)
         {

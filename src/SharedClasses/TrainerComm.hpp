@@ -26,9 +26,10 @@ enum PossibleMoves
 class TrainerComm
 {
 
-    Move *MovePtr;
-
 public:
+    Move *MovePtr;
+    string ExchangedTiles;
+
     TrainerComm();
     vector<string> split_string(string input_string); //finalized
 

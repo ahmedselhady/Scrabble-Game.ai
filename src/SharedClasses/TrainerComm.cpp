@@ -266,7 +266,10 @@ PossibleMoves TrainerComm::SendAndReceiveGUI(string str, bool ToSend, bool ToRec
 		if (StrVec[0] == "####")
 			return PASS;
 		else if (StrVec[0] == "****")
+		{
+			ExchangedTiles=StrVec[1];
 			return EXCHANGE;
+		}
 		else if (StrVec[0] == "challenge")
 			return CHALLENGE;
 		else if (StrVec[0] == "play")
