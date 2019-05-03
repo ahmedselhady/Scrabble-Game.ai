@@ -90,9 +90,6 @@ add_executable (${PROJECT_NAME} ${PROJECT_SOURCES} ${PROJECT_HEADERS}
                                 ${PROJECT_CONFIGS} ${VENDORS_SOURCES})
                                 
 target_link_libraries(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/vendor/libzmq.lib ${CMAKE_THREAD_LIBS_INIT})
-#target_link_libraries (${PROJECT_NAME})
-#target_link_libraries(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/vendor/libzmq-v120-mt-4_0_4.dll ${CMAKE_THREAD_LIBS_INIT})
-#target_link_libraries (${PROJECT_NAME})
 
 message("HERE : ${CMAKE_SOURCE_DIR}")
 set_target_properties (${PROJECT_NAME} PROPERTIES
