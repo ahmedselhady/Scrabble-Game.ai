@@ -9,7 +9,10 @@
 #include "../src/MoveGeneration/Gaddag.h"
 #include "../src/Board/Board_and_tiles/Board_and_tiles/Tiles.h"
 #include "../src/Board/Board_and_tiles/Board_and_tiles/BoardCommunication.h"
-#include "../SharedClasses/Game_Evaluator.hpp"
+#include "./SharedClasses/Game_Evaluator.hpp"
+#include "./ScoreEvaluation/Evaluator.hpp"
+#include "./ScoreEvaluation/VCValueEvaluator.hpp"
+#include "./ScoreEvaluation/LoadHeuristics.hpp"
 
 class AiMode
 {
@@ -29,16 +32,17 @@ public:
         this->bagReference = bag;
     }
 
-    Move *doWork(bool);
+    Move *doWork(bool, int, LoadHeuristics *);
 
     AiMode();
 
 private:
-    Node *gaddag_instance;
-    BoardToGrammer *b2g;
-    std::vector<char> *tiles;
-    std::unordered_map<char, int> *bagReference;
-    OpponentRack opponentRackGenerator;
+	Node *gaddag_instance;
+	BoardToGrammer *b2g;
+	std::vector<char> *tiles;
+	std::unordered_map<char, int> *bagReference;
+	OpponentRack opponentRackGenerator;
+	Evaluator* evaluator;
 
     list<Move> MovesGeneration(bool);
 

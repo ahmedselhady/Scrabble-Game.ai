@@ -1,5 +1,5 @@
 #include "AI_MODE.hpp"
-#include "../Brain.hpp"
+#include "./Brain.hpp"
 #include "../Board/Board_and_tiles/Board_and_tiles/Board.h"
 #include <future>
 #include <list>
@@ -9,7 +9,7 @@ AiMode::AiMode()
     this->gaddag_instance = GameBrain::__get_gaddag();
 }
 
-Move *AiMode::doWork(bool isFuckinEmpty)
+Move *AiMode::doWork(bool isFuckinEmpty, int bagSize, LoadHeuristics *loader)
 {
     // first: generate all possible moves given the tiles and board:
     std::cout << "creating gaddag started....\n";
@@ -37,6 +37,9 @@ Move *AiMode::doWork(bool isFuckinEmpty)
 
     // sort the moves based on their huristic value!
     // TODO: change the game phase to the global one by main class
+
+    this->evaluator = new VCValueEvaluator(loader, NULL, bagSize, isFuckinEmpty);
+
     gameEvaluator::__get_Instance()->evaluateMovesHuristic(listOfMoves, END_GAME_MODE);
 
     // when done with those: use game evaluator to limit the moves to 23 moves only:
@@ -51,13 +54,16 @@ Move *AiMode::doWork(bool isFuckinEmpty)
     if (listOfMoves.size() == 0)
         return nullptr;
 
+    delete this->evaluator;
+
     return new Move(*listOfMoves.begin());
 }
 
 list<Move> AiMode::MovesGeneration(bool isEmpty)
 {
-    std::cout << "waslnaaaaaaa....\n";
-    WordGenerate *Gen = new WordGenerate(this->b2g, this->gaddag_instance);
+    
+    // TODO: EDIT THE VALUES PASSED TO CONSTRUCTOR OF WORDGENERATE (BAG SIZE,BAGSIZE ...).
+    WordGenerate *Gen = new WordGenerate(this->b2g, this->gaddag_instance, this->evaluator);
 
     Gen->countTilesRack(tiles);
 

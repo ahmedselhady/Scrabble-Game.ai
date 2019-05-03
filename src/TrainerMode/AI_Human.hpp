@@ -6,7 +6,7 @@
 class AI_Human
 {
 private:
-	std::string messageToHuman;
+    std::string messageToHuman;
     Board *MyBoard;
     vector<char> *HumanTiles;
     unordered_map<char, int> *Bag;
@@ -15,7 +15,7 @@ private:
 
     AiMode *AI_Agent;
     TrainerComm *Communicator;
-	
+
     void exchange(std::vector<char> *, char, char);
 
 public:
@@ -26,8 +26,9 @@ public:
     bool SetCommunicator(TrainerComm *);
     bool SetBoard(Board *MyBoard);
     bool SetAgent(AiMode *AI_Agent);
-    Move *DoWork(bool);
-	std::string getString() const {
-		return this->messageToHuman;
-	}
+    Move *DoWork(bool, int, LoadHeuristics *);
+    std::string getString() const
+    {
+        return this->messageToHuman;
+    }
 };

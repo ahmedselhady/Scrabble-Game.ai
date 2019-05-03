@@ -23,5 +23,5 @@ public:
     bool SetBoard(Board *);
     bool SetCommunicator(TrainerComm *);
     bool SetAgent(AiMode *);
-    Move *DoWork(bool);
+    Move *DoWork(bool, int, LoadHeuristics *);
 };

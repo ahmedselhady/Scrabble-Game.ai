@@ -1,6 +1,5 @@
 
 #include "Brain.hpp"
-#include "./Board/Board_and_tiles/Board_and_tiles/Board.h"
 
 Node *GameBrain::_gaddagInstance = nullptr;
 
@@ -35,6 +34,10 @@ Node *GameBrain::__get_gaddag()
 
 GameBrain::GameBrain(TrainerComm *comm, Board *MyBoard, bool whoseTurn)
 {
+
+    this->heuristicsLoader = new LoadHeuristics();
+    this->heuristicsLoader->loadALL();
+
     readyToSend = false;
     this->isFuckinBitchEmpty = true;
     this->turn_TrainerMode = whoseTurn;
@@ -264,7 +267,7 @@ void GameBrain::work_human_vs_computer()
 
             trainer.Human.SetTiles(&HumanTiles);
             // *let the thinker do the magic
-            Move *move = trainer.Human.DoWork(this->isFuckinBitchEmpty);
+            Move *move = trainer.Human.DoWork(this->isFuckinBitchEmpty, this->bagSize, this->heuristicsLoader);
 
             if (move != nullptr)
             {
@@ -303,7 +306,7 @@ void GameBrain::work_human_vs_computer()
             std::cout << std::endl;
 
             trainer.AI.SetTiles(&AI_Tiles);
-            Move *move = trainer.AI.DoWork(this->isFuckinBitchEmpty);
+            Move *move = trainer.AI.DoWork(this->isFuckinBitchEmpty, this->bagSize, this->heuristicsLoader);
 
             //TODO: we have the move now but we have to send it to the GUI
             if (move != nullptr)
@@ -364,8 +367,8 @@ void GameBrain::work_computer_vs_computer()
     aimode->setBoardToGrammar(Ptr2G);
     aimode->setBagPointer(&this->bag);
 
-    Move *move = aimode->doWork(this->isFuckinBitchEmpty);
-    std::cout << "Move Score: " << move->evaluatedScore << std::endl;
+    //Move *move = aimode->doWork(this->isFuckinBitchEmpty);
+    //std::cout << "Move Score: " << move->evaluatedScore << std::endl;
 }
 
 bool GameBrain::IsFinished()

@@ -1,18 +1,4 @@
 
-//#include "./SharedClasses/TrainerComm.hpp"
-//
-//void main()
-//{
-//	TrainerComm Communicator;
-//	while (1)
-//	{
-//		PossibleMoves ret = Communicator.SendAndReceiveGUI("1/2/3/4", true, true);
-//		cout << ret << endl;
-//	}
-//
-//	system("pause");
-//	return;
-//}
 
 #include "./Brain.hpp"
 #include "./Definitions.hpp"
