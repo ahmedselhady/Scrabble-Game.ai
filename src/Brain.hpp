@@ -13,7 +13,6 @@
 #include <utility>
 #include "./Board/Board_and_tiles/Board_and_tiles/Board.h"
 #include "./TrainerMode/Trainer.hpp"
-#include "../ScoreEvaluation/LoadHeuristics.hpp"
 
 class GameBrain
 {
@@ -26,7 +25,6 @@ private:
     TimerGUI *T1;
     TimerGUI *T2;
     TimerGUI *T3;
-    LoadHeuristics *heuristicsLoader;
     void updateBoard(Move *);
     void refillTiles(std::vector<char> &, Move *);
     bool turn_TrainerMode;
