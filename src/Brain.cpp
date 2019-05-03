@@ -1,7 +1,5 @@
 
 #include "Brain.hpp"
-#include "./Board/Board_and_tiles/Board_and_tiles/Board.h"
-#include "./ScoreEvaluation/VCValueEvaluator.hpp"
 
 Node *GameBrain::_gaddagInstance = nullptr;
 
@@ -45,6 +43,7 @@ GameBrain::GameBrain(TrainerComm *comm, Board *MyBoard, bool whoseTurn)
     this->turn_TrainerMode = whoseTurn;
     this->comm = comm;
     this->MyBoard = MyBoard;
+    this->heuristicsLoader = new LoadHeuristics();
     T1 = new TimerGUI(comm, 1200);
     T2 = new TimerGUI(comm, 600);
     T3 = new TimerGUI(comm, 600);
@@ -268,7 +267,7 @@ void GameBrain::work_human_vs_computer()
 
             trainer.Human.SetTiles(&HumanTiles);
             // *let the thinker do the magic
-            Move *move = trainer.Human.DoWork(this->isFuckinBitchEmpty,this->bagSize, this->heuristicsLoader);
+            Move *move = trainer.Human.DoWork(this->isFuckinBitchEmpty, this->bagSize, this->heuristicsLoader);
 
             if (move != nullptr)
             {
@@ -307,7 +306,7 @@ void GameBrain::work_human_vs_computer()
             std::cout << std::endl;
 
             trainer.AI.SetTiles(&AI_Tiles);
-            Move *move = trainer.AI.DoWork(this->isFuckinBitchEmpty, this->bagSize,this->heuristicsLoader);
+            Move *move = trainer.AI.DoWork(this->isFuckinBitchEmpty, this->bagSize, this->heuristicsLoader);
 
             //TODO: we have the move now but we have to send it to the GUI
             if (move != nullptr)

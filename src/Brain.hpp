@@ -1,4 +1,5 @@
-#pragma once
+#ifndef HEADER_BRAIN
+#define HEADER_BRAIN
 
 #include <unordered_map>
 #include <vector>
@@ -12,8 +13,9 @@
 #include <utility>
 #include "./Board/Board_and_tiles/Board_and_tiles/Board.h"
 #include "./TrainerMode/Trainer.hpp"
-#include "./ScoreEvaluation/Evaluator.hpp"
-#include "./ScoreEvaluation/LoadHeuristics.hpp"
+#include"../src/ScoreEvaluation/LoadHeuristics.hpp"
+#include "../src/ScoreEvaluation/Evaluator.hpp"
+#include "../src/ScoreEvaluation/VCValueEvaluator.hpp"
 
 class GameBrain
 {
@@ -22,7 +24,7 @@ private:
     bool isFuckinBitchEmpty;
     bool readyToSend;
     std::string sendMessage;
-    LoadHeuristics *heuristicsLoader;
+    LoadHeuristics * heuristicsLoader;
     Trainer trainer;
     TimerGUI *T1;
     TimerGUI *T2;
@@ -59,3 +61,5 @@ public:
     void work_computer_vs_computer();
     void work_human_vs_computer();
 };
+
+#endif

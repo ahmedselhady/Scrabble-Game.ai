@@ -40,9 +40,9 @@ void WordGenerate::generateWords()
             if (isAnchorSquare)
             {
                 //currCrossSet.set();
-                countRoomLeft = roomLeftCount(indexRow, indexCol);
-                anchorRow = indexRow;
-                anchorCol = indexCol;
+                countRoomLeft =(char) roomLeftCount(indexRow, indexCol);
+                anchorRow = (char)indexRow;
+                anchorCol = (char)indexCol;
                 gen(0, word, this->root);
             }
 
@@ -54,9 +54,9 @@ void WordGenerate::generateWords()
             if (isAnchorSquare)
             {
                 //currCrossSet.set();
-                countRoomLeft = roomLeftCount(indexRow, indexCol);
-                anchorRow = indexRow;
-                anchorCol = indexCol;
+                countRoomLeft = (char)roomLeftCount(indexRow, indexCol);
+                anchorRow =(char) indexRow;
+                anchorCol = (char)indexCol;
                 gen(0, word, this->root);
             }
         }
@@ -236,7 +236,7 @@ void WordGenerate::setDirectionOptions(int row, int col, bool isHorizontal)
     if (isHorizontal)
     {
         maxBorder = MAX_BOARD_COLS;
-        currDirection = col;
+        currDirection =(char) col;
         cancelIndex = 0;
         colOffset = 1;
         rowOffset = 0;
@@ -245,7 +245,7 @@ void WordGenerate::setDirectionOptions(int row, int col, bool isHorizontal)
     else
     {
         maxBorder = MAX_BOARD_ROWS;
-        currDirection = row;
+        currDirection =(char) row;
         cancelIndex = 1;
         colOffset = 0;
         rowOffset = 1;
@@ -300,8 +300,8 @@ void WordGenerate::goOn(int pos, char boardLetter, string word, Node *gaddagNode
             Move *newMove = new Move();
             newMove->word = word;
             newMove->horizontal = (cancelIndex == 0 ? true : false);
-            newMove->startPosition.ROW = anchorRow + (pos) * (cancelIndex);
-            newMove->startPosition.COL = anchorCol + (pos) * (1 - cancelIndex);
+            newMove->startPosition.ROW =(char) (anchorRow + (pos) * (cancelIndex));
+            newMove->startPosition.COL = (char) (anchorCol + (pos) * (1 - cancelIndex));
 
             if (usedTiles == 7)
             { // BINGO
@@ -380,8 +380,8 @@ void WordGenerate::goOn(int pos, char boardLetter, string word, Node *gaddagNode
             Move *newMove = new Move();
             newMove->word = word;
             newMove->horizontal = (cancelIndex == 0 ? true : false);
-            newMove->startPosition.ROW = anchorRow + pos * (cancelIndex) + (1 - word.length()) * (cancelIndex);
-            newMove->startPosition.COL = anchorCol + pos * (1 - cancelIndex) + (1 - word.length()) * (1 - cancelIndex);
+            newMove->startPosition.ROW =(char) (anchorRow + pos * (cancelIndex) + (1 - word.length()) * (cancelIndex));
+            newMove->startPosition.COL = (char)(anchorCol + pos * (1 - cancelIndex) + (1 - word.length()) * (1 - cancelIndex));
 
             if (usedTiles == 7)
             { // BINGO
@@ -1141,10 +1141,10 @@ void WordGenerate::emptyBoardMoves()
             {
                 Move move;
                 move.word = (*it);
-                move.moveUsedTiles = (*it).length();
+                move.moveUsedTiles =(char) ((*it).length());
                 move.horizontal = true;
                 move.startPosition.ROW = 7;
-                move.startPosition.COL = 7 - ((*it).length()) + 1 + k;
+                move.startPosition.COL =(char)(7 - ((*it).length()) + 1 + k) ;
 
                 if (move.startPosition.COL < 0)
                 {
@@ -1242,7 +1242,7 @@ bool WordGenerate::checkWordDict(string word)
 {
     // HERE:
     Node *nodePtr = root;
-    for (int index = word.size() - 1; index >= 0; --index)
+    for (int index =(int) word.size() - 1; index >= 0; --index)
     {
 
         nodePtr = nodePtr->findChildChar(word[index]);

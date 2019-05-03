@@ -61,6 +61,7 @@ Move *AiMode::doWork(bool isFuckinEmpty, int bagSize, LoadHeuristics *loader)
 
 list<Move> AiMode::MovesGeneration(bool isEmpty)
 {
+    
     // TODO: EDIT THE VALUES PASSED TO CONSTRUCTOR OF WORDGENERATE (BAG SIZE,BAGSIZE ...).
     WordGenerate *Gen = new WordGenerate(this->b2g, this->gaddag_instance, this->evaluator);
 

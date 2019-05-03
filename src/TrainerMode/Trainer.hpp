@@ -1,6 +1,6 @@
 #pragma once
+#include "./AI_Human.hpp"
 
-#include "AI_Human.hpp"
 #include "AI_AI.hpp"
 
 class Trainer

@@ -29,6 +29,9 @@ endif()
 
 message("Generated with config types: ${CMAKE_CONFIGURATION_TYPES}")
 
+set(PKG_CONFIG_EXECUTABLE "C:/All needed folders for zeromq/cppzmq-master/libzmq-pkg-config/")
+find_package(PkgConfig)
+pkg_check_modules (PC_ZeroMQ QUIET zmq)
 
 # Set include paths for header files
 #
@@ -46,6 +49,9 @@ include_directories (src/
                     src/Opponent-Rack-Generator/
                     src/AiMode/
                     src/TrainerMode/
+                    vendor/
+                    vendor/libzmq/include/
+                    vendor/cppzmq-master/
                     )
 
 #
@@ -82,10 +88,15 @@ add_definitions (-DGLFW_INCLUDE_NONE
 add_executable (${PROJECT_NAME} ${PROJECT_SOURCES} ${PROJECT_HEADERS}
                                 ${COMMON_SOURCES} ${COMMON_HEADERS}
                                 ${PROJECT_CONFIGS} ${VENDORS_SOURCES})
+                                
+target_link_libraries(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/vendor/libzmq.lib ${CMAKE_THREAD_LIBS_INIT})
 #target_link_libraries (${PROJECT_NAME})
-set_target_properties (${PROJECT_NAME} PROPERTIES
-    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${PROJECT_NAME})
+#target_link_libraries(${PROJECT_NAME} ${CMAKE_SOURCE_DIR}/vendor/libzmq-v120-mt-4_0_4.dll ${CMAKE_THREAD_LIBS_INIT})
+#target_link_libraries (${PROJECT_NAME})
 
+message("HERE : ${CMAKE_SOURCE_DIR}")
+set_target_properties (${PROJECT_NAME} PROPERTIES
+RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${PROJECT_NAME})
 
 
 

@@ -14,6 +14,7 @@ out.txt
 
 # Prerequisites 
 *.d
+vendor
 
 # Compiled Object files
 *.slo
@@ -47,7 +48,6 @@ ipch/
 *.lai
 *.la
 *.a
-*.lib
 
 # Executables
 *.exe
