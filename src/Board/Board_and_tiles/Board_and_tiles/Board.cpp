@@ -126,8 +126,16 @@ std::vector<char> &Board::getNextVertical(int VerticalIndex)
 void Board::SetCharPos(char Letter, int Row, int Col)
 {
 	int Offsit = Row + 15 * Col;
+
+	if (Letter >= (65 + 32) && Letter <= (90 + 32)) //  blank
+	{
+		blank_[blankCounter++] = Offsit;
+		Letter -= 32;
+	}
 	if (Offsit < 0 || Offsit > (14 + 15 * 14))
+	{
 		return;
+	}
 	BoardMap[Letter].setBit(Offsit);
 	AllCharBoard.setBit(Offsit); // for all Titles
 }

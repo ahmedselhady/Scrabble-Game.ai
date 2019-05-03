@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 //#include "./SharedClasses/TrainerComm.hpp"
 //
 //void main()
@@ -30,3 +31,16 @@ int main()
 	system("pause");
 	return 0;
 }
+=======
+// #include "./Brain.hpp"
+// #include "./Definitions.hpp"
+
+// int main()
+// {
+// 	GameBrain *brain = new GameBrain();
+// 	brain->work_computer_vs_computer();
+
+// 	system("pause");
+// 	return 0;
+// }
+>>>>>>> a3b0ccf98f9db4b067d7026ee5159f29475a9e5c

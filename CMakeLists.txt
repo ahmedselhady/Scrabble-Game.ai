@@ -40,6 +40,10 @@ include_directories (src/
                     src/GuiInterface/
                     src/MoveGeneration/
                     src/SharedClasses/
+                    src/AI_MODE/
+                    src/ScoreEvaluation/
+                    src/ScoreEvaluation/Heuristics/
+                    src/Opponent-Rack-Generator/
                     src/AiMode/
                     src/TrainerMode/
                     )

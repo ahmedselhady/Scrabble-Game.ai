@@ -19,7 +19,8 @@ private:
 	int *blank_;
 
 public:
-	static Board *getBoard();												  //it gets instance of the board
+	static Board *
+	getBoard();																  //it gets instance of the board
 	BoardMask getBoardStatus();												  //it returns all charcters in board
 	char getCharByOffsit(int offsit);										  //it gets the character whose offset is given
 	std::vector<char> &getNextHorizontal(int HorizontalIndex);				  //it will call the function from the AI module to determine the next state given the current board Horizontally

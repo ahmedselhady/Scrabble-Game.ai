@@ -4,6 +4,7 @@
 //INCLUDES:
 
 #include <iostream>
+#include "LoadGaddag.h"
 #include <vector>
 #include <unordered_map>
 #include <list>
@@ -11,9 +12,10 @@
 #include <string>
 
 #include "Gaddag.h"
-#include "../SharedClasses/Move.hpp"
+//#include "../SharedClasses/Move.hpp"
+#include "../ScoreEvaluation/Evaluator.hpp"
 #include "..\Board\Board_and_tiles\Board_and_tiles\BoardCommunication.h"
-#include "../SharedClasses/Move.hpp"
+
 using namespace std;
 
 #define MAX_BOARD_ROWS 15
@@ -51,15 +53,19 @@ private:
     BoardToGrammer *board;
     list<Move> moves; // all possible moves provided a Rack and and a Board at a given instant.
     Node *root;       // gaddag root tree.
-    unordered_map <char, int> tilesCount;
+    unordered_map<char, int> tilesCount;
     list<string> nonRepeatedMoves;
     char maxBorder; // Utility Variables inside fuctions helping in Transformation from Vertical to Horiz and vice versa.
     char colOffset;
     char rowOffset;
     char currDirection; // i.e. if horizontal move we choose the col else the row.
+    int bagSize;
+    bool isEmptyBoard;
+    bool bagSizeGreaterThanZero;
     bitset<27> Horiz_crossset[15][15];
     bitset<27> Vertical_crossset[15][15];
     bitset<27> (*currCrossSet)[15][15];
+    bool boardChanged = true;
     //bitset<27> (*currCrossSet)(int row,int col);
     char countRoomLeft = 0; // count of chars directly left to an anchor sqaure.
     char cancelIndex = 0;   // just a factor to eliminate duplicate of code.
@@ -68,13 +74,14 @@ private:
     char anchorRow; // chosen anchor square postion.
     char anchorCol;
     char usedTiles = 0;
-
+    Evaluator *EvalCalculator;
     bool emptyBoard = false;
+    vector<char> *Rack;
 
 public:
-    WordGenerate(BoardToGrammer *board, Node *root); // Takes a Reference to the Board.
-    void setBoardState(BoardToGrammer *board);       // Assigns Different Board States For Monte Carlo.
-    void generateWords();                            // iterates on each sqaure in the board and performing the algo. Taking the board 2-Dimensions into Consideration.
+    WordGenerate(BoardToGrammer *board, Node *root, Evaluator *EvalCalculator); // Takes a Reference to the Board.
+    void setBoardState(BoardToGrammer *board);                                  // Assigns Different Board States For Monte Carlo.
+    void generateWords();                                                       // iterates on each sqaure in the board and performing the algo. Taking the board 2-Dimensions into Consideration.
     int roomLeftCount(int row, int col);
     /*
             this function may seem awkward but it's usefull.
@@ -99,16 +106,21 @@ public:
     list<Move> allMoves();                                               // Returns all moves.
     void setDirectionOptions(int row, int col, bool isHorizontal);       // Sets the Options needed for transforming from Horiz. to vertical and vice versa.
     void duplicateMovesRemoval();                                        // TODO: removes duplicate moves occuring from a one tile play. (vertically + Horizonatally)
-    void generateEmpty(Node *node, string &word);                        // For Empty Board State Moves.
+    void generateEmpty(Node *node, string word);                         // For Empty Board State Moves.
     void emptyBoardMoves();                                              // Generate all possible moves availabe given certain Rack when the status of the board is empty only.
     void crosssets();                                                    // calculate the crosssets of each square.
+    void Specific_crosssets(int row,int col);                            // calculate the crosssets of specific square.   
     void updateCrossSet(Move *move);                                     /////TODO: Just Updates Changed CrossSet.
     bool checkWordDict(string word);                                     // Given a Word it checks Whether This word in Dict or NOT.
     Move *bestScoreMove();                                               // TODO: Returns Best (Highest Score) Move From The Last Generated Moves RUN.
     void moveCalcHeuristic();                                            // TODO: Calculates 'RackLeave' Heuristic of a Move with Accumalation with its score.
-    void sortMoves(MoveRank rank, int numberMoves);                      // TODO: Sorts Moves Based on a Given Criteria and Returns The 'K' Highest Moves Controlled By numberMoves.
+    list<Move> sortMoves(int numberMoves);                               ///// TODO: Sorts Moves Based on a Given Criteria and Returns The 'K' Highest Moves Controlled By numberMoves.
     //--> TODO: Optimize CrossSet Calculation Each Move Played. Should Be Called After Each Play t.
-    void printCrossSet(); // TEST FUNCTION ONLY.
+    void printCrossSet();                                      // TEST FUNCTION ONLY.
+    void movesManager(Move *move);                             // TODO: Whether To Update or Generate New Crosssets.
+    void setEvaluator(Evaluator *EvalCalculator);              // Set An Evalutor Object Type.
+    void setBoardBagParamters(int bagSize, bool isEmptyBoard); // Setting Board & Bag Needed Parameters.
+                                                               // void genAllMoves(Move *move);                              // GENERATE ALL WORDS --> Given Past Move For Faster Update
 };
 
 // NOTES: (Put Critical Questions Here For Furthur Development)

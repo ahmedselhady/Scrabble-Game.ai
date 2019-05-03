@@ -1,5 +1,4 @@
 #include "AI_MODE.hpp"
-#include "../Brain.hpp"
 #include "../Board/Board_and_tiles/Board_and_tiles/Board.h"
 #include <future>
 #include <list>
@@ -56,8 +55,8 @@ Move *AiMode::doWork(bool isFuckinEmpty)
 
 list<Move> AiMode::MovesGeneration(bool isEmpty)
 {
-    std::cout << "waslnaaaaaaa....\n";
-    WordGenerate *Gen = new WordGenerate(this->b2g, this->gaddag_instance);
+    // TODO: EDIT THE VALUES PASSED TO CONSTRUCTOR OF WORDGENERATE (BAG SIZE,BAGSIZE ...).
+    WordGenerate *Gen = new WordGenerate(this->b2g, this->gaddag_instance, NULL);
 
     Gen->countTilesRack(tiles);
 
@@ -69,7 +68,7 @@ list<Move> AiMode::MovesGeneration(bool isEmpty)
     else
     {
         cout << "Non-Empty board" << endl;
-        Gen->crosssets(); // Gen->Updatecrosssets();
+        Gen->crosssets(); // Gen->Updatecrosssets(); // ! REMEBER NEEDS UPDATE TO MAKE IT FAST ..
         Gen->generateWords();
     }
     return Gen->allMoves();

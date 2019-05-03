@@ -3,8 +3,14 @@
 #include "LoadNode.h"
 #include <sys/stat.h>
 #include <algorithm>
+<<<<<<< HEAD
 #define DICT_FILE_NAME "B:/lectures and assignements/Spring 2019/Machine Intelligence/tandeef el project/src/MoveGeneration/Dict.txt"
 #define GADDAG_FILE_NAME "B:/lectures and assignements/Spring 2019/Machine Intelligence/tandeef el project/src/MoveGeneration/GADDAG.txt"
+=======
+
+#define DICT_FILE_NAME "./src/MoveGeneration/Dict.txt"
+#define GADDAG_FILE_NAME "./src/MoveGeneration/GADDAG.txt"
+>>>>>>> a3b0ccf98f9db4b067d7026ee5159f29475a9e5c
 #define TOTAL_GADDAG_NODES 6419512
 
 using namespace std;
@@ -12,6 +18,7 @@ using namespace std;
 //Function LoadGaddag is the constructor
 LoadGaddag::LoadGaddag() : Root((char)GADDAG_ROOT)
 {
+
     // nothing.
 }
 
@@ -107,7 +114,6 @@ Node *LoadGaddag::constructGaddag()
     }
 
     //bool check = Root.findWord("legovsaa");
-
     gaddagNodes.push_back(&Root);
     cout << "HERE 2" << endl;
 
