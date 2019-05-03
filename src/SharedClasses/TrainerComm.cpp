@@ -164,9 +164,9 @@ Move *TrainerComm::ConstructMoveFromReceivedStr(vector<string> ReceivedStrVec)
 
 void TrainerComm::SendStringToGUI(string str)
 {
-	// zmq::context_t context(1);
-	// zmq::socket_t socket(context, ZMQ_REQ);
-	// socket.connect("tcp://192.168.88.208:5555");
+	zmq::context_t context(1);
+	zmq::socket_t socket(context, ZMQ_REQ);
+	socket.connect("tcp://192.168.88.208:5555");
 	zmq_msg_t Msg;
 	zmq_msg_init_size(&Msg, str.length());
 	memcpy(zmq_msg_data(&Msg), str.c_str(), str.length());
@@ -176,9 +176,9 @@ void TrainerComm::SendStringToGUI(string str)
 
 string TrainerComm::ReceiveSTRFromGUI(string str) //may not be used after renewing the protocol
 {
-	// zmq::context_t context(1);
-	// zmq::socket_t socket(context, ZMQ_REQ);
-	//socket.connect("tcp://192.168.88.208:5555");
+	zmq::context_t context(1);
+	zmq::socket_t socket(context, ZMQ_REQ);
+	socket.connect("tcp://192.168.88.208:5555");
 	//socket.connect("tcp://192.168.43.169:5555"); //edit it
 	zmq_msg_t message;
 
@@ -198,9 +198,9 @@ string TrainerComm::ReceiveSTRFromGUI(string str) //may not be used after renewi
 
 string TrainerComm::RecSTRFromGUI()
 {
-	// zmq::context_t context(1);
-	// zmq::socket_t socket(context, ZMQ_REQ);
-	//socket.connect("tcp://192.168.88.208:5555");
+	zmq::context_t context(1);
+	zmq::socket_t socket(context, ZMQ_REQ);
+	socket.connect("tcp://192.168.88.208:5555");
 	//socket.connect("tcp://192.168.43.169:5555"); //edit it
 	zmq_msg_t message;
 
