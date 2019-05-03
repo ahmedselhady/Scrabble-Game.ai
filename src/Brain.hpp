@@ -18,6 +18,8 @@ class GameBrain
 private:
     int bagSize;
     bool isFuckinBitchEmpty;
+	bool readyToSend;
+	std::string sendMessage;
     Trainer trainer;
     TimerGUI *T1;
     TimerGUI *T2;
@@ -41,8 +43,9 @@ private:
     }
 
     AiMode *ourBelovedIntelligentAgent;
-
-    bool IsFinished();
+	std::string constructString(Move*, int, int, unsigned long, unsigned long, unsigned long, std::vector<char>&, std::string);
+	bool IsFinished();
+	void communicatorThreadSynch();
 
 public:
     static Node *__get_gaddag();

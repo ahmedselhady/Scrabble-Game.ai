@@ -3,8 +3,8 @@
 #include "LoadNode.h"
 #include <sys/stat.h>
 #include <algorithm>
-#define DICT_FILE_NAME "./src/MoveGeneration/Dict.txt"
-#define GADDAG_FILE_NAME "./src/MoveGeneration/GADDAG.txt"
+#define DICT_FILE_NAME "B:/lectures and assignements/Spring 2019/Machine Intelligence/tandeef el project/src/MoveGeneration/Dict.txt"
+#define GADDAG_FILE_NAME "B:/lectures and assignements/Spring 2019/Machine Intelligence/tandeef el project/src/MoveGeneration/GADDAG.txt"
 #define TOTAL_GADDAG_NODES 6419512
 
 using namespace std;

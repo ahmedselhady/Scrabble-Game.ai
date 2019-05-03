@@ -1,14 +1,8 @@
 #include "AI_Human.hpp"
 #include <time.h>
-enum PlayerMoveValue
-{
-    PASS,
-    PLAY,
-    XCHNG,
-    DUMMY
-};
 
-PlayerMoveValue getMoveConsole(Move *retrunableMove)
+
+PossibleMoves getMoveConsole(Move *retrunableMove)
 {
     std::cout << "enter your move:\n";
     int startCol, endCol, isHorizontal;
@@ -24,7 +18,7 @@ PlayerMoveValue getMoveConsole(Move *retrunableMove)
         std::cin >> x;
         retrunableMove->word = " ";
         retrunableMove->word[0] = x;
-        return XCHNG;
+        return EXCHANGE;
     }
 
     std::cin >> endCol >> isHorizontal;
@@ -190,41 +184,36 @@ Move *AI_Human::DoWork(bool isFuckinBitchEmpty)
 {
     Move *BestMove = nullptr;
     Move *PlayerMove = new Move();
-    PlayerMoveValue ret = DUMMY;
+	PossibleMoves ret = DUMMY;
 
     while (ret == DUMMY) // busy wait until a play is played
     {
-        // todo: replace with communicator:
+        // TODO: replace with communicator:
         ret = getMoveConsole(PlayerMove);
-        //PlayerMove = Communicator->SendPlayerMove();
     }
     if (ret == PLAY)
     {
         BestMove = this->AI_Agent->doWork(isFuckinBitchEmpty);
         if (BestMove == NULL)
         {
-            std::cout << "\nExcellent !I Couldn't do better\n";
+			this->messageToHuman = "Excellent !I Couldn't do better";
         }
         else
         {
 
             if (BestMove->moveScore > PlayerMove->moveScore)
             {
-                std::cout << "\nBravo! But You Could Do Better..\n";
-                // Communicator->ReceiveString("Bravo! But You Could Do Better..");
-                // Communicator->SetReceivedPlayerMove(BestMove);
+				this->messageToHuman = "Bravo! But You Could Do Better..";
             }
 
             if (BestMove->moveScore < PlayerMove->moveScore)
             {
-                std::cout << "\nMarvellous! your move is better than what I thought\n";
-                // Communicator->ReceiveString("Marvellous! your move is better than what I thought");
+				this->messageToHuman = "Marvellous! your move is better than what I thought";
             }
 
             if (BestMove->moveScore == PlayerMove->moveScore)
             {
-                std::cout << "\nExcellent !I Couldn't do better\n";
-                // Communicator->ReceiveString("Excellent! I Couldn't do better");
+				this->messageToHuman = "Excellent !I Couldn't do better";
             }
         }
 
@@ -235,28 +224,24 @@ Move *AI_Human::DoWork(bool isFuckinBitchEmpty)
         BestMove = this->AI_Agent->doWork(isFuckinBitchEmpty);
         if (BestMove == NULL)
         {
-            std::cout << "\nExcellent !I Couldn't do better\n";
+			this->messageToHuman = "Excellent !I Couldn't do better";
         }
         else
         {
 
             if (BestMove->moveScore > PlayerMove->moveScore)
             {
-                std::cout << "\nBravo! But You Could Do Better..\n";
-                // Communicator->ReceiveString("Bravo! But You Could Do Better..");
-                // Communicator->SetReceivedPlayerMove(BestMove);
+				this->messageToHuman = "Bravo! But You Could Do Better..";
             }
 
             if (BestMove->moveScore < PlayerMove->moveScore)
             {
-                std::cout << "\nMarvellous! your move is better than what I thought\n";
-                // Communicator->ReceiveString("Marvellous! your move is better than what I thought");
+				this->messageToHuman = "Marvellous! your move is better than what I thought";
             }
 
             if (BestMove->moveScore == PlayerMove->moveScore)
             {
-                std::cout << "\nExcellent !I Couldn't do better\n";
-                // Communicator->ReceiveString("Excellent! I Couldn't do better");
+				this->messageToHuman = "Excellent !I Couldn't do better";
             }
         }
         return NULL;
