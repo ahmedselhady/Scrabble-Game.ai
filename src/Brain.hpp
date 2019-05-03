@@ -8,23 +8,25 @@
 #include "./MoveGeneration/LoadGaddag.h"
 #include "./MoveGeneration/LoadNode.h"
 #include "./AI_MODE/AI_MODE.hpp"
-#include ".\TrainerMode\RackOfTiles.hpp"
-#include ".\TrainerMode\Timer.hpp"
+#include "./TrainerMode/RackOfTiles.hpp"
+#include "./TrainerMode/Timer.hpp"
 #include <utility>
 #include "./Board/Board_and_tiles/Board_and_tiles/Board.h"
 #include "./TrainerMode/Trainer.hpp"
+#include "../ScoreEvaluation/LoadHeuristics.hpp"
 
 class GameBrain
 {
 private:
     int bagSize;
     bool isFuckinBitchEmpty;
-	bool readyToSend;
-	std::string sendMessage;
+    bool readyToSend;
+    std::string sendMessage;
     Trainer trainer;
     TimerGUI *T1;
     TimerGUI *T2;
     TimerGUI *T3;
+    LoadHeuristics *heuristicsLoader;
     void updateBoard(Move *);
     void refillTiles(std::vector<char> &, Move *);
     bool turn_TrainerMode;
@@ -44,9 +46,9 @@ private:
     }
 
     AiMode *ourBelovedIntelligentAgent;
-	std::string constructString(Move*, int, int, unsigned long, unsigned long, unsigned long, std::vector<char>&, std::string);
-	bool IsFinished();
-	void communicatorThreadSynch();
+    std::string constructString(Move *, int, int, unsigned long, unsigned long, unsigned long, std::vector<char> &, std::string);
+    bool IsFinished();
+    void communicatorThreadSynch();
 
 public:
     static Node *__get_gaddag();

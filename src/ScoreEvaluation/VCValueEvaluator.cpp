@@ -50,7 +50,7 @@ double VCValueEvaluator::equity(std::vector<char> *Rack, Move *move)
 
     else if (this->bagSize > 0)
     {
-        int leftInBagPlusSeven = bagSize - move->moveUsedTiles + 7;
+        int leftInBagPlusSeven = bagSize - move->moveUsedTiles + 7; // ! BAG BEFORE PLAY
         double heuristicArray[13] =
             {
                 0.0, -8.0, 0.0, -0.5, -2.0, -3.5, -2.0,
@@ -76,6 +76,7 @@ double VCValueEvaluator::endgameResult(std::vector<char> *Rack, Move *move)
     {
         double deadwood = 0;
         deadwood += Options::rackScore(opponentRack);
+        // deadwood = move->moveScore;
 
         return deadwood * 2;
     }

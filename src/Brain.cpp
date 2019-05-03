@@ -35,11 +35,12 @@ Node *GameBrain::__get_gaddag()
 
 GameBrain::GameBrain(TrainerComm *comm, Board *MyBoard, bool whoseTurn)
 {
-	readyToSend = false;
+    readyToSend = false;
     this->isFuckinBitchEmpty = true;
     this->turn_TrainerMode = whoseTurn;
     this->comm = comm;
     this->MyBoard = MyBoard;
+    this->heuristicsLoader = new LoadHeuristics();
     T1 = new TimerGUI(comm, 1200);
     T2 = new TimerGUI(comm, 600);
     T3 = new TimerGUI(comm, 600);
@@ -107,70 +108,73 @@ void GameBrain::updateBoard(Move *move)
 
 void GameBrain::refillTiles(std::vector<char> &tiles, Move *move)
 {
-	int lenghtOfMove = move->word.size();
-	std::vector<char> temp = rackoftiles->RandomizeTiles(lenghtOfMove);
-	int index = 0;
-	string word = move->word;
+    int lenghtOfMove = move->word.size();
+    std::vector<char> temp = rackoftiles->RandomizeTiles(lenghtOfMove);
+    int index = 0;
+    string word = move->word;
 
-	for (int i = 0; i < tiles.size(); i++)
-	{
-		int p = count(word.begin(), word.end(), tiles[i]);
-		if (p > 0)
-		{
-			char t = tiles[i];
-			tiles[i] = temp[index++];
-			for (int j = 0; j < word.size(); j++)
-			{
-				if (word[j] == t)
-				{
-					word.erase(j, j + 1);
-					break;
-				}
-			}
-		}
-	}
+    for (int i = 0; i < tiles.size(); i++)
+    {
+        int p = count(word.begin(), word.end(), tiles[i]);
+        if (p > 0)
+        {
+            char t = tiles[i];
+            tiles[i] = temp[index++];
+            for (int j = 0; j < word.size(); j++)
+            {
+                if (word[j] == t)
+                {
+                    word.erase(j, j + 1);
+                    break;
+                }
+            }
+        }
+    }
 }
 
-std::string GameBrain::constructString(Move* move, int humanScore, int computerScore, unsigned long myTime, unsigned long opponentTime, unsigned long totalTime, std::vector<char>& humanRack,std::string messageFromTeacher)
+std::string GameBrain::constructString(Move *move, int humanScore, int computerScore, unsigned long myTime, unsigned long opponentTime, unsigned long totalTime, std::vector<char> &humanRack, std::string messageFromTeacher)
 {
-	// *it's a play:
-	std::string stringToComm = "play/tm/";
-	stringToComm += (std::to_string(move->startPosition.COL) + "/" + std::to_string(move->startPosition.ROW));
-	stringToComm += (move->horizontal) ? "/true/" : "/false/";
-	stringToComm += move->word;
-	stringToComm += ("/"+std::to_string(humanScore)+"/"+std::to_string(computerScore));
-	stringToComm += ("/"+std::to_string(myTime)+"/" + std::to_string(opponentTime)+"/" + std::to_string(totalTime)+"/");
+    // *it's a play:
+    std::string stringToComm = "play/tm/";
+    stringToComm += (std::to_string(move->startPosition.COL) + "/" + std::to_string(move->startPosition.ROW));
+    stringToComm += (move->horizontal) ? "/true/" : "/false/";
+    stringToComm += move->word;
+    stringToComm += ("/" + std::to_string(humanScore) + "/" + std::to_string(computerScore));
+    stringToComm += ("/" + std::to_string(myTime) + "/" + std::to_string(opponentTime) + "/" + std::to_string(totalTime) + "/");
 
-	std::string rackString = "1234567";
-	for (int i = 0; i < humanRack.size(); ++i) {
-		rackString[i] = humanRack[i];
-	}
-	stringToComm += (rackString+"/"+messageFromTeacher);
+    std::string rackString = "1234567";
+    for (int i = 0; i < humanRack.size(); ++i)
+    {
+        rackString[i] = humanRack[i];
+    }
+    stringToComm += (rackString + "/" + messageFromTeacher);
 
-	
-
-	// *
-	return stringToComm;
+    // *
+    return stringToComm;
 }
 
-void GameBrain::communicatorThreadSynch() {
+void GameBrain::communicatorThreadSynch()
+{
 
-	while (true) {
+    while (true)
+    {
 
-		if (this->readyToSend) {
-			this->comm->SendAndReceiveGUI(this->sendMessage, true, false);
-			this->readyToSend = false;
-		}
-		else {
-			this->comm->SendAndReceiveGUI("dummy string", false, false);
-		}
-	}
+        if (this->readyToSend)
+        {
+            this->comm->SendAndReceiveGUI(this->sendMessage, true, false);
+            this->readyToSend = false;
+        }
+        else
+        {
+            this->comm->SendAndReceiveGUI("dummy string", false, false);
+        }
+    }
 }
 
 void GameBrain::work_human_vs_computer()
 {
-	auto thread = std::async(&GameBrain::communicatorThreadSynch, this);
-	
+    auto thread = std::async(&GameBrain::communicatorThreadSynch, this);
+
     // *set board reference to both agents:
     /**
      * set board for Computer Agent
@@ -324,45 +328,44 @@ void GameBrain::work_human_vs_computer()
             std::cout << "Player 2 Time time: ";
             T3->SendTime();
 
-			this->sendMessage= this->constructString(move, humanScore, computerScore, T2->getTime(), T3->getTime(), T1->getTime(), HumanTiles, trainer.Human.getString());
-			this->readyToSend = true;
-		}
+            this->sendMessage = this->constructString(move, humanScore, computerScore, T2->getTime(), T3->getTime(), T1->getTime(), HumanTiles, trainer.Human.getString());
+            this->readyToSend = true;
+        }
         // *reverse the turn
         turn_TrainerMode = !turn_TrainerMode;
-		// *call trainer Comm to send the update:
-		
-        // ! if the human played a pass!
+        // *call trainer Comm to send the update:
 
+        // ! if the human played a pass!
     }
 }
 
 void GameBrain::work_computer_vs_computer()
 {
-	vector<char> Rack;
-	Rack.push_back('f');
-	Rack.push_back('g');
-	Rack.push_back('o');
-	Rack.push_back('a');
-	Rack.push_back('p');
-	Rack.push_back('e');
-	Rack.push_back('n');
+    vector<char> Rack;
+    Rack.push_back('f');
+    Rack.push_back('g');
+    Rack.push_back('o');
+    Rack.push_back('a');
+    Rack.push_back('p');
+    Rack.push_back('e');
+    Rack.push_back('n');
 
-	BoardToGrammer Ptr2G = BoardToGrammer();
-	Ptr2G.SetChar('B', 6, 7);
-	Ptr2G.SetChar('A', 7, 7);
-	Ptr2G.SetChar('B', 8, 7);
-	Ptr2G.SetChar('E', 9, 7);
-	Ptr2G.SetChar('A', 9, 8);
-	Ptr2G.SetChar('R', 9, 9);
-	Ptr2G.SetChar('S', 9, 10);
+    BoardToGrammer Ptr2G = BoardToGrammer();
+    Ptr2G.SetChar('B', 6, 7);
+    Ptr2G.SetChar('A', 7, 7);
+    Ptr2G.SetChar('B', 8, 7);
+    Ptr2G.SetChar('E', 9, 7);
+    Ptr2G.SetChar('A', 9, 8);
+    Ptr2G.SetChar('R', 9, 9);
+    Ptr2G.SetChar('S', 9, 10);
 
-	AiMode *aimode = new AiMode();
-	aimode->setTiles(Rack);
-	aimode->setBoardToGrammar(Ptr2G);
-	aimode->setBagPointer(&this->bag);
+    AiMode *aimode = new AiMode();
+    aimode->setTiles(Rack);
+    aimode->setBoardToGrammar(Ptr2G);
+    aimode->setBagPointer(&this->bag);
 
-	Move *move = aimode->doWork(this->isFuckinBitchEmpty);
-	std::cout << "Move Score: " << move->evaluatedScore << std::endl;
+    Move *move = aimode->doWork(this->isFuckinBitchEmpty);
+    std::cout << "Move Score: " << move->evaluatedScore << std::endl;
 }
 
 bool GameBrain::IsFinished()

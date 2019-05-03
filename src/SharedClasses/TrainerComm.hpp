@@ -1,13 +1,13 @@
 #pragma once
 
 #include <string.h>
-#include <zmq.h>
+#include "zmq.h"
 #include <cstdint>
 #include <future>
 #include <iostream>
 #include <string>
 #include <vector>
-#include <zmq.hpp>
+#include "zmq.hpp"
 #include <cstdint>
 //#include "BoardCommunicator.hpp"
 #include "Move.hpp"
