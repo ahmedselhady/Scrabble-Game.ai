@@ -89,6 +89,7 @@ void GameBrain::updateBoard(Move *move)
 {
     move->word = *Options::moveChar(move);
     std::cout << move->word << std::endl;
+
     BoardToGrammer b2g;
     for (int i = 0, index = 0; index < move->word.length(); ++i)
     {
