@@ -189,7 +189,7 @@ Move *AI_Human::DoWork(bool isFuckinBitchEmpty, int bagSize, LoadHeuristics *loa
     {
         // TODO: replace with communicator:
         ret = this->Communicator->SendAndReceiveGUI("dummyText", false, true);
-        // ret = getMoveConsole(PlayerMove);
+        //ret = getMoveConsole(PlayerMove);
     }
 
     if (ret == PLAY)

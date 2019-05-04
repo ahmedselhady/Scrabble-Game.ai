@@ -191,7 +191,7 @@ void GameBrain::communicatorThreadSynch()
 
 void GameBrain::work_human_vs_computer()
 {
-    //auto thread = std::async(&GameBrain::communicatorThreadSynch, this);
+    auto thread = std::async(&GameBrain::communicatorThreadSynch, this);
 
     // *set board reference to both agents:
     /**
@@ -286,6 +286,7 @@ void GameBrain::work_human_vs_computer()
 
             if (move != nullptr)
             {
+                std::cout << "EXIEDDDDDDDDDDDDD ..:" << move->word << std::endl;
                 // *refill the tiles of the human player's rack
                 this->refillTiles(HumanTiles, move);
 

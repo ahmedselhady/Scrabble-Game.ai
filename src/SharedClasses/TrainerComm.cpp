@@ -145,7 +145,19 @@ Move *TrainerComm::ConstructMoveFromReceivedStr(vector<string> ReceivedStrVec)
 	//vector<string> ReceivedStrVec = split_string(ReceivedMove);
 	Position pos;
 	pos.ROW = ReceivedStrVec[1][0];
+	if (ReceivedStrVec[1][1] != '/')
+	{
+		pos.ROW -= '0';
+		pos.ROW *= 10;
+		pos.ROW += (ReceivedStrVec[1][1] - '0');
+	}
 	pos.COL = ReceivedStrVec[2][0];
+	if (ReceivedStrVec[2][1] != '/')
+	{
+		pos.COL -= '0';
+		pos.COL *= 10;
+		pos.COL += (ReceivedStrVec[2][1] - '0');
+	}
 	bool IsHorizontal;
 	if (ReceivedStrVec[3] == "true")
 		IsHorizontal = true;
@@ -162,7 +174,7 @@ string TrainerComm::ReceiveSTRFromGUI(string str)
 	zmq::context_t context(1);
 	zmq::socket_t socket(context, ZMQ_REQ);
 	//socket.connect("tcp://192.168.88.208:5555");
-	socket.connect("tcp://192.168.43.169:5555"); //edit it
+	socket.connect("tcp://192.168.43.103:5555"); //edit it
 	zmq_msg_t message;
 
 	string ReceivedMove; // 0 row, 1 col,2 word, 3 horizontal,4 is
@@ -183,7 +195,7 @@ void TrainerComm::SendStringToGUI(string str)
 {
 	zmq::context_t context(1);
 	zmq::socket_t socket(context, ZMQ_REQ);
-	socket.connect("tcp://192.168.88.208:5555");
+	socket.connect("tcp://192.168.43.103:5555");
 	zmq_msg_t Msg;
 	zmq_msg_init_size(&Msg, str.length());
 	memcpy(zmq_msg_data(&Msg), str.c_str(), str.length());
@@ -195,7 +207,7 @@ void TrainerComm::RecCPPServerSendGUI(uint8_t SRow, uint8_t SCol, uint8_t Dir, v
 {
 	zmq::context_t context(1);
 	zmq::socket_t socket(context, ZMQ_REQ);
-	socket.connect("tcp://localhost:5555"); //edit it
+	socket.connect("tcp://192.168.43.103:5555"); //edit it
 
 	vector<uint8_t> RowColDir;
 	RowColDir.push_back(SRow);
@@ -236,7 +248,8 @@ PossibleMoves TrainerComm::SendAndReceiveGUI(string str, bool ToSend, bool ToRec
 	//initializations
 	zmq::context_t context(1);
 	zmq::socket_t socket(context, ZMQ_REQ);
-	socket.connect("tcp://localhost:5555"); //edit it
+	socket.connect("tcp://192.168.43.103:5555"); //edit it
+	//cout << "connected" << endl;
 	string ToSendString;
 	if (ToSend)
 	{
@@ -251,8 +264,13 @@ PossibleMoves TrainerComm::SendAndReceiveGUI(string str, bool ToSend, bool ToRec
 	zmq_msg_t Msg;
 	zmq_msg_init_size(&Msg, ToSendString.length());
 	memcpy(zmq_msg_data(&Msg), ToSendString.c_str(), ToSendString.length());
+	//cout << "msg:" << ToSendString << endl;
+
 	zmq_msg_send(&Msg, socket, !ZMQ_DONTWAIT);
+	//cout << "before rec" << endl;
+
 	zmq_msg_recv(&Msg, socket, !ZMQ_DONTWAIT);
+	//cout << "after rec" << endl;
 
 	//string Received = RecSTRFromGUI();
 	size_t MsgSize = zmq_msg_size(&Msg); // size_t zmq_msg_size (zmq_msg_t *msg);
@@ -267,7 +285,7 @@ PossibleMoves TrainerComm::SendAndReceiveGUI(string str, bool ToSend, bool ToRec
 			return PASS;
 		else if (StrVec[0] == "****")
 		{
-			ExchangedTiles=StrVec[1];
+			ExchangedTiles = StrVec[1];
 			return EXCHANGE;
 		}
 		else if (StrVec[0] == "challenge")
