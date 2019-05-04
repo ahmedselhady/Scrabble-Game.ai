@@ -41,6 +41,7 @@ Move *AiMode::doWork(bool isFuckinEmpty, int bagSize, LoadHeuristics *loader)
     // sort the moves based on their huristic value!
     gameEvaluator::__get_Instance()->evaluateMovesHuristic(listOfMoves, END_GAME_MODE);
 
+    std::cout << "Moves Sorted...\n";
     // when done with those: use game evaluator to limit the moves to 23 moves only:
     if (listOfMoves.size() > 23)
     {
@@ -54,6 +55,7 @@ Move *AiMode::doWork(bool isFuckinEmpty, int bagSize, LoadHeuristics *loader)
         return nullptr;
 
     delete this->evaluator;
+    std::cout << "Finished Generation of Best Word...\n";
 
     return new Move(*listOfMoves.begin());
 }

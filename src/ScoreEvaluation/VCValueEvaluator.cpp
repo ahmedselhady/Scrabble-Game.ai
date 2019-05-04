@@ -75,7 +75,14 @@ double VCValueEvaluator::endgameResult(std::vector<char> *Rack, Move *move)
     if (remainingRack->empty())
     {
         double deadwood = 0;
-        deadwood += Options::rackScore(opponentRack);
+        if (Rack != NULL)
+        {
+            deadwood += Options::rackScore(opponentRack);
+        }
+        else
+        {
+            deadwood = 0.0; //move->moveScore;
+        }
         // deadwood = move->moveScore;
 
         return deadwood * 2;

@@ -13,7 +13,7 @@
 #include <utility>
 #include "./Board/Board_and_tiles/Board_and_tiles/Board.h"
 #include "./TrainerMode/Trainer.hpp"
-#include"../src/ScoreEvaluation/LoadHeuristics.hpp"
+#include "../src/ScoreEvaluation/LoadHeuristics.hpp"
 #include "../src/ScoreEvaluation/Evaluator.hpp"
 #include "../src/ScoreEvaluation/VCValueEvaluator.hpp"
 
@@ -24,7 +24,7 @@ private:
     bool isFuckinBitchEmpty;
     bool readyToSend;
     std::string sendMessage;
-    LoadHeuristics * heuristicsLoader;
+    LoadHeuristics *heuristicsLoader;
     Trainer trainer;
     TimerGUI *T1;
     TimerGUI *T2;

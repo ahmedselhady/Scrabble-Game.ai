@@ -88,11 +88,14 @@ GameBrain::GameBrain(TrainerComm *comm, Board *MyBoard, bool whoseTurn)
 void GameBrain::updateBoard(Move *move)
 {
     move->word = *Options::moveChar(move);
+    std::cout << move->word << std::endl;
     BoardToGrammer b2g;
-    for (int i = 0, index = 0; i < move->word.length(); ++i)
+    for (int i = 0, index = 0; index < move->word.length(); ++i)
     {
+
         if (move->horizontal)
         {
+            std::cout << index << std::endl;
             if (!b2g.hasaTile(move->startPosition.ROW, move->startPosition.COL + i))
             {
                 b2g.SetChar(move->word[index++] - 32, move->startPosition.ROW, move->startPosition.COL + i);
@@ -100,7 +103,7 @@ void GameBrain::updateBoard(Move *move)
         }
         else
         {
-            if (!b2g.hasaTile(move->startPosition.ROW, move->startPosition.COL))
+            if (!b2g.hasaTile(move->startPosition.ROW + i, move->startPosition.COL))
             {
                 b2g.SetChar(move->word[index++] - 32, move->startPosition.ROW + i, move->startPosition.COL);
             }
@@ -110,10 +113,22 @@ void GameBrain::updateBoard(Move *move)
 
 void GameBrain::refillTiles(std::vector<char> &tiles, Move *move)
 {
-    int lenghtOfMove = move->word.size();
+    // int lenghtOfMove = 0;
+    // if (isHuman)
+    // // {
+    // //     lenghtOfMove = move->word.size();
+    // // }
+    // // else
+    // // {
+    // //     lenghtOfMove = move->moveUsedTiles;
+    // // }
+    string word = *Options::moveChar(move);
+
+    int lenghtOfMove = word.length();
+
     std::vector<char> temp = rackoftiles->RandomizeTiles(lenghtOfMove);
     int index = 0;
-    string word = move->word;
+    //string word = move->word;
 
     for (int i = 0; i < tiles.size(); i++)
     {
@@ -175,7 +190,7 @@ void GameBrain::communicatorThreadSynch()
 
 void GameBrain::work_human_vs_computer()
 {
-    auto thread = std::async(&GameBrain::communicatorThreadSynch, this);
+    //auto thread = std::async(&GameBrain::communicatorThreadSynch, this);
 
     // *set board reference to both agents:
     /**
@@ -310,11 +325,13 @@ void GameBrain::work_human_vs_computer()
             //TODO: we have the move now but we have to send it to the GUI
             if (move != nullptr)
             {
+                std::cout << "Updating Board...\n";
                 // *update the board with the human's move
                 this->updateBoard(move);
 
                 // *refill the tiles of the computer player's rack
                 this->refillTiles(AI_Tiles, move);
+                std::cout << "Refiled Computer Tiles...\n";
 
                 // *updating computer score
                 computerScore += move->moveScore;
