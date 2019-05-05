@@ -1,0 +1,17 @@
+﻿  AI_MODE.cpp
+c:\users\mina ashraf louis\desktop\scrabble_gameproject\scrabble-game.ai\src\sharedclasses\trainercomm.hpp(10): fatal error C1083: Cannot open include file: 'zmq.hpp': No such file or directory
+  Brain.cpp
+c:\users\mina ashraf louis\desktop\scrabble_gameproject\scrabble-game.ai\src\sharedclasses\trainercomm.hpp(10): fatal error C1083: Cannot open include file: 'zmq.hpp': No such file or directory
+  main.cpp
+c:\users\mina ashraf louis\desktop\scrabble_gameproject\scrabble-game.ai\src\sharedclasses\trainercomm.hpp(10): fatal error C1083: Cannot open include file: 'zmq.hpp': No such file or directory
+  TrainerComm.cpp
+c:\users\mina ashraf louis\desktop\scrabble_gameproject\scrabble-game.ai\src\sharedclasses\trainercomm.hpp(10): fatal error C1083: Cannot open include file: 'zmq.hpp': No such file or directory
+  AI_AI.cpp
+c:\users\mina ashraf louis\desktop\scrabble_gameproject\scrabble-game.ai\src\sharedclasses\trainercomm.hpp(10): fatal error C1083: Cannot open include file: 'zmq.hpp': No such file or directory
+  AI_Human.cpp
+c:\users\mina ashraf louis\desktop\scrabble_gameproject\scrabble-game.ai\src\sharedclasses\trainercomm.hpp(10): fatal error C1083: Cannot open include file: 'zmq.hpp': No such file or directory
+  RackOfTiles.cpp
+c:\users\mina ashraf louis\desktop\scrabble_gameproject\scrabble-game.ai\src\sharedclasses\trainercomm.hpp(10): fatal error C1083: Cannot open include file: 'zmq.hpp': No such file or directory
+  Timer.cpp
+c:\users\mina ashraf louis\desktop\scrabble_gameproject\scrabble-game.ai\src\sharedclasses\trainercomm.hpp(10): fatal error C1083: Cannot open include file: 'zmq.hpp': No such file or directory
+  Generating Code...

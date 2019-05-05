@@ -443,7 +443,7 @@
 //    for (std::list<Move>::iterator it = moves.begin(); it != moves.end(); it++)
 //    {
 //        MovesFile << it->word << " " << it->horizontal << " " << (int)it->startPosition.ROW << " " << (int)it->startPosition.COL << " "
-//                  << it->moveScore << " " << it->evaluatedScore << " " << it->testHScore << "\n";
+//                  << it->moveScore << " " << it->evaluatedScore << " " << it->testHScore << "/n";
 //        double total = (it->evaluatedScore + it->moveScore);
 //        if (total > best)
 //        {

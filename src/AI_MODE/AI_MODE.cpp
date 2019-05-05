@@ -1,5 +1,5 @@
 #include "AI_MODE.hpp"
-#include "./Brain.hpp"
+#include "../Brain.hpp"
 #include "../Board/Board_and_tiles/Board_and_tiles/Board.h"
 #include <future>
 #include <list>

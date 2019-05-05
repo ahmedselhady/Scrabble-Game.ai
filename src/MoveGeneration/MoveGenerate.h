@@ -14,7 +14,7 @@
 #include "Gaddag.h"
 //#include "../SharedClasses/Move.hpp"
 #include "../ScoreEvaluation/Evaluator.hpp"
-#include "..\Board\Board_and_tiles\Board_and_tiles\BoardCommunication.h"
+#include "../Board/Board_and_tiles/Board_and_tiles/BoardCommunication.h"
 
 using namespace std;
 

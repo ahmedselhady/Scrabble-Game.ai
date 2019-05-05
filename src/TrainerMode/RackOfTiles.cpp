@@ -36,7 +36,6 @@ bool RackOfTiles::updateBag(char tileToReduce)
 
 std::vector<char> RackOfTiles::RandomizeTiles(int WantedTiles)
 {
-
     srand(time(NULL));
     std::vector<char> Rack;
     int count = 0;

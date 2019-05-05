@@ -34,7 +34,9 @@ Node *GameBrain::__get_gaddag()
 
 GameBrain::GameBrain(TrainerComm *comm, Board *MyBoard, bool whoseTurn)
 {
-
+	this->bestMove = NULL;
+	this->iWantToReceive = false;
+	this->returnOfReceiver = DUMMY;
     this->heuristicsLoader = new LoadHeuristics();
     this->heuristicsLoader->loadALL();
 
@@ -88,18 +90,26 @@ GameBrain::GameBrain(TrainerComm *comm, Board *MyBoard, bool whoseTurn)
 void GameBrain::updateBoard(Move *move)
 {
     move->word = *Options::moveChar(move);
-    std::cout << move->word << std::endl;
 
-    BoardToGrammer b2g;
+	std::cout << "Evvvvvery thing about the move: ";
+
+    std::cout << move->word << std::endl;
+	std::cout << move->horizontal << std::endl;
+	std::cout << move->startPosition.ROW+'0' <<","<<	move->startPosition.COL+'0'  << std::endl;
+	std::cout << move->isBingo << std::endl;
+	std::cout << move->moveScore << std::endl;
+	
+	BoardToGrammer b2g;
     for (int i = 0, index = 0; index < move->word.length(); ++i)
     {
-
+		// lower caps: blank
+		// upper caps: letter
         if (move->horizontal)
         {
             std::cout << index << std::endl;
             if (!b2g.hasaTile(move->startPosition.ROW, move->startPosition.COL + i))
             {
-                b2g.SetChar(move->word[index++] - 32, move->startPosition.ROW, move->startPosition.COL + i);
+				b2g.SetChar(move->word[index++] , move->startPosition.ROW, move->startPosition.COL + i);
             }
         }
         else
@@ -110,26 +120,17 @@ void GameBrain::updateBoard(Move *move)
             }
         }
     }
+
 }
 
 void GameBrain::refillTiles(std::vector<char> &tiles, Move *move)
 {
-    // int lenghtOfMove = 0;
-    // if (isHuman)
-    // // {
-    // //     lenghtOfMove = move->word.size();
-    // // }
-    // // else
-    // // {
-    // //     lenghtOfMove = move->moveUsedTiles;
-    // // }
     string word = *Options::moveChar(move);
 
     int lenghtOfMove = word.length();
 
     std::vector<char> temp = rackoftiles->RandomizeTiles(lenghtOfMove);
     int index = 0;
-    //string word = move->word;
 
     for (int i = 0; i < tiles.size(); i++)
     {
@@ -152,11 +153,22 @@ void GameBrain::refillTiles(std::vector<char> &tiles, Move *move)
 
 std::string GameBrain::constructString(Move *move, int humanScore, int computerScore, unsigned long myTime, unsigned long opponentTime, unsigned long totalTime, std::vector<char> &humanRack, std::string messageFromTeacher)
 {
+	std::string stringToComm = (this->bestMove == NULL) ? "play/tm/" : "best/tm/";
+	stringToComm += (this->turn_TrainerMode) ? "1/" : "0/";
+
     // *it's a play:
-    std::string stringToComm = "play/tm/";
-    stringToComm += (std::to_string(move->startPosition.COL) + "/" + std::to_string(move->startPosition.ROW));
-    stringToComm += (move->horizontal) ? "/true/" : "/false/";
-    stringToComm += move->word;
+	if (move == NULL) {
+		stringToComm += "1/1";
+		stringToComm += "/true/";
+		stringToComm += "----";
+	}
+	else {
+		stringToComm += (std::to_string(move->startPosition.COL) + "/" + std::to_string(move->startPosition.ROW));
+		stringToComm += (move->horizontal) ? "/true/" : "/false/";
+		stringToComm += move->word;
+	}
+    
+
     stringToComm += ("/" + std::to_string(humanScore) + "/" + std::to_string(computerScore));
     stringToComm += ("/" + std::to_string(myTime) + "/" + std::to_string(opponentTime) + "/" + std::to_string(totalTime) + "/");
 
@@ -167,24 +179,41 @@ std::string GameBrain::constructString(Move *move, int humanScore, int computerS
     }
     stringToComm += (rackString + "/" + messageFromTeacher);
 
+	// 
+	if (this->bestMove != NULL) // I have correctly constructly constructed the string:
+		this->bestMove = NULL;
     // *
+	std::cout << stringToComm << std::endl;
     return stringToComm;
 }
 
 void GameBrain::communicatorThreadSynch()
 {
+	returnOfReceiver;
 
     while (true)
     {
 
         if (this->readyToSend)
         {
-            this->comm->SendAndReceiveGUI(this->sendMessage, true, false);
+			returnOfReceiver=this->comm->SendAndReceiveGUI(this->sendMessage, true, true);
+			if (returnOfReceiver != DUMMY) {
+				this->iWantToReceive = true;
+			}
+			else {
+				this->iWantToReceive = false;
+			}
             this->readyToSend = false;
         }
         else
         {
-            this->comm->SendAndReceiveGUI("dummy string", false, false);
+			returnOfReceiver = this->comm->SendAndReceiveGUI("dummyText", false, true);
+			if (returnOfReceiver != DUMMY) {
+				this->iWantToReceive = true;
+			}
+			else {
+				this->iWantToReceive = false;
+			}
         }
     }
 }
@@ -262,12 +291,13 @@ void GameBrain::work_human_vs_computer()
     T3->start();
 
     // *local parameters
-    int lenghtOfMove, index;
+	int lenghtOfMove, index, penaltyOnHumanTime = 0;
     vector<char> temp(7);
+
 
     while (!IsFinished())
     {
-        std::cout << "Human Score: " << humanScore << "\t\tComputer Score: " << computerScore << std::endl;
+        std::cout << "Human Score: " << humanScore << "/t/tComputer Score: " << computerScore << std::endl;
         MyBoard->print();
         std::cout << "your tiles are:\n";
         for (int i = 0; i < 7; ++i)
@@ -282,7 +312,14 @@ void GameBrain::work_human_vs_computer()
 
             trainer.Human.SetTiles(&HumanTiles);
             // *let the thinker do the magic
-            Move *move = trainer.Human.DoWork(this->isFuckinBitchEmpty, this->bagSize, this->heuristicsLoader);
+            Move *move = trainer.Human.DoWork(this->isFuckinBitchEmpty, this->bagSize, this->heuristicsLoader,&returnOfReceiver,&iWantToReceive);
+			
+			this->bestMove = this->trainer.Human.getBestMove();
+			
+			if(this->bestMove != NULL){
+				this->sendMessage = this->constructString(this->bestMove, humanScore, computerScore, T2->getTime(), T3->getTime(), T1->getTime(), HumanTiles, trainer.Human.getString());
+				this->readyToSend = true;
+			}
 
             if (move != nullptr)
             {
@@ -294,10 +331,14 @@ void GameBrain::work_human_vs_computer()
                 this->updateBoard(move);
 
                 // *updating human score
-                humanScore += move->moveScore;
+				humanScore += (move->moveScore); 
+					
 
                 // final board update
                 this->isFuckinBitchEmpty = (this->isFuckinBitchEmpty) ? false : false;
+
+				this->sendMessage = this->constructString(move, humanScore , computerScore, T2->getTime(), T3->getTime(), T1->getTime(), HumanTiles, trainer.Human.getString());
+				this->readyToSend = true;
             }
 
             T3->start();
@@ -349,7 +390,12 @@ void GameBrain::work_human_vs_computer()
             std::cout << "Player 2 Time time: ";
             T3->SendTime();
 
-            this->sendMessage = this->constructString(move, humanScore, computerScore, T2->getTime(), T3->getTime(), T1->getTime(), HumanTiles, trainer.Human.getString());
+			if(T2->isOver(T2->getTime())){
+				long SendTime = T2->finalendtime - T2->getTime();
+				penaltyOnHumanTime = (SendTime / 60) * 10;
+				penaltyOnHumanTime = (penaltyOnHumanTime < 0) ? penaltyOnHumanTime : 0;
+			}
+            this->sendMessage = this->constructString(move, humanScore + penaltyOnHumanTime, computerScore, T2->getTime(), T3->getTime(), T1->getTime(), HumanTiles, trainer.Human.getString());
             this->readyToSend = true;
         }
         // *reverse the turn

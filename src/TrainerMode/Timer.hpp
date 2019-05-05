@@ -16,9 +16,10 @@ private:
 	bool running;
 	unsigned long beg;
 	unsigned long end;
-	unsigned long finalendtime;
 
 public:
+	unsigned long finalendtime;
+
 	TimerGUI(TrainerComm *, unsigned long);
 	void start();
 	void stop();

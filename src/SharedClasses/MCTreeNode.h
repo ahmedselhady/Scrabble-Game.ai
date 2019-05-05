@@ -4,7 +4,7 @@
 #include <vector>
 #include<list>
 #include "Move.hpp"
-#include "Opponent-Rack-Generator/Opponent.h"
+#include "../Opponent-Rack-Generator/Opponent.h"
 
 using namespace std;
 

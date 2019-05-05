@@ -12,13 +12,17 @@ private:
     unordered_map<char, int> *Bag;
     BoardMask *BoardStatus;
     BoardToGrammer b2g;
-
+	Move* bestMove;
     AiMode *AI_Agent;
     TrainerComm *Communicator;
 
     void exchange(std::vector<char> *, char, char);
 
 public:
+
+	Move* getBestMove() const{
+		return bestMove;
+	}
     AI_Human();
     void exchangeTiles(std::vector<char> *, char);
     bool SetBag(unordered_map<char, int> *);
@@ -26,7 +30,7 @@ public:
     bool SetCommunicator(TrainerComm *);
     bool SetBoard(Board *MyBoard);
     bool SetAgent(AiMode *AI_Agent);
-    Move *DoWork(bool, int, LoadHeuristics *);
+    Move *DoWork(bool, int, LoadHeuristics *, PossibleMoves* , bool*);
     std::string getString() const
     {
         return this->messageToHuman;

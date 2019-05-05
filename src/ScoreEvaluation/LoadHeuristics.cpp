@@ -1,8 +1,8 @@
 
 #include "LoadHeuristics.hpp"
-#define SYNERGY "./src/ScoreEvaluation/Heuristics/Synergy.txt"
-#define VC_PLACE "./src/ScoreEvaluation/Heuristics/VCPlace.txt"
-#define WORTHS "./src/ScoreEvaluation/Heuristics/Worths.txt"
+#define SYNERGY "C:/Users/Mina Ashraf Louis/Desktop/Scrabble_GameProject/Scrabble-Game.ai/src/ScoreEvaluation/Heuristics/Synergy.txt"
+#define VC_PLACE "C:/Users/Mina Ashraf Louis/Desktop/Scrabble_GameProject/Scrabble-Game.ai/src/ScoreEvaluation/Heuristics/VCPlace.txt"
+#define WORTHS "C:/Users/Mina Ashraf Louis/Desktop/Scrabble_GameProject/Scrabble-Game.ai/src/ScoreEvaluation/Heuristics/Worths.txt"
 #define SUPER_LEAVES "./src/ScoreEvaluation/Heuristics/superleaves"
 
 LoadHeuristics::LoadHeuristics()

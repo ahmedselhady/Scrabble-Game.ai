@@ -29,16 +29,19 @@ private:
     TimerGUI *T1;
     TimerGUI *T2;
     TimerGUI *T3;
+	Move* bestMove;
     void updateBoard(Move *);
     void refillTiles(std::vector<char> &, Move *);
     bool turn_TrainerMode;
+	bool iWantToReceive;
+	PossibleMoves returnOfReceiver;
     vector<char> AI_Tiles, HumanTiles;
     TrainerComm *comm;
     Board *MyBoard;
     RackOfTiles *rackoftiles;
     std::unordered_map<char, int> bag;
     GamePhase game_phase;
-
+	
     static Node *_gaddagInstance;
     static inline Node *createGaddag()
     {
@@ -55,6 +58,8 @@ private:
 public:
     static Node *__get_gaddag();
 
+
+	 
     GameBrain(TrainerComm *comm, Board *MyBoard, bool);
     void setTurnOfTrainerMode(bool);
     void updateBag(std::vector<char> &);
