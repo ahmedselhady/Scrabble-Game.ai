@@ -70,12 +70,6 @@ build/
 x64
 
 # unwanted .vcxproj files
-IsA.vcxproj
-IsA.vcxproj.filters
-IsA.vcxproj.user
-Trainer2.vcxproj
-Trainer2.vcxproj.filters
-Trainer2.vcxproj.user
-trainerMode.vcxproj
-trainerMode.vcxproj.filters
-trainerMode.vcxproj.user
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
