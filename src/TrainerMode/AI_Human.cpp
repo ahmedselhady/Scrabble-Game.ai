@@ -179,41 +179,45 @@ void AI_Human::exchangeTiles(std::vector<char> *tiles, char tileToExchange)
     }
 }
 
-Move *AI_Human::DoWork(bool isFuckinBitchEmpty, int bagSize, LoadHeuristics *loader)
+Move *AI_Human::DoWork(bool isFuckinBitchEmpty, int bagSize, LoadHeuristics *loader, PossibleMoves* pointerToBrain, bool* what)
 {
-    Move *BestMove = nullptr;
+    
     Move *PlayerMove = new Move();
-    PossibleMoves ret = DUMMY;
+    /*PossibleMoves ret = DUMMY;*/
 
-    while (ret == DUMMY) // busy wait until a play is played
+    while (!*what) // busy wait until a play is played
     {
-        // TODO: replace with communicator:
-        ret = this->Communicator->SendAndReceiveGUI("dummyText", false, true);
-        // ret = getMoveConsole(PlayerMove);
+        //*busy wait
+		//std::cout << ".";
     }
-
-    if (ret == PLAY)
+	//*pointerToBrain = getMoveConsole(PlayerMove);
+	*what = false;
+	std::cout << "ya farag elaaaaaaah" << std::endl;
+    if (*pointerToBrain == PLAY)
     {
         PlayerMove = this->Communicator->MovePtr;
-        BestMove = this->AI_Agent->doWork(isFuckinBitchEmpty, bagSize - PlayerMove->moveUsedTiles, loader);
-        if (BestMove == NULL)
+		PlayerMove->moveScore = b2g.calculateScore(PlayerMove->word, PlayerMove->startPosition.ROW, PlayerMove->startPosition.COL, PlayerMove->horizontal);
+        PlayerMove->moveScore += (PlayerMove->isBingo) ? 50 : 0;
+
+		this->bestMove = this->AI_Agent->doWork(isFuckinBitchEmpty, bagSize - PlayerMove->moveUsedTiles, loader);
+        if (this->bestMove == NULL)
         {
             this->messageToHuman = "Excellent !I Couldn't do better";
         }
         else
         {
 
-            if (BestMove->moveScore > PlayerMove->moveScore)
+            if (this->bestMove->moveScore > PlayerMove->moveScore)
             {
                 this->messageToHuman = "Bravo! But You Could Do Better..";
             }
 
-            if (BestMove->moveScore < PlayerMove->moveScore)
+            if (this->bestMove->moveScore < PlayerMove->moveScore)
             {
                 this->messageToHuman = "Marvellous! your move is better than what I thought";
             }
 
-            if (BestMove->moveScore == PlayerMove->moveScore)
+            if (this->bestMove->moveScore == PlayerMove->moveScore)
             {
                 this->messageToHuman = "Excellent !I Couldn't do better";
             }
@@ -221,27 +225,27 @@ Move *AI_Human::DoWork(bool isFuckinBitchEmpty, int bagSize, LoadHeuristics *loa
 
         return PlayerMove;
     }
-    else if (ret == PASS)
+    else if (*pointerToBrain == PASS)
     {
-        BestMove = this->AI_Agent->doWork(isFuckinBitchEmpty, bagSize, loader);
-        if (BestMove == NULL)
+		this->bestMove = this->AI_Agent->doWork(isFuckinBitchEmpty, bagSize, loader);
+        if (this->bestMove == NULL)
         {
             this->messageToHuman = "Excellent !I Couldn't do better";
         }
         else
         {
 
-            if (BestMove->moveScore > PlayerMove->moveScore)
+            if (this->bestMove->moveScore > PlayerMove->moveScore)
             {
                 this->messageToHuman = "Bravo! But You Could Do Better..";
             }
 
-            if (BestMove->moveScore < PlayerMove->moveScore)
+            if (this->bestMove->moveScore < PlayerMove->moveScore)
             {
                 this->messageToHuman = "Marvellous! your move is better than what I thought";
             }
 
-            if (BestMove->moveScore == PlayerMove->moveScore)
+            if (this->bestMove->moveScore == PlayerMove->moveScore)
             {
                 this->messageToHuman = "Excellent !I Couldn't do better";
             }
@@ -250,8 +254,9 @@ Move *AI_Human::DoWork(bool isFuckinBitchEmpty, int bagSize, LoadHeuristics *loa
     }
     else
     {
+		this->bestMove = NULL;
         // *then exchange:
-        this->exchangeTiles(this->HumanTiles, this->Communicator->ExchangedTiles[0]);
+		this->exchangeTiles(this->HumanTiles, this->Communicator->ExchangedTiles[0]);
         return NULL;
     }
 

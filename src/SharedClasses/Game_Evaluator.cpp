@@ -34,5 +34,5 @@ void gameEvaluator::evaluateMovesHuristic(std::list<Move> &moves, GamePhase curr
     //     itr->evaluatedScore = this->moveUtility(*itr, currentPhase);
     // }
 
-    moves.sort([](const Move &a, const Move &b) { return a.evaluatedScore > b.evaluatedScore; });
+    moves.sort([](const Move &a, const Move &b) { return (a.moveScore + a.evaluatedScore) > (b.evaluatedScore + b.moveScore); });
 }

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Move.hpp"
-#include "./Definitions.hpp"
+#include "../Definitions.hpp"
 
 #include <list>
 
