@@ -3,33 +3,28 @@
 
 Node *GameBrain::_gaddagInstance = nullptr;
 
-void GameBrain::updateBag(std::vector<char> &tilesToReduce)
-{
-    for (int i = 0; i < tilesToReduce.size(); ++i)
-    {
-        try
-        {
-            GameBrain::bag[tilesToReduce[i]] -= 1;
-            --this->bagSize;
-        }
-        catch (const std::exception &e)
-        {
-            // ! how on earth did you place a non alphabet character!
-            std::cout << e.what() << std::endl;
-        }
+void GameBrain::updateBag(std::vector<char> &tilesToReduce) {
+  for (int i = 0; i < (int)tilesToReduce.size(); ++i) {
+    try {
+      GameBrain::bag[tilesToReduce[i]] -= 1;
+      --this->bagSize;
+    } catch (const std::exception &e) {
+      // ! how on earth did you place a non alphabet character!
+      std::cout << e.what() << std::endl;
     }
+  }
 
-    GameBrain::game_phase = (bagSize <= 7) ? END_GAME_MODE : (bagSize <= 9) ? PREEND_GAME_MODE : MID_GAME_MODE;
+  GameBrain::game_phase =
+      (bagSize <= 7) ? END_GAME_MODE
+                     : (bagSize <= 9) ? PREEND_GAME_MODE : MID_GAME_MODE;
 }
 
-Node *GameBrain::__get_gaddag()
-{
-    if (GameBrain::_gaddagInstance == nullptr)
-    {
-        GameBrain::_gaddagInstance = createGaddag();
-    }
+Node *GameBrain::__get_gaddag() {
+  if (GameBrain::_gaddagInstance == nullptr) {
+    GameBrain::_gaddagInstance = createGaddag();
+  }
 
-    return GameBrain::_gaddagInstance;
+  return GameBrain::_gaddagInstance;
 }
 
 GameBrain::GameBrain(TrainerComm *comm, Board *MyBoard, bool whoseTurn)

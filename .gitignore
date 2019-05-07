@@ -4,6 +4,7 @@
 *.md
 LICENSE
 
+# Prerequisites
 moves.txt
 out.txt
 
@@ -27,7 +28,7 @@ vendor
 *.pch
 
 # Compiled Dynamic libraries
-*.so
+[^libzmq].so
 *.dylib
 *.dll
 

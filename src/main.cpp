@@ -1,5 +1,3 @@
-
-
 #include "./Brain.hpp"
 #include "./Definitions.hpp"
 

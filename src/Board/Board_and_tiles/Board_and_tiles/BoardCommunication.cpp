@@ -1,6 +1,6 @@
-#include "./Tiles.h"
 #include "./BoardCommunication.h"
 #include "./Board.h"
+#include "./Tiles.h"
 
 //Constructor
 BoardToGrammer::BoardToGrammer()
@@ -8,9 +8,16 @@ BoardToGrammer::BoardToGrammer()
 	BoardCommunicator::BoardPtr = Board::getBoard(); // need to edit this
 	BoardCommunicator::TilesPtr = Tiles::getTiles(); // need to edit this
 }
-//Destructor
-BoardToGrammer::~BoardToGrammer()
-{
+// Destructor
+BoardToGrammer::~BoardToGrammer() {}
+
+bool BoardToGrammer::isEmpty() {
+  for (int i = 0; i < 15; ++i) {
+    for (int j = 0; j < 15; ++j) {
+      if (this->hasaTile(i, j)) return false;
+    }
+  }
+  return true;
 }
 
 //This Function it will call the function from the AI module to determine the next state given the current board Vertically
@@ -38,16 +45,12 @@ char BoardToGrammer::getTileAtPosition(int row, int col)
 	return (CurrentRow[col] == '*') ? '*' : CurrentRow[col] + 32;
 }
 
-//This function set character postion
-void BoardToGrammer::SetChar(char Letter, int Row, int Col)
-{
-	BoardPtr->SetCharPos(Letter, Row, Col);
+// This function set character postion
+void BoardToGrammer::SetChar(char Letter, int Row, int Col) {
+  BoardPtr->SetCharPos(Letter, Row, Col);
 }
 
-void BoardToGrammer::PrintBitBoard()
-{
-	BoardPtr->print();
-}
+void BoardToGrammer::PrintBitBoard() { BoardPtr->print(); }
 
 //This function checs if this place contain a tile or not
 bool BoardToGrammer::hasaTile(int row, int col)
