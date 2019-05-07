@@ -22,15 +22,13 @@ class GameBrain
 private:
     int bagSize;
     bool isFuckinBitchEmpty;
-    bool readyToSend;
-    std::string sendMessage;
     LoadHeuristics *heuristicsLoader;
     Trainer trainer;
     TimerGUI *T1;
     TimerGUI *T2;
     TimerGUI *T3;
 	Move* bestMove;
-    void updateBoard(Move *);
+
     void refillTiles(std::vector<char> &, Move *);
     bool turn_TrainerMode;
 	bool iWantToReceive;
@@ -43,6 +41,7 @@ private:
     GamePhase game_phase;
 	
     static Node *_gaddagInstance;
+
     static inline Node *createGaddag()
     {
         LoadGaddag gaddagConstructor;
@@ -51,20 +50,23 @@ private:
     }
 
     AiMode *ourBelovedIntelligentAgent;
-    std::string constructString(Move *, int, int, unsigned long, unsigned long, unsigned long, std::vector<char> &, std::string);
     bool IsFinished();
     void communicatorThreadSynch();
 
 public:
     static Node *__get_gaddag();
+    bool readyToSend;
+    std::string sendMessage;
 
-
-	 
+    void updateBoard(Move *);
+    std::string constructString(Move *, int, int, unsigned long, unsigned long, unsigned long, std::vector<char> &, std::string);
     GameBrain(TrainerComm *comm, Board *MyBoard, bool);
     void setTurnOfTrainerMode(bool);
     void updateBag(std::vector<char> &);
-    void work_computer_vs_computer();
+    void initialize_computer_vs_computer();
+    Move* work_computer_vs_computer();
     void work_human_vs_computer();
+    void fillComputerTiles(std::vector<char>&);
 };
 
 #endif

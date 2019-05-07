@@ -406,33 +406,74 @@ void GameBrain::work_human_vs_computer()
     }
 }
 
-void GameBrain::work_computer_vs_computer()
+void GameBrain::initialize_computer_vs_computer()
 {
-    vector<char> Rack;
-    Rack.push_back('f');
-    Rack.push_back('g');
-    Rack.push_back('o');
-    Rack.push_back('a');
-    Rack.push_back('p');
-    Rack.push_back('e');
-    Rack.push_back('n');
+    auto thread = std::thread(&GameBrain::communicatorThreadSynch, this);
+    thread.detach();
+    // *set board reference to both agents:
+    /**
+     * set board for Computer Agent
+    */
+    trainer.AI.SetBoard(MyBoard);
 
-    BoardToGrammer Ptr2G = BoardToGrammer();
-    Ptr2G.SetChar('B', 6, 7);
-    Ptr2G.SetChar('A', 7, 7);
-    Ptr2G.SetChar('B', 8, 7);
-    Ptr2G.SetChar('E', 9, 7);
-    Ptr2G.SetChar('A', 9, 8);
-    Ptr2G.SetChar('R', 9, 9);
-    Ptr2G.SetChar('S', 9, 10);
+    // *set agents' reference to bags
+    /**
+     * set computer agent's reference to the global bag
+    */
+    trainer.AI.SetBag(&bag);
 
-    AiMode *aimode = new AiMode();
-    aimode->setTiles(Rack);
-    aimode->setBoardToGrammar(Ptr2G);
-    aimode->setBagPointer(&this->bag);
+    // *set agents' reference to the GUI communicator
+    /**
+     * set computer agent's reference to the communicator
+    */
+    trainer.AI.SetCommunicator(comm);
 
-    //Move *move = aimode->doWork(this->isFuckinBitchEmpty);
-    //std::cout << "Move Score: " << move->evaluatedScore << std::endl;
+    // *set agents' referene to the Thinker module
+    /**
+     * set computer agent's reference to the Thinking Agent 
+    */
+    trainer.AI.SetAgent(this->ourBelovedIntelligentAgent);
+}
+
+void GameBrain::fillComputerTiles(std::vector<char>& newTiles){
+    for(int i=0;i<newTiles.size();++i){
+        this->AI_Tiles.push_back(newTiles[i]);
+    }
+}
+
+Move* GameBrain::work_computer_vs_computer()
+{
+
+    // ! in testing only: print the board and human tiles to allow human to think
+    std::cout << "computer tiles are:\n";
+    for (int i = 0; i < 7; ++i)
+    {
+        std::cout << AI_Tiles[i] << " ";
+    }
+    std::cout << std::endl;
+
+    trainer.AI.SetTiles(&AI_Tiles);
+    Move *move = trainer.AI.DoWork(this->isFuckinBitchEmpty, this->bagSize, this->heuristicsLoader);
+
+    if (move != nullptr)
+    {
+        std::cout << "Updating Board...\n";
+        // *update the board with the human's move
+        this->updateBoard(move);      
+        this->isFuckinBitchEmpty = (this->isFuckinBitchEmpty) ? false : false;
+    }
+
+    //* remove the tiles used from the bag:
+    std::vector<char>* temporaryRack = Options::unusedRackTiles(&AI_Tiles, move);
+    AI_Tiles.clear();
+    for(int i=0;i<temporaryRack->size();++i){
+        AI_Tiles.push_back((*temporaryRack)[i]);
+    }
+    
+    temporaryRack->clear();
+    delete temporaryRack;
+
+    return move;
 }
 
 bool GameBrain::IsFinished()
