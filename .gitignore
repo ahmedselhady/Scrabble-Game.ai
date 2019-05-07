@@ -67,7 +67,15 @@ Debug/
 build/
 
 # x64 folder 
-x64/
+x64
 
 # unwanted .vcxproj files
-*.vcxproj
+IsA.vcxproj
+IsA.vcxproj.filters
+IsA.vcxproj.user
+Trainer2.vcxproj
+Trainer2.vcxproj.filters
+Trainer2.vcxproj.user
+trainerMode.vcxproj
+trainerMode.vcxproj.filters
+trainerMode.vcxproj.user
