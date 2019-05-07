@@ -65,3 +65,9 @@ Debug/
 
 # CMake build directory
 build/
+
+# x64 folder 
+x64/
+
+# unwanted .vcxproj files
+*.vcxproj

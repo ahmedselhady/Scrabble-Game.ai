@@ -185,16 +185,17 @@ Move *AI_Human::DoWork(bool isFuckinBitchEmpty, int bagSize, LoadHeuristics *loa
     Move *PlayerMove = new Move();
     /*PossibleMoves ret = DUMMY;*/
 
-    //while (!*what) // busy wait until a play is played
-    //{
-    //    //*busy wait
-    //}
-	*pointerToBrain = getMoveConsole(PlayerMove);
+    while (!*what) // busy wait until a play is played
+    {
+        //*busy wait
+		//std::cout << ".";
+    }
+	//*pointerToBrain = getMoveConsole(PlayerMove);
 	*what = false;
 	std::cout << "ya farag elaaaaaaah" << std::endl;
     if (*pointerToBrain == PLAY)
     {
-        //PlayerMove = this->Communicator->MovePtr;
+        PlayerMove = this->Communicator->MovePtr;
 		PlayerMove->moveScore = b2g.calculateScore(PlayerMove->word, PlayerMove->startPosition.ROW, PlayerMove->startPosition.COL, PlayerMove->horizontal);
         PlayerMove->moveScore += (PlayerMove->isBingo) ? 50 : 0;
 
@@ -255,7 +256,7 @@ Move *AI_Human::DoWork(bool isFuckinBitchEmpty, int bagSize, LoadHeuristics *loa
     {
 		this->bestMove = NULL;
         // *then exchange:
-		this->exchangeTiles(this->HumanTiles, PlayerMove->word[0]);//this->Communicator->ExchangedTiles[0]);
+		this->exchangeTiles(this->HumanTiles, this->Communicator->ExchangedTiles[0]);
         return NULL;
     }
 
