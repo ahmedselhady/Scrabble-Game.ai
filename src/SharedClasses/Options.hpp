@@ -18,7 +18,8 @@ public:
     static std::vector<char> *setRackGrounded(std::vector<char> *Rack);                // Returns Offset Chars starting from ZERO.
     static int rackScore(std::vector<char> *Rack);                                     // Returns Rack Leave Score for Individuals Chars.
     static std::string *moveChar(Move *move);                                          // Returns actual new tile of a move that will be played.
-
-private:
+    static std::string *playableOnBoard(Move *move);  // Returns a good format for the move to stick it on board
+                      // directly.
+   private:
     Options();
 };

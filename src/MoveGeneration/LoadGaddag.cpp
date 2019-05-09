@@ -10,7 +10,7 @@
 
 #define DICT_FILE_NAME "../MoveGeneration/Dict.txt"
 
-#define GADDAG_FILE_NAME "C:/Users/Mina Ashraf Louis/Desktop/Scrabble_GameProject/Scrabble-Game.ai/src/MoveGeneration/GADDAG.txt"
+#define GADDAG_FILE_NAME "E:/CUFE/CMPN402 [Machine Intelligence]/Project/Scrabble_GameProject/Scrabble-Game.ai/src/MoveGeneration/GADDAG.txt"
 
 #define TOTAL_GADDAG_NODES 6419512
 

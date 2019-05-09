@@ -284,380 +284,329 @@ void Board::SetCharPos(char Letter, int Row, int Col)
 
 //This Function calculateScore it calulates the word and letter score
 
+// This Function calculateScore it calulates the word and letter score
+
 int Board::calculateScore(int offsit, bool horizontal, char intersectionLetter)
 
 {
+  BoardMask WordScoreMultiplyBy3(
+      0b0000000000000000000000000000000000000000000000000100000010000001,
+      0b0000000010000000000000100000000000000000000000000000000000000000,
+      0b0000000000000000000000000000000000000000000000000000000000000000,
+      0b0000000000000000000000000000000100000010000001000000000000000000);
 
+  BoardMask WordScoreMultiplyBy2(
+      0b0000000100000001000001000000000100010000000000010000000000000000,
+      0b0000000000000001000000000000000000000000000000000000000001000001,
+      0b0000000001000001000000010000000100000100000000000000000000000000,
+      0b0000000000000000000000000000000000000000000000010000000000010001);
 
+  BoardMask LetterScoreMultiplyBy2(
+      0b0000100000010000001000000101000000000000000000000000100000001000,
+      0b0100010000010000000100000100010100010000000000000000000000000000,
+      0b0001010000001000000100000010000000000000000000000000000000010001,
+      0b0000000000000000000000000000000000100000001000000000000000000000);
 
-	BoardMask WordScoreMultiplyBy3(0b0000000000000000000000000000000000000000000000000100000010000001, 0b0000000010000000000000100000000000000000000000000000000000000000, 0b0000000000000000000000000000000000000000000000000000000000000000, 0b0000000000000000000000000000000100000010000001000000000000000000);
+  BoardMask LetterScoreMultiplyBy3(
+      0b0000000000000000000000000000000000000001000100000000000000000000,
+      0b0000000000000000000000000000000000000001000100010001000000000000,
+      0b0000000000000000000000000000000000000000000100010001000100000000,
+      0b0000000000000000000000000000000000000000000000000001000100000000);
 
-	BoardMask WordScoreMultiplyBy2(0b0000000100000001000001000000000100010000000000010000000000000000, 0b0000000000000001000000000000000000000000000000000000000001000001, 0b0000000001000001000000010000000100000100000000000000000000000000, 0b0000000000000000000000000000000000000000000000010000000000010001);
+  int mStartOffsit = offsit;
 
-	BoardMask LetterScoreMultiplyBy2(0b0000100000010000001000000101000000000000000000000000100000001000, 0b0100010000010000000100000100010100010000000000000000000000000000, 0b0001010000001000000100000010000000000000000000000000000000010001, 0b0000000000000000000000000000000000100000001000000000000000000000);
+  int WordScore = 0;
 
-	BoardMask LetterScoreMultiplyBy3(0b0000000000000000000000000000000000000001000100000000000000000000, 0b0000000000000000000000000000000000000001000100010001000000000000, 0b0000000000000000000000000000000000000000000100010001000100000000, 0b0000000000000000000000000000000000000000000000000001000100000000);
+  int TileValues[26] = {
+      1, 3, 3, 2,  1, 4, 2, 4, 1, 8, 5, 1, 3,
+      1, 1, 3, 10, 1, 1, 1, 1, 4, 4, 8, 4, 10};  // need to add the blank
 
+  bool Wsx3 = false;
 
+  bool Wsx2 = false;
 
-	int mStartOffsit = offsit;
+  int Wsx3M = 1;  // multiplyer
 
-	int WordScore = 0;
+  int Wsx2M = 1;
 
-	int TileValues[26] = {1, 3, 3, 2, 1, 4, 2, 4, 1, 8, 5, 1, 3, 1, 1, 3, 10, 1, 1, 1, 1, 4, 4, 8, 4, 10}; //need to add the blank
+  if (!horizontal)  // vertically
 
-	bool Wsx3 = false;
+  {
+    while ((AllCharBoard.getBit(mStartOffsit - 15)) && (mStartOffsit - 15) >= 0)
 
-	bool Wsx2 = false;
+    {
+      mStartOffsit -= 15;
+    }
 
-	int Wsx3M = 1; // multiplyer
+    while ((offsit == mStartOffsit || AllCharBoard.getBit(mStartOffsit)) &&
+           (mStartOffsit) <= 224)  // the word still didnt complete
 
-	int Wsx2M = 1;
+    {
+      char Tile = ' ';
 
-	if (!horizontal) // vertically
+      char charOffsit = ' ';
 
-	{
+      bool addBonus = false;
 
+      bool isBlank = false;
 
+      if (offsit == mStartOffsit)
 
-		while ((AllCharBoard.getBit(mStartOffsit - 15)) && (mStartOffsit - 15) >= 0)
+      {
+        if (!AllCharBoard.getBit(mStartOffsit))
 
-		{
+        {
+          addBonus = true;
+        }
 
-			mStartOffsit -= 15;
+        Tile = intersectionLetter;
 
-		}
+        if (intersectionLetter >= 65 && intersectionLetter <= 90)  //  blank
 
-		while ((offsit == mStartOffsit || AllCharBoard.getBit(mStartOffsit)) && (mStartOffsit) <= 224) // the word still didnt complete
+        {
+          isBlank = true;
 
-		{
+          charOffsit = 'A';
 
-			char Tile = ' ';
+        }
 
-			char charOffsit = ' ';
+        else
 
-			bool addBonus = false;
+        {
+          charOffsit = 'a';
+        }
 
-			bool isBlank = false;
+      }
 
-			if (offsit == mStartOffsit)
+      else
 
-			{
+      {
+        Tile = getCharByOffsit(mStartOffsit);  // get the current char
 
-				if (!AllCharBoard.getBit(mStartOffsit))
+        charOffsit = 'A';
+      }
 
-				{
+      if (addBonus)
 
-					addBonus = true;
+      {
+        if (LetterScoreMultiplyBy2.getBit(mStartOffsit) && !isBlank)
 
-				}
+        {
+          WordScore += TileValues[Tile - charOffsit] * 2;
 
-				Tile = intersectionLetter;
+        }
 
-				if (intersectionLetter >= 65 && intersectionLetter <= 90) //  blank
+        else if (LetterScoreMultiplyBy3.getBit(mStartOffsit) && !isBlank)
 
-				{
+        {
+          WordScore += TileValues[Tile - charOffsit] * 3;
 
-					isBlank = true;
+        }
 
-					charOffsit = 'A';
+        else if (!isBlank)
 
-				}
+        {
+          WordScore += TileValues[Tile - charOffsit];
+        }
 
-				else
+        if ((WordScoreMultiplyBy2.getBit(mStartOffsit)) ||
+            (mStartOffsit == 7 + 15 * 7))  // the start square
 
-				{
+        {
+          Wsx2 = true;
 
-					charOffsit = 'a';
+          Wsx2M *= 2;
 
-				}
+        }
 
-			}
+        else if (WordScoreMultiplyBy3.getBit(mStartOffsit))
 
-			else
+        {
+          Wsx3 = true;
 
-			{
+          Wsx3M *= 3;
+        }
 
-				Tile = getCharByOffsit(mStartOffsit); // get the current char
+      }
 
-				charOffsit = 'A';
+      else
 
-			}
+      {
+        if (!isBlank)
 
-			if (addBonus)
+        {
+          bool boardblank =
+              ((blank_[0] == mStartOffsit) || (blank_[1] == mStartOffsit))
+                  ? true
+                  : false;
 
-			{
+          if (!boardblank)
 
-				if (LetterScoreMultiplyBy2.getBit(mStartOffsit) && !isBlank)
+          {
+            WordScore += TileValues[Tile - charOffsit];
+          }
+        }
+      }
 
-				{
+      mStartOffsit += 15;
+    }
 
-					WordScore += TileValues[Tile - charOffsit] * 2;
+    if (Wsx2)
 
-				}
+    {
+      WordScore = WordScore * Wsx2M;
 
-				else if (LetterScoreMultiplyBy3.getBit(mStartOffsit) && !isBlank)
+    }
 
-				{
+    else if (Wsx3)
 
-					WordScore += TileValues[Tile - charOffsit] * 3;
+    {
+      WordScore = WordScore * Wsx3M;
+    }
 
-				}
+    return WordScore;
 
-				else if (!isBlank)
+  }
 
-				{
+  else
 
-					WordScore += TileValues[Tile - charOffsit];
+  {
+    while (AllCharBoard.getBit(mStartOffsit - 1) &&
+           (mStartOffsit - 1) >=
+               0)  // need to add a validition if its a valid offsit or not
 
-				}
+    {
+      mStartOffsit--;
+    }
 
+    while ((offsit == mStartOffsit || AllCharBoard.getBit(mStartOffsit)) &&
+           (mStartOffsit <= 224))  // the world still didnt complete
 
+    {
+      char Tile = ' ';
 
-				if ((WordScoreMultiplyBy2.getBit(mStartOffsit)) || (mStartOffsit == 7 + 15 * 7)) // the start square
+      char charOffsit = ' ';
 
-				{
+      bool addBonus = false;
 
-					Wsx2 = true;
+      bool isBlank = false;
 
-					Wsx2M *= 2;
+      if (offsit == mStartOffsit)
 
-				}
+      {
+        if (!AllCharBoard.getBit(mStartOffsit))
 
-				else if (WordScoreMultiplyBy3.getBit(mStartOffsit))
+        {
+          addBonus = true;
+        }
 
-				{
+        Tile = intersectionLetter;
 
-					Wsx3 = true;
+        if (intersectionLetter >= 65 && intersectionLetter <= 90)  //  blank
 
-					Wsx3M *= 3;
+        {
+          isBlank = true;
 
-				}
+          charOffsit = 'A';
 
-			}
+        }
 
-			else
+        else
 
-			{
+        {
+          charOffsit = 'a';
+        }
 
-				if (!isBlank)
+      }
 
-				{
+      else
 
-					bool boardblank = ((blank_[0] == mStartOffsit) || (blank_[1] == mStartOffsit)) ? true : false;
+      {
+        Tile = getCharByOffsit(mStartOffsit);  // get the current char
 
-					if (!boardblank)
+        charOffsit = 'A';
+      }
 
-					{
+      if (addBonus)
 
-						WordScore += TileValues[Tile - charOffsit];
+      {
+        if (LetterScoreMultiplyBy2.getBit(mStartOffsit) && !isBlank)
 
-					}
+        {
+          WordScore += TileValues[Tile - charOffsit] * 2;
 
-				}
+        }
 
-			}
+        else if (LetterScoreMultiplyBy3.getBit(mStartOffsit) && !isBlank)
 
+        {
+          WordScore += TileValues[Tile - charOffsit] * 3;
 
+        }
 
-			mStartOffsit += 15;
+        else if (!isBlank)
 
-		}
+        {
+          WordScore += TileValues[Tile - charOffsit];
+        }
 
-		if (Wsx2)
+        if ((WordScoreMultiplyBy2.getBit(mStartOffsit)) ||
+            (mStartOffsit == 7 + 15 * 7))  // the start square
 
-		{
+        {
+          Wsx2 = true;
 
-			WordScore = WordScore * Wsx2M;
+          Wsx2M *= 2;
 
-		}
+        }
 
-		else if (Wsx3)
+        else if (WordScoreMultiplyBy3.getBit(mStartOffsit))
 
-		{
+        {
+          Wsx3 = true;
 
-			WordScore = WordScore * Wsx3M;
+          Wsx3M *= 3;
+        }
 
-		}
+      }
 
-		return WordScore;
+      else
 
-	}
+      {
+        if (!isBlank)
 
-	else
+        {
+          bool boardblank =
+              ((blank_[0] == mStartOffsit) || (blank_[1] == mStartOffsit))
+                  ? true
+                  : false;
 
-	{
+          if (!boardblank)
 
+          {
+            WordScore += TileValues[Tile - charOffsit];
+          }
+        }
+      }
 
+      mStartOffsit += 1;
+    }
 
-		while (AllCharBoard.getBit(mStartOffsit - 1) && (mStartOffsit - 1) >= 0) // need to add a validition if its a valid offsit or not
+    if (Wsx2)
 
-		{
+    {
+      WordScore = WordScore * Wsx2M;
 
-			mStartOffsit--;
+    }
 
-		}
+    else if (Wsx3)
 
-		while ((offsit == mStartOffsit || AllCharBoard.getBit(mStartOffsit)) && (mStartOffsit <= 224)) // the world still didnt complete
+    {
+      WordScore = WordScore * Wsx3M;
+    }
 
-		{
-
-			char Tile = ' ';
-
-			char charOffsit = ' ';
-
-			bool addBonus = false;
-
-			bool isBlank = false;
-
-			if (offsit == mStartOffsit)
-
-			{
-
-				if (!AllCharBoard.getBit(mStartOffsit))
-
-				{
-
-					addBonus = true;
-
-				}
-
-				Tile = intersectionLetter;
-
-				if (intersectionLetter >= 65 && intersectionLetter <= 90) //  blank
-
-				{
-
-					isBlank = true;
-
-					charOffsit = 'A';
-
-				}
-
-				else
-
-				{
-
-					charOffsit = 'a';
-
-				}
-
-			}
-
-			else
-
-			{
-
-				Tile = getCharByOffsit(mStartOffsit); // get the current char
-
-				charOffsit = 'A';
-
-			}
-
-
-
-			if (addBonus)
-
-			{
-
-
-
-				if (LetterScoreMultiplyBy2.getBit(mStartOffsit) && !isBlank)
-
-				{
-
-					WordScore += TileValues[Tile - charOffsit] * 2;
-
-				}
-
-				else if (LetterScoreMultiplyBy3.getBit(mStartOffsit) && !isBlank)
-
-				{
-
-					WordScore += TileValues[Tile - charOffsit] * 3;
-
-				}
-
-				else if (!isBlank)
-
-				{
-
-					WordScore += TileValues[Tile - charOffsit];
-
-				}
-
-
-
-				if ((WordScoreMultiplyBy2.getBit(mStartOffsit)) || (mStartOffsit == 7 + 15 * 7)) // the start square
-
-				{
-
-					Wsx2 = true;
-
-					Wsx2M *= 2;
-
-				}
-
-				else if (WordScoreMultiplyBy3.getBit(mStartOffsit))
-
-				{
-
-					Wsx3 = true;
-
-					Wsx3M *= 3;
-
-				}
-
-			}
-
-			else
-
-			{
-
-				if (!isBlank)
-
-				{
-
-					bool boardblank = ((blank_[0] == mStartOffsit) || (blank_[1] == mStartOffsit)) ? true : false;
-
-					if (!boardblank)
-
-					{
-
-						WordScore += TileValues[Tile - charOffsit];
-
-					}
-
-				}
-
-			}
-
-
-
-			mStartOffsit += 1;
-
-		}
-
-		if (Wsx2)
-
-		{
-
-			WordScore = WordScore * Wsx2M;
-
-		}
-
-		else if (Wsx3)
-
-		{
-
-			WordScore = WordScore * Wsx3M;
-
-		}
-
-		return WordScore;
-
-	}
-
+    return WordScore;
+  }
 }
 
 

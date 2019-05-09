@@ -19,25 +19,7 @@
 class GameBrain
 {
 private:
-    int bagSize;
-    bool isFuckinBitchEmpty;
-    LoadHeuristics *heuristicsLoader;
-    Trainer trainer;
-    TimerGUI *T1;
-    TimerGUI *T2;
-    TimerGUI *T3;
-	Move* bestMove;
-
-    void refillTiles(std::vector<char> &, Move *);
-    bool turn_TrainerMode;
-	bool iWantToReceive;
-	PossibleMoves returnOfReceiver;
-    vector<char> AI_Tiles, HumanTiles;
-    TrainerComm *comm;
-    Board *MyBoard;
-    RackOfTiles *rackoftiles;
-    std::unordered_map<char, int> bag;
-    GamePhase game_phase;
+   
 	
     static Node *_gaddagInstance;
 
@@ -53,12 +35,34 @@ private:
     void communicatorThreadSynch();
 
 public:
+    int bagSize;
+    bool isFuckinBitchEmpty;
+    LoadHeuristics *heuristicsLoader;
+    Trainer trainer;
+    TimerGUI *T1;
+    TimerGUI *T2;
+    TimerGUI *T3;
+    Move *bestMove;
+
+    void refillTiles(std::vector<char> &, Move *);
+    bool turn_TrainerMode;
+    bool iWantToReceive;
+    PossibleMoves returnOfReceiver;
+    vector<char> AI_Tiles, HumanTiles;
+    TrainerComm *comm;
+    Board *MyBoard;
+    RackOfTiles *rackoftiles;
+    std::unordered_map<char, int> bag;
+    GamePhase game_phase;
+	vector<char> getAITiles();
     static Node *__get_gaddag();
     bool readyToSend;
     std::string sendMessage;
 
     void updateBoard(Move *);
     std::string constructString(Move *, int, int, unsigned long, unsigned long, unsigned long, std::vector<char> &, std::string);
+    std::string constructEndGameString(int ourScore,int opponentScore );
+
     GameBrain(TrainerComm *comm, Board *MyBoard, bool);
     void setTurnOfTrainerMode(bool);
     void updateBag(std::vector<char> &);

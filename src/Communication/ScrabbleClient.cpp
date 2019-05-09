@@ -1,16 +1,21 @@
 #ifndef COMM_SCRABBLE_CLIENT_CPP
 #define COMM_SCRABBLE_CLIENT_CPP
 
+
+#ifdef _WIN32
+	#pragma comment(lib, "ws2_32")
+	#include <WinSock2.h>
+#endif
 #include <assert.h>
 #include <cstdlib>
 #include <future>
 #include <iostream>
 #include <string>
 #include "BinaryEnvelope.hpp"
-#include "Board/Board_and_tiles/Board_and_tiles/Board.h"
-#include "Brain.hpp"
-#include "Move.hpp"
-#include "SharedClasses/TrainerComm.hpp"
+#include "../Board/Board_and_tiles/Board_and_tiles/Board.h"
+#include "../Brain.hpp"
+#include "../SharedClasses/Move.hpp"
+#include "../SharedClasses/TrainerComm.hpp"
 #include "easywsclient/easywsclient.hpp"
 //#include "easywsclient/easywsclient.cpp"  // <-- include only if you don't
 // want compile separately
@@ -21,17 +26,13 @@ static WebSocket::pointer ws_connection = nullptr;
 static std::string mode = "";
 
 Board* board = nullptr;
-GameBrain* brain = nullptr;
-bool readyToSend = false;
+GameBrain* brainiac = nullptr;
+bool readySendServer = false;
 std::vector<uint8_t> vecToSend;
+int our, their, total;
 
 // this is used to hold the current state of our communcation
 States state = States::INIT;
-
-void sendMsgToGUI(std::string str) {
-  std::thread t(sendStringToGUI, str);
-  t.detach();
-}
 
 void print_vec(const std::vector<uint8_t>& msg) {
   std::cout << std::endl;
@@ -41,45 +42,51 @@ void print_vec(const std::vector<uint8_t>& msg) {
   std::cout << std::endl;
 }
 
-void playTeacherMode() {
-  auto vec = getMsgFromGUI("MAKE_PASS");
-  std::cout << "GOT FROM GUI: ";
-  for (auto m : vec) {
-    std::cout << m << " ";
-  }
-  std::cout << std::endl;
-}
+Move* theMove;
 
 void playAIMode() {
-  auto theMove = brain->work_computer_vs_computer();
+  theMove = brainiac->work_computer_vs_computer();
+
+
+ // print_vec(brainiac->getAITiles());
 
   BinaryEnvelope env;
-  env.insertUInt8(MessageTypes::PLAY);
-  env.insertUInt8(theMove->startPosition.COL + 1);
-  env.insertUInt8(theMove->startPosition.ROW + 1);
-  env.insertUInt8(theMove->horizontal ? 0 : 1);
+  if(theMove == nullptr){
+    env.insertUInt8(MessageTypes::PASSMSG);
+  } else {
+    env.insertUInt8(MessageTypes::PLAYMSG);
+    env.insertUInt8(theMove->startPosition.COL + 1);
+    env.insertUInt8(theMove->startPosition.ROW + 1);
+    env.insertUInt8(theMove->horizontal ? 0 : 1);
 
-  for (int i = 0; i < theMove->word.length(); i++) {
-    if (theMove->word[i] >= 0 && theMove->word[i] <= 25) {
-      continue;
-    } else if (theMove->word[i] >= 65 && theMove->word[i] <= 90) {
-      env.insertUInt8((uint8_t)theMove->word[i] + 36);
-    } else {
-      env.insertUInt8((uint8_t)theMove->word[i] - 96);
+    for (int i = 0; i < theMove->word.length(); i++) {
+      if (theMove->word[i] >= 0 && theMove->word[i] <= 25) {
+        continue;
+      } else if (theMove->word[i] >= 'A' && theMove->word[i] <= 'Z') {
+        env.insertUInt8((uint8_t)theMove->word[i] -'A'+101);
+      } else {
+        env.insertUInt8((uint8_t)theMove->word[i] - 'a'+1);
+      }
     }
-  }
-  int len = theMove->word.length();
-  while (len < 7) {
-    env.insertUInt8(0);
-    len++;
-  }
 
-  env.insert32BitInt(4);
-  auto ser = env.serialize();
-  print_vec(ser);
-  // ws_connection->sendBinary(ser);
-  readyToSend = true;
+	theMove->word = *Options::moveChar(theMove);
+    int len = theMove->word.length();
+    while (len < 7) {
+      env.insertUInt8(0);
+      len++;
+    }
+
+    env.insert32BitInt(theMove->moveScore);
+
+	
+
+	
+  }
+	
+  
+  auto ser = env.serialize();  
   vecToSend = ser;
+  readySendServer = true;
   state = States::AWAIT_PLAY_RESPONSE;
 }
 
@@ -111,16 +118,18 @@ void handle_message(const std::vector<uint8_t>& message) {
   } else if (msgType == MessageTypes::START) {
     auto smsg = deserializeReadyMessage(message);
     // TODO: Construct the board and hold it from here
+    std::vector<char> vec;
+    for (int i = 0; i < 7; i++) {
+      uint8_t x = smsg.tiles[i];
+      if (x == 0) continue;
+      if (x == 100) {
+        vec.emplace_back(' '); 
+	  } else {
+        vec.emplace_back(x + 'a' - 1);
+	  }
+	}
+    brainiac->fillComputerTiles(vec);
 
-    board = Board::getBoard();
-
-    GUIMsg += "BOARD / ";
-    for (int i = 0; i < 15; i++) {
-      for (int j = 0; j < 15; j++) {
-        GUIMsg += std::to_string(smsg.board[i][j]) + " ";
-      }
-    }
-    brain->setTiles(smsg.tiles);
     if (smsg.order == 1) {
       // * well this is our turn
       state = States::THINKING;
@@ -137,29 +146,60 @@ void handle_message(const std::vector<uint8_t>& message) {
               << std::endl;
 
     state = States::READY;
-  } else if (msgType == MessageTypes::PASS) {
+  } else if (msgType == MessageTypes::PASSMSG) {
     auto passFromOpponent = deserializePassMessage(message);
 
     // other player passed, we should play
     state = States::THINKING;
 
     // ? state should be known after the play is known
-  } else if (msgType == MessageTypes::PLAY) {
+  } else if (msgType == MessageTypes::PLAYMSG) {
     auto playFromOpponent = deserializePlayMessage(message);
-    // TODO: here we can update the gui maybe
-    // TODO(Salem): here u can access play data
+
+	Move* oppMove = new Move();
+    oppMove->startPosition.COL = playFromOpponent.column - 1;
+    oppMove->startPosition.ROW = playFromOpponent.row - 1;
+    oppMove->horizontal = playFromOpponent.direction == 0 ? true : false;
+    for (int i = 0; i < 7; i++) {
+      char chr;
+      uint8_t t = playFromOpponent.tiles[i];
+      if (t >= 1 && t <= 26) { 
+        chr = t + 'a' - 1;
+      } else if (t >= 101 && t <= 126) { 
+        chr = t + 'A' - 101; 
+      } else { 
+        continue;
+	  }
+      oppMove->word.push_back(chr);//aspoor 
+
+	}
+	brainiac->updateBoard(oppMove);
+
+	std::vector<char> rack = {};
+
+	brainiac->sendMessage = brainiac->constructString(
+            oppMove, 0, playFromOpponent.score, playFromOpponent.ourRemainingTime, playFromOpponent.totalRemainingTime - playFromOpponent.ourRemainingTime, playFromOpponent.totalRemainingTime, rack, "no message no cry");
+    brainiac->readyToSend = true;
 
     state = States::AWAIT_AGENT_CHALLENGE;
   } else if (msgType == MessageTypes::INVALID) {
     if (state == States::AWAIT_PLAY_RESPONSE) {
       auto invalidPlay = deserializeInvalidPlayMessage(message);
-      state = States::THINKING;
+      our = invalidPlay.ourRemainingTime;
+      total = invalidPlay.totalRemainingTime;
+      their = total - our;
+      state = States::IDLE;
     } else if (state == States::AWAIT_EXCHANGE_RESPONSE) {
       auto invalidEx = deserializeInvalidExchangeMessage(message);
-      state = States::THINKING;
+      our = invalidEx.ourRemainingTime;
+      total = invalidEx.totalRemainingTime;
+      their = total - our;
+	  state = States::THINKING;
     } else {
       std::cerr << "Undefined state and action Invalid and state: " << state;
     }
+    sendMessage = true;
+    env.insertUInt8(MessageTypes::PASSMSG);
     std::cout << "Received an Invalid message, won't do anything" << std::endl;
   } else if (msgType == MessageTypes::CHALLENGE_ACCEPTED) {
     auto chgmsg = deserializeChallengeAcceptedMessage(message);
@@ -183,18 +223,71 @@ void handle_message(const std::vector<uint8_t>& message) {
     // TODO: update the gui
   } else if (msgType == MessageTypes::NO_CHALLENGE) {
     auto nochg = deserializeNoChallengeMessage(message, state);
+    
 
-    // * our extra tiles are given to us at NO_CHALLENGE
 
     if (state == States::AWAIT_CHALLENGE_RESPONSE) {
+      
       state = States::THINKING;
     } else if (state == States::AWAIT_AGENT_CHALLENGE) {
       state = States::THINKING;
     } else if (state == States::AWAIT_PLAY_RESPONSE) {
-      brain->setTiles(nochg.tiles);
+
+		std::vector<char> rack = brainiac->getAITiles();
+
+      brainiac->sendMessage = brainiac->constructString(
+          theMove, theMove->moveScore, 0, 0, 0, 0, rack, "no message no cry");
+      brainiac->readyToSend = true;
+
+	  if (theMove != nullptr) {
+        // * check for starting with a tile on board:
+        if (theMove->word[0] >= 0 && theMove->word[0] <= 25) {
+          if (theMove->horizontal) {
+            theMove->startPosition.COL++;
+          } else {
+            theMove->startPosition.ROW++;
+          }
+        }
+        std::cout << "Updating Board...\n";
+        // *update the board with the human's move
+        brainiac->updateBoard(theMove);
+        brainiac->MyBoard->print();
+        brainiac->isFuckinBitchEmpty =
+            (brainiac->isFuckinBitchEmpty) ? false : false;
+      }
+
+      //* remove the tiles used from the bag:
+      std::vector<char>* temporaryRack =
+          Options::unusedRackTiles(&brainiac->getAITiles(), theMove);
+      brainiac->AI_Tiles.clear();
+      for (int i = 0; i < temporaryRack->size(); ++i) {
+        brainiac->AI_Tiles.push_back((*temporaryRack)[i]);
+      }
+
+      temporaryRack->clear();
+      delete temporaryRack;
+
+
+
+      std::vector<char> tiles;
+
+      // * our extra tiles are given to us at NO_CHALLENGE
+      for(int i = 0;i < 7;i++){
+        if(nochg.tiles[i] != 0){
+          char t =  nochg.tiles[i];
+          if(t == 100){
+            t = ' ';
+          }else {
+            t = t + 'a' - 1;
+          }
+          tiles.emplace_back(t);
+        }
+      }
+
+      brainiac->fillComputerTiles(tiles);
       state = States::IDLE;
     }
-  } else if (msgType == MessageTypes::EXCHANGE) {
+  } else if (msgType == MessageTypes::EXCHANGEMSG) {
     if (state == States::AWAIT_EXCHANGE_RESPONSE) {
       auto msg = deserializeOkExchangeMessage(message);
       // TODO: now i have new tiles, should update our agent
@@ -207,7 +300,7 @@ void handle_message(const std::vector<uint8_t>& message) {
           << "Undefined state and action received Exchange, current state: "
           << state;
     }
-  } else if (msgType == MessageTypes::CHALLENGE) {
+  } else if (msgType == MessageTypes::CHALLENGEMSG) {
   } else {
     // ? this is the default if the message is weird
     std::cerr << "Unknown Message Type, ya bashmo7nds zbt acoadk" << std::endl;
@@ -234,7 +327,6 @@ void handle_message(const std::vector<uint8_t>& message) {
     // auto x = std::async(std::launch::async, playAIMode);
     std::thread t(playAIMode);
     t.detach();
-    sendMessage = false;
     /* env.insertUInt8(MessageTypes::PLAY);
 
     std::cout << std::endl << "Please enter play: " << std::flush;
@@ -269,17 +361,31 @@ void handle_message(const std::vector<uint8_t>& message) {
 
 int main(int argc, char** argv) {
   // use the default local machine socket
-  std::string hostname = "ws://localhost:8080/";
+  // 192.168.43.164  
+  std::string hostname = "ws://192.168.43.164:8080/";
+
+  board = Board::getBoard();
+  brainiac = new GameBrain(new TrainerComm(), board, false);
+  brainiac->initialize_computer_vs_computer();
 
   if (argc == 2) {
-    mode = argv[1];
+    hostname = argv[1];
   }
 
-  if (argc == 3) {
-    hostname = argv[2];
+  #ifdef _WIN32
+
+  INT rc;
+
+  WSADATA wsaData;
+
+  rc = WSAStartup(MAKEWORD(2, 2), &wsaData);
+
+  if (rc) {
+    printf("WSAStartup Failed.\n");
+    return 1;
   }
 
-  brain = new GameBrain();
+#endif
 
   // * amount of connection retries to the server
   int retries = 0;
@@ -297,12 +403,12 @@ int main(int argc, char** argv) {
     // if the connection dies, loop back to try to connect again
 
     while (ws_connection->getReadyState() != WebSocket::CLOSED) {
-      if (readyToSend) {
+      if (readySendServer) {
         std::cout << "Sending the binary";
         print_vec(vecToSend);
         ws_connection->sendBinary(vecToSend);
         vecToSend.clear();
-        readyToSend = false;
+        readySendServer = false;
       }
       /* if (nMove != nullptr && nMove->valid() &&
           nMove->wait_for(std::chrono::seconds(1)) ==
@@ -328,7 +434,6 @@ int main(int argc, char** argv) {
 
       // here we are chillin'
       // do something non-blocking !!!!
-      // TODO: maybe send a non-blocking message to the GUI, maybe ?
     }
 
     // * Reset the state to start a new connection
@@ -339,9 +444,11 @@ int main(int argc, char** argv) {
     std::cerr << "The Connection was weirdly closed for the " << ++retries
               << " time, attempting to reconnect..." << std::endl;
   }
-  // 4, 7, 8, 0, 14, 1, 0, 0, 0, 0, 0, 0, 0, 0, 4,
-  // 4, 7, 8, 0, 14, 1, 0, 0, 0, 0, 0, 0, 0, 0, 4,
+	#ifdef _WIN32
 
+	WSACleanup();
+
+	#endif
   return 0;
 }
 

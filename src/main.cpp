@@ -1,8 +1,8 @@
-#include "./Brain.hpp"
-#include "./Definitions.hpp"
+//#include "./Brain.hpp"
+//#include "./Definitions.hpp"
 
-int main()
-{
+//int main()
+//{
 
 	/**
 	 * teacher mode main
@@ -35,6 +35,6 @@ int main()
 
 	brainAdams->updateBoard(opponentMocve);
 	*/
-	system("pause");
-	return 0;
-}
+//	system("pause");
+//	return 0;
+//}

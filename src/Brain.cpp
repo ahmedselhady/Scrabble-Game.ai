@@ -1,6 +1,8 @@
 
 #include "Brain.hpp"
 
+vector<char> GameBrain::getAITiles() { return AI_Tiles; }
+
 Node *GameBrain::_gaddagInstance = nullptr;
 
 void GameBrain::updateBag(std::vector<char> &tilesToReduce) {
@@ -84,7 +86,7 @@ GameBrain::GameBrain(TrainerComm *comm, Board *MyBoard, bool whoseTurn)
 
 void GameBrain::updateBoard(Move *move)
 {
-    move->word = *Options::moveChar(move);
+    std::string stringToUpdateWith = *Options::playableOnBoard(move);
 
 	std::cout << "Evvvvvery thing about the move: ";
 
@@ -95,7 +97,8 @@ void GameBrain::updateBoard(Move *move)
 	std::cout << move->moveScore << std::endl;
 	
 	BoardToGrammer b2g;
-    for (int i = 0, index = 0; index < move->word.length(); ++i)
+        for (int i = 0, index = 0; index < stringToUpdateWith.length();
+             ++i)
     {
 		// lower caps: blank
 		// upper caps: letter
@@ -104,18 +107,19 @@ void GameBrain::updateBoard(Move *move)
             std::cout << index << std::endl;
             if (!b2g.hasaTile(move->startPosition.ROW, move->startPosition.COL + i))
             {
-				b2g.SetChar(move->word[index++] , move->startPosition.ROW, move->startPosition.COL + i);
+              b2g.SetChar(stringToUpdateWith[index++], move->startPosition.ROW, move->startPosition.COL + i);
             }
         }
         else
         {
             if (!b2g.hasaTile(move->startPosition.ROW + i, move->startPosition.COL))
             {
-                b2g.SetChar(move->word[index++] - 32, move->startPosition.ROW + i, move->startPosition.COL);
+            b2g.SetChar(stringToUpdateWith[index++],  move->startPosition.ROW + i, move->startPosition.COL);
             }
         }
     }
 
+	this->isFuckinBitchEmpty = (this->isFuckinBitchEmpty) ? false : false;
 }
 
 void GameBrain::refillTiles(std::vector<char> &tiles, Move *move)
@@ -148,6 +152,8 @@ void GameBrain::refillTiles(std::vector<char> &tiles, Move *move)
 
 std::string GameBrain::constructString(Move *move, int humanScore, int computerScore, unsigned long myTime, unsigned long opponentTime, unsigned long totalTime, std::vector<char> &humanRack, std::string messageFromTeacher)
 {
+  move->word = *Options::moveChar(move);
+ 
 	std::string stringToComm = (this->bestMove == NULL) ? "play/tm/" : "best/tm/";
 	stringToComm += (this->turn_TrainerMode) ? "1/" : "0/";
 
@@ -184,33 +190,32 @@ std::string GameBrain::constructString(Move *move, int humanScore, int computerS
 
 void GameBrain::communicatorThreadSynch()
 {
-	returnOfReceiver;
-
-    while (true)
-    {
-
-        if (this->readyToSend)
-        {
-			returnOfReceiver=this->comm->SendAndReceiveGUI(this->sendMessage, true, true);
-			if (returnOfReceiver != DUMMY) {
-				this->iWantToReceive = true;
-			}
-			else {
-				this->iWantToReceive = false;
-			}
-            this->readyToSend = false;
+  try {
+    while (true) {
+      if (this->readyToSend) {
+        returnOfReceiver =
+            this->comm->SendAndReceiveGUI(this->sendMessage, true, true);
+        if (returnOfReceiver != DUMMY) {
+          this->iWantToReceive = true;
+        } else {
+          this->iWantToReceive = false;
         }
-        else
-        {
-			returnOfReceiver = this->comm->SendAndReceiveGUI("dummyText", false, true);
-			if (returnOfReceiver != DUMMY) {
-				this->iWantToReceive = true;
-			}
-			else {
-				this->iWantToReceive = false;
-			}
+        this->readyToSend = false;
+      } else {
+        returnOfReceiver =
+            this->comm->SendAndReceiveGUI("dummyText", false, true);
+        if (returnOfReceiver != DUMMY) {
+          this->iWantToReceive = true;
+        } else {
+          this->iWantToReceive = false;
         }
+      }
     }
+  } catch (...) {
+    this->communicatorThreadSynch();
+  }
+
+    
 }
 
 void GameBrain::work_human_vs_computer()
@@ -441,7 +446,7 @@ Move* GameBrain::work_computer_vs_computer()
 
     // ! in testing only: print the board and human tiles to allow human to think
     std::cout << "computer tiles are:\n";
-    for (int i = 0; i < 7; ++i)
+    for (int i = 0; i < AI_Tiles.size(); ++i)
     {
         std::cout << AI_Tiles[i] << " ";
     }
@@ -450,24 +455,9 @@ Move* GameBrain::work_computer_vs_computer()
     trainer.AI.SetTiles(&AI_Tiles);
     Move *move = trainer.AI.DoWork(this->isFuckinBitchEmpty, this->bagSize, this->heuristicsLoader);
 
-    if (move != nullptr)
-    {
-        std::cout << "Updating Board...\n";
-        // *update the board with the human's move
-        this->updateBoard(move);      
-        this->isFuckinBitchEmpty = (this->isFuckinBitchEmpty) ? false : false;
-    }
 
-    //* remove the tiles used from the bag:
-    std::vector<char>* temporaryRack = Options::unusedRackTiles(&AI_Tiles, move);
-    AI_Tiles.clear();
-    for(int i=0;i<temporaryRack->size();++i){
-        AI_Tiles.push_back((*temporaryRack)[i]);
-    }
-    
-    temporaryRack->clear();
-    delete temporaryRack;
 
+  
     return move;
 }
 

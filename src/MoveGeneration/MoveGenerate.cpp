@@ -1250,6 +1250,8 @@ void WordGenerate::crosssets()
 
                 nod = this->root;
 
+				board->PrintBitBoard();
+
                 for (int i = 0; i < move_row - row; i++)
 
                 {

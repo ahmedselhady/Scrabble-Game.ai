@@ -136,9 +136,12 @@ NoChallengeRequestMessage deserializeNoChallengeMessage(
   NoChallengeRequestMessage msg;
   int index = 0;
   msg.type = binary[index++];
-  for (int i = 0; i < 7; i++) {
-    msg.tiles[i] = binary[index++];
+  if(state == States::AWAIT_PLAY_RESPONSE){
+    for (int i = 0; i < 7; i++) {
+      msg.tiles[i] = binary[index++];
+    }
   }
+  
   return msg;
 };
 
@@ -178,6 +181,22 @@ ExchangeRequestMessage deserializeExchangeMessage(
 PlayRequestMessage deserializePlayMessage(const std::vector<uint8_t>& binary) {
   PlayRequestMessage msg;
   // TODO: Ahmed Hussein Complete this
+  int index = 0;
+  msg.type = binary[index++];
+  msg.column = binary[index++];
+  msg.row = binary[index++];
+  msg.direction = binary[index++];
+  for (int i = 0; i < 7; i++) {
+    msg.tiles[i] = binary[index++];
+  }
+  msg.score = binary[index++] << 24 | binary[index++] << 16 |
+              binary[index++] << 8 | binary[index++];
+  msg.allowedChallengeTime = binary[index++] << 24 | binary[index++] << 16 |
+                             binary[index++] << 8 | binary[index++];
+  msg.ourRemainingTime = binary[index++] << 24 | binary[index++] << 16 |
+                         binary[index++] << 8 | binary[index++];
+  msg.totalRemainingTime = binary[index++] << 24 | binary[index++] << 16 |
+                           binary[index++] << 8 | binary[index++];
   return msg;
 };
 

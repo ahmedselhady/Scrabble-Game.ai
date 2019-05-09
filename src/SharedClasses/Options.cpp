@@ -225,3 +225,22 @@ std::string *Options::moveChar(Move *move)
 //     }
 //     return newMove;
 // } // Returns actual new tile of a move that will be played.
+
+std::string *Options::playableOnBoard(Move *move) {
+ 
+  std::string *newMove = new std::string();
+  for (int index = 0; index < move->word.length(); ++index) {
+    if ((move->word[index] >= 0 && move->word[index] <= 25))  // on Board char.
+    {
+      continue;
+    } else {
+      if ((move->word[index] >= 97 && move->word[index] <= 122)) {
+        newMove->push_back(move->word[index] - 32);
+      } else {
+        newMove->push_back(move->word[index] + 32);
+      }
+    }
+  }
+  return newMove;
+
+}  // Returns a good format for the move to stick it on board directly.
